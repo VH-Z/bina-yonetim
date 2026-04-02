@@ -1,0 +1,78 @@
+name: Windows EXE Build
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Kodu çek
+        uses: actions/checkout@v4
+
+      - name: Python kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Bağımlılıkları kur
+        run: |
+          pip install pyinstaller
+          pip install reportlab
+          pip install python-docx
+
+      - name: EXE oluştur
+        run: |
+          pyinstaller --onefile --windowed `
+            --name BinaYonetim `
+            --hidden-import tkinter `
+            --hidden-import tkinter.ttk `
+            --hidden-import tkinter.messagebox `
+            --hidden-import tkinter.filedialog `
+            --hidden-import tkinter.simpledialog `
+            --hidden-import reportlab `
+            --hidden-import reportlab.pdfgen `
+            --hidden-import reportlab.lib `
+            --hidden-import reportlab.lib.pagesizes `
+            --hidden-import reportlab.lib.styles `
+            --hidden-import reportlab.lib.units `
+            --hidden-import reportlab.platypus `
+            --hidden-import docx `
+            bina_yonetim.py
+
+      - name: Kurulum paketi oluştur
+        run: |
+          choco install innosetup --yes --no-progress
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup.iss
+
+      - name: EXE artifact yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: BinaYonetim-EXE
+          path: dist\BinaYonetim.exe
+          retention-days: 30
+
+      - name: Kurulum paketi artifact yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: BinaYonetim-Kurulum
+          path: kurulum_cikti\BinaYonetim_Kurulum.exe
+          retention-days: 30
+
+      - name: Release oluştur
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: "Bina Yönetim Sistemi v${{ github.run_number }}"
+          body: |
+            Otomatik derlendi.
+            - BinaYonetim_Kurulum.exe → Kurulum sihirbazı
+            - BinaYonetim.exe → Taşınabilir tek dosya
+          files: |
+            dist/BinaYonetim.exe
+            kurulum_cikti/BinaYonetim_Kurulum.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
