@@ -481,10 +481,10 @@ def makbuz_yazdir(data, odeme):
           border-radius:5px;cursor:pointer;font-size:14px;}}
   @media print{{.np{{display:none;}}body{{background:#fff;padding:0;}}}}
 </style></head><body>
-<div><div class="np"><button onclick="window.print()">🖨️ Makbuzu Yazdır</button></div>
+<div><div class="np"><button onclick="window.print()">Yazdir Makbuzu Yazdır</button></div>
 <div class="card">
   <div class="top">
-    <div style="font-size:32px">🏢</div>
+    <div style="font-size:32px">Bina</div>
     <h1 style="font-size:18px;margin:8px 0 4px">{b['adi']}</h1>
     <p style="color:#666;font-size:12px">Bina Yönetim Sistemi</p>
   </div>
@@ -544,10 +544,10 @@ def og_makbuz_yazdir(data, alacakli, odeme_kaydi):
           border-radius:5px;cursor:pointer;font-size:14px;font-weight:bold;}}
   @media print{{.np{{display:none;}}body{{background:#fff;padding:0;}}}}
 </style></head><body>
-<div><div class="np"><button onclick="window.print()">🖨️ Makbuzu Yazdır</button></div>
+<div><div class="np"><button onclick="window.print()">Yazdir Makbuzu Yazdır</button></div>
 <div class="card">
   <div class="top">
-    <div style="font-size:32px">🔧</div>
+    <div style="font-size:32px">Arac</div>
     <h1 style="font-size:18px;margin:8px 0 4px">{b['adi']}</h1>
     <p style="color:#666;font-size:12px">Bina Yönetim Sistemi</p>
   </div>
@@ -556,7 +556,7 @@ def og_makbuz_yazdir(data, alacakli, odeme_kaydi):
     <p style="color:#666;font-size:13px;margin:4px 0 0">No: {mkb_no}</p>
   </div>
   <div class="badge2">
-    <p style="font-size:13px;font-weight:bold;color:#e67e22;margin:0">🔧 {gider_adi}</p>
+    <p style="font-size:13px;font-weight:bold;color:#e67e22;margin:0">Arac {gider_adi}</p>
     <p style="font-size:11px;color:#888;margin:4px 0 0">Ortak Gider / Tadilat</p>
   </div>
   <table>
@@ -567,7 +567,7 @@ def og_makbuz_yazdir(data, alacakli, odeme_kaydi):
     {"<tr><td>Not</td><td>" + not_ + "</td></tr>" if not_ else ""}
   </table>
   <div class="tutar"><p>BU ÖDEMEDE ÖDENEN</p><h3>{fmt(odeme_kaydi['tutar'])}</h3></div>
-  {"<div class='kalan'><p>Kalan Borç</p><h4>" + fmt(kalan) + "</h4></div>" if kalan > 0.01 else "<div class='kalan' style='background:#f0faf4;border-color:#27ae60'><p style='color:#27ae60'>✅ Borç Tamamen Kapatıldı</p><h4 style='color:#27ae60'>✔ Sıfırlandı</h4></div>"}
+  {"<div class='kalan'><p>Kalan Borç</p><h4>" + fmt(kalan) + "</h4></div>" if kalan > 0.01 else "<div class='kalan' style='background:#f0faf4;border-color:#27ae60'><p style='color:#27ae60'>OK Borç Tamamen Kapatıldı</p><h4 style='color:#27ae60'>v Sıfırlandı</h4></div>"}
   <p class="footer">Bu makbuz {b['adi']} tarafından düzenlenmiştir.</p>
 </div></div></body></html>"""
     tmp = tempfile.NamedTemporaryFile(suffix=".html", delete=False,
@@ -628,9 +628,9 @@ def _toplu_makbuz_html(b, isim, daire_no, baslik, rows_html):
                 .makbuz{{box-shadow:none;border:1px solid #eee;}}}}
 </style></head><body>
 <div class="np">
-  <button onclick="window.print()">🖨️ Tümünü Yazdır</button>
+  <button onclick="window.print()">Yazdir Tümünü Yazdır</button>
 </div>
-<h1>🏢 {b['adi']}</h1>
+<h1>Bina {b['adi']}</h1>
 <p class="sub">{baslik}  •  Daire {daire_no}  —  {isim}</p>
 {rows_html}
 </body></html>"""
@@ -736,7 +736,7 @@ class VeriYokEkrani(tk.Toplevel):
         hdr = frm(self, bg=T["bg2"])
         hdr.pack(fill="x")
         tk.Frame(hdr, bg=T["bg2"], height=18).pack()
-        lbl(hdr, "⚠️", font=("Segoe UI Emoji", 36),
+        lbl(hdr, "Uyari", font=("Segoe UI Emoji", 36),
             bg=T["bg2"], fg=T["orange"]).pack()
         lbl(hdr, "Veri Dosyaları Bulunamadı",
             font=("Segoe UI", 16, "bold"), bg=T["bg2"]).pack(pady=(6, 2))
@@ -762,7 +762,7 @@ class VeriYokEkrani(tk.Toplevel):
         self._yedek_frame = frm(i1, bg=T["bg3"])
         self._yedek_frame.pack(fill="x", pady=(0, 6))
 
-        btn(i1, "📂  Yedek Dosyası Seç…", self._yedek_sec, "orange").pack(
+        btn(i1, "Klasor  Yedek Dosyası Seç…", self._yedek_sec, "orange").pack(
             anchor="w", ipadx=10, ipady=5)
 
         # ── SEÇENEK 2: Yeni Kurulum ──────────────────────────────────────────
@@ -771,15 +771,15 @@ class VeriYokEkrani(tk.Toplevel):
         s2.pack(fill="x", pady=(0, 12))
         tk.Frame(s2, bg=T["gold"], height=3).pack(fill="x")
         i2 = frm(s2, bg=T["bg3"]); i2.pack(fill="x", padx=16, pady=12)
-        lbl(i2, "🚀  Yeni Kurulum Başlat",
+        lbl(i2, "  Yeni Kurulum Başlat",
             font=("Segoe UI", 11, "bold"), fg=T["gold2"], bg=T["bg3"]).pack(anchor="w")
         lbl(i2, "Bina bilgilerini girerek sistemi sıfırdan kurun.",
             fg=T["text2"], font=("Segoe UI", 9), bg=T["bg3"]).pack(anchor="w", pady=(2, 8))
-        btn(i2, "➕  Yeni Kurulum", self._yeni_kurulum, "gold").pack(
+        btn(i2, "+  Yeni Kurulum", self._yeni_kurulum, "gold").pack(
             anchor="w", ipadx=10, ipady=5)
 
         # ── SEÇENEK 3: Çıkış ─────────────────────────────────────────────────
-        btn(body, "❌  Programdan Çık", self._cikis, "gray").pack(
+        btn(body, "X  Programdan Çık", self._cikis, "gray").pack(
             anchor="e", ipadx=10, ipady=5, pady=(4, 0))
 
     # ─── YARDIMCI: Olası yedekleri bul ───────────────────────────────────────
@@ -808,13 +808,13 @@ class VeriYokEkrani(tk.Toplevel):
             w.destroy()
 
         if bulunanlar:
-            lbl(self._yedek_frame, "🔍  Bulunan yedek dosyaları:",
+            lbl(self._yedek_frame, "Ara  Bulunan yedek dosyaları:",
                 fg=T["text3"], font=("Segoe UI", 8, "bold"),
                 bg=T["bg3"]).pack(anchor="w", pady=(0, 4))
             for p in bulunanlar[:4]:
                 pf = frm(self._yedek_frame, bg=T["bg3"])
                 pf.pack(fill="x", pady=1)
-                lbl(pf, f"  📦 {p.name}",
+                lbl(pf, f"   {p.name}",
                     fg=T["text2"], font=("Segoe UI", 8),
                     bg=T["bg3"]).pack(side="left")
                 p2 = p
@@ -935,7 +935,7 @@ class SetupEkrani(tk.Toplevel):
         hdr = frm(self, bg=T["bg2"])
         hdr.pack(fill="x")
         tk.Frame(hdr, bg=T["bg2"], height=14).pack()
-        lbl(hdr, "🏢", font=("Segoe UI Emoji",34),
+        lbl(hdr, "Bina", font=("Segoe UI Emoji",34),
             bg=T["bg2"], fg=T["gold"]).pack()
         lbl(hdr, "Bina Yönetim Sistemi",
             font=("Segoe UI",17,"bold"), bg=T["bg2"]).pack(pady=(4,2))
@@ -947,12 +947,12 @@ class SetupEkrani(tk.Toplevel):
 
         # Normal alanlar
         fields = [
-            ("adi",    "🏢  Bina Adı",               "Örn: Gül Apartmanı"),
-            ("daire",  "🚪  Daire Sayısı",            "Örn: 12"),
-            ("kat",    "🏗️  Kat Sayısı",             "Örn: 4"),
-            ("aidat",  "💰  Aylık Aidat (₺)",         "Örn: 750"),
-            ("faiz",   "📈  Geç Ödeme Faizi (%/ay)",  "Örn: 2"),
-            ("songun", "📅  Son Ödeme Günü",           "Örn: 10"),
+            ("adi",    "Bina  Bina Adı",               "Örn: Gül Apartmanı"),
+            ("daire",  "  Daire Sayısı",            "Örn: 12"),
+            ("kat",    "Insaat  Kat Sayısı",             "Örn: 4"),
+            ("aidat",  "Para  Aylık Aidat (₺)",         "Örn: 750"),
+            ("faiz",   "Yukari  Geç Ödeme Faizi (%/ay)",  "Örn: 2"),
+            ("songun", "Takvim  Son Ödeme Günü",           "Örn: 10"),
         ]
         self._vars = {}
         for key, ltext, ph in fields:
@@ -970,7 +970,7 @@ class SetupEkrani(tk.Toplevel):
             self._vars[key] = (var, ph)
 
         # Başlangıç ayı seçici
-        lbl(form, "📆  Aidat Başlangıç Ayı / Yılı",
+        lbl(form, "  Aidat Başlangıç Ayı / Yılı",
             fg=T["text2"], font=("Segoe UI",9,"bold"),
             bg=T["bg"]).pack(anchor="w", pady=(12,4))
 
@@ -988,7 +988,7 @@ class SetupEkrani(tk.Toplevel):
         self._bas_sec = AySecici(inner_bas, bg=T["bg3"])
         self._bas_sec.pack(anchor="w")
 
-        btn(self, "🚀  Sistemi Başlat", self._kaydet, "gold").pack(
+        btn(self, "  Sistemi Başlat", self._kaydet, "gold").pack(
             fill="x", padx=40, pady=16, ipady=10)
 
     def _kaydet(self):
@@ -1057,7 +1057,7 @@ class OdemeDuzenle(tk.Toplevel):
     def _build(self):
         o = self.odeme
         tk.Frame(self, bg=T["gold"], height=3).pack(fill="x")
-        lbl(self, f"✏️  Ödeme Düzenle",
+        lbl(self, f"Duzenle  Ödeme Düzenle",
             font=("Segoe UI",13,"bold")).pack(pady=(14,4), padx=20, anchor="w")
         lbl(self, f"Daire {o['daireNo']}  •  {ay_label(o['ay'])}  •  Makbuz: {o['makbuzNo']}",
             fg=T["text2"], font=("Segoe UI",9)).pack(padx=20, anchor="w", pady=(0,10))
@@ -1103,10 +1103,10 @@ class OdemeDuzenle(tk.Toplevel):
         sep(self)
         btn_f = frm(self)
         btn_f.pack(fill="x", padx=20, pady=12)
-        btn(btn_f, "❌ İptal",    self.destroy,    "gray").pack(side="right", padx=(6,0))
-        btn(btn_f, "✅ Kaydet",   self._kaydet,    "gold").pack(side="right")
-        btn(btn_f, "🖨️ Makbuz", self._makbuz,    "gray").pack(side="left")
-        btn(btn_f, "🗑️ Sil",    self._sil_odeme, "red" ).pack(side="left", padx=(8,0))
+        btn(btn_f, "X İptal",    self.destroy,    "gray").pack(side="right", padx=(6,0))
+        btn(btn_f, "OK Kaydet",   self._kaydet,    "gold").pack(side="right")
+        btn(btn_f, "Yazdir Makbuz", self._makbuz,    "gray").pack(side="left")
+        btn(btn_f, "Sil Sil",    self._sil_odeme, "red" ).pack(side="left", padx=(8,0))
 
     def _sil_odeme(self):
         """Ödemeyi ve ilişkili gelir kaydını tamamen sil, daire borcuna geri ekle.
@@ -1237,7 +1237,7 @@ class OzelAidatPencere(tk.Toplevel):
         hdr.pack(fill="x")
         lbl_f = frm(hdr, bg=T["bg2"])
         lbl_f.pack(fill="x", padx=14, pady=10)
-        lbl(lbl_f, "📅  Aylık Özel Aidat Tutarları",
+        lbl(lbl_f, "Takvim  Aylık Özel Aidat Tutarları",
             font=("Segoe UI",13,"bold"), bg=T["bg2"]).pack(side="left")
         lbl(lbl_f, f"  Varsayılan aidat: {fmt(b['aidat'])}",
             fg=T["text3"], bg=T["bg2"], font=("Segoe UI",9)).pack(side="left",padx=8)
@@ -1269,7 +1269,7 @@ class OzelAidatPencere(tk.Toplevel):
             row=0, column=5, padx=(6,0))
 
         lbl(form,
-            "ℹ️  Gelecek aya özel tutar eklerken 'Evet' seçeneğiyle o aydan sonrasına toplu uygulayabilirsiniz.",
+            "i  Gelecek aya özel tutar eklerken 'Evet' seçeneğiyle o aydan sonrasına toplu uygulayabilirsiniz.",
             fg=T["text3"], font=("Segoe UI",8),
             bg=T["bg3"]).grid(row=1, column=0, columnspan=6, sticky="w", pady=(8,0))
 
@@ -1288,8 +1288,8 @@ class OzelAidatPencere(tk.Toplevel):
         # Alt butonlar
         alt = frm(self)
         alt.pack(fill="x", padx=14, pady=(0,12))
-        btn(alt, "🗑️ Seçili Özel Tutarı Sil", self._sil_secili, "red").pack(side="left")
-        btn(alt, "✅ Kapat", self.destroy, "gold").pack(side="right")
+        btn(alt, "Sil Seçili Özel Tutarı Sil", self._sil_secili, "red").pack(side="left")
+        btn(alt, "OK Kapat", self.destroy, "gold").pack(side="right")
 
     def _tree_doldur(self):
         self._tree.delete(*self._tree.get_children())
@@ -1309,16 +1309,16 @@ class OzelAidatPencere(tk.Toplevel):
 
             if ay > today_str:
                 if ozel_val is not None:
-                    durum_txt = "🔵⭐ İleri / Özel"
+                    durum_txt = "o* İleri / Özel"
                     durum_tag = "ozel"
                 else:
-                    durum_txt = "🔵 İleri Dönem"
+                    durum_txt = "o İleri Dönem"
                     durum_tag = "ileri"
             elif ozel_val is not None:
-                durum_txt = "⭐ Özel Tutar"
+                durum_txt = "* Özel Tutar"
                 durum_tag = "ozel"
             else:
-                durum_txt = "📋 Varsayılan"
+                durum_txt = "Liste Varsayılan"
                 durum_tag = "normal"
 
             goster = fmt(ozel_val) if ozel_val is not None else f"{fmt(varsayilan)} (varsayılan)"
@@ -1436,8 +1436,8 @@ class DaireDetay(tk.Toplevel):
 
         btns = frm(bar, bg=T["bg2"])
         btns.pack(side="right", padx=14, pady=8)
-        btn(btns,"👤 Sakin Düzenle",        self._sakin, "gray").pack(side="left",padx=4)
-        btn(btns,"✅ Seçili Ayları Tahsil",  self._tahsil,"gold").pack(side="left",padx=4)
+        btn(btns,"Kisi Sakin Düzenle",        self._sakin, "gray").pack(side="left",padx=4)
+        btn(btns,"OK Seçili Ayları Tahsil",  self._tahsil,"gold").pack(side="left",padx=4)
 
         tk.Frame(self, bg=T["border"], height=1).pack(fill="x")
 
@@ -1454,7 +1454,7 @@ class DaireDetay(tk.Toplevel):
         tk.Frame(uhdr, bg=T["gold"], height=2).pack(fill="x")
         uh2 = frm(uhdr, bg=T["bg2"])
         uh2.pack(fill="x", padx=12, pady=6)
-        lbl(uh2, "📅  Tüm Aidat Dönemleri",
+        lbl(uh2, "Takvim  Tüm Aidat Dönemleri",
             font=("Segoe UI",11,"bold"), bg=T["bg2"]).pack(side="left")
         lbl(uh2, "  Ctrl+tıkla = çoklu seçim  •  Çift tıkla ödendi = düzenle",
             fg=T["text3"], font=("Segoe UI",8), bg=T["bg2"]).pack(side="left",padx=6)
@@ -1476,7 +1476,7 @@ class DaireDetay(tk.Toplevel):
         tk.Frame(ahdr, bg=T["gold"], height=2).pack(fill="x")
         ah2 = frm(ahdr, bg=T["bg2"])
         ah2.pack(fill="x", padx=12, pady=6)
-        lbl(ah2, "🧾  Geçmiş Ödemeler",
+        lbl(ah2, "Makbuz  Geçmiş Ödemeler",
             font=("Segoe UI",11,"bold"), bg=T["bg2"]).pack(side="left")
         lbl(ah2, "  Çift tıkla = düzenle / makbuz",
             fg=T["text3"], font=("Segoe UI",8), bg=T["bg2"]).pack(side="left",padx=6)
@@ -1526,7 +1526,7 @@ class DaireDetay(tk.Toplevel):
             if odeme:
                 tag = "odendi"
                 self._tree_ay.insert("", "end", iid=ay, tags=(tag,),
-                    values=(ay_label(ay), "✔  Ödendi",
+                    values=(ay_label(ay), "v  Ödendi",
                             fmt(aidat_tut),
                             fmt(gec_faiz) if gec_faiz else "—",
                             fmt(odeme["tutar"]),
@@ -1535,7 +1535,7 @@ class DaireDetay(tk.Toplevel):
             elif is_ileri:
                 tag = "ileri"
                 self._tree_ay.insert("", "end", iid=ay, tags=(tag,),
-                    values=(ay_label(ay), "🔵 İleri Dönem",
+                    values=(ay_label(ay), "o İleri Dönem",
                             fmt(aidat_tut), "—", "—", "—", "—"))
             else:
                 tag = "borclu"
@@ -1636,11 +1636,11 @@ class _TahsilatOnay(tk.Toplevel):
     def _build(self):
         b = self.app.data["bina"]
         tk.Frame(self, bg=T["gold"], height=3).pack(fill="x")
-        lbl(self, f"💳  {len(self.aylar)} Ay için Aidat Tahsilat",
+        lbl(self, f"Kart  {len(self.aylar)} Ay için Aidat Tahsilat",
             font=("Segoe UI",13,"bold")).pack(pady=(14,6), padx=20, anchor="w")
 
         # ── Aidat satırları ───────────────────────────────────────────────────
-        lbl(self, "📋  Aidat Kalemleri", fg=T["text2"],
+        lbl(self, "Liste  Aidat Kalemleri", fg=T["text2"],
             font=("Segoe UI",9,"bold")).pack(padx=20, anchor="w", pady=(0,3))
 
         self._tutar_vars = {}
@@ -1702,7 +1702,7 @@ class _TahsilatOnay(tk.Toplevel):
 
         if og_kayitlar:
             sep(self)
-            lbl(self, "🔧  Ortak Gider Kalemleri  (seçip ödeyebilirsiniz)",
+            lbl(self, "Arac  Ortak Gider Kalemleri  (seçip ödeyebilirsiniz)",
                 fg=T["gold2"], font=("Segoe UI",9,"bold")).pack(
                 padx=20, anchor="w", pady=(0,3))
 
@@ -1744,7 +1744,7 @@ class _TahsilatOnay(tk.Toplevel):
                     command=self._hesapla_toplam).pack(side="left", padx=(0,4))
 
                 isim = a.get("kisi") or a.get("aciklama","") or "Ortak Gider"
-                lbl(row, f"🔧 {isim}", fg=T["gold2"],
+                lbl(row, f"Arac {isim}", fg=T["gold2"],
                     bg=T["bg4"], font=("Segoe UI",9,"bold")).pack(side="left")
 
                 if odenen > 0:
@@ -1793,8 +1793,8 @@ class _TahsilatOnay(tk.Toplevel):
         sep(self)
         btn_f = frm(self)
         btn_f.pack(fill="x", padx=20, pady=10)
-        btn(btn_f,"❌ İptal",     self.destroy,  "gray").pack(side="right", padx=(6,0))
-        btn(btn_f,"✅ Tahsil Et", self._onayla,  "gold").pack(side="right")
+        btn(btn_f,"X İptal",     self.destroy,  "gray").pack(side="right", padx=(6,0))
+        btn(btn_f,"OK Tahsil Et", self._onayla,  "gold").pack(side="right")
 
     def _hesapla_toplam(self):
         total = 0
@@ -1930,7 +1930,7 @@ class _SakinDuzenle(tk.Toplevel):
         pr=parent.winfo_rootx(); pt=parent.winfo_rooty()
         self.geometry(f"420x300+{pr+80}+{pt+80}")
         tk.Frame(self,bg=T["gold"],height=3).pack(fill="x")
-        lbl(self,f"👤  Daire {daire_no} Sakin Bilgisi",
+        lbl(self,f"Kisi  Daire {daire_no} Sakin Bilgisi",
             font=("Segoe UI",13,"bold")).pack(pady=(14,6),padx=20,anchor="w")
         form=frm(self); form.pack(fill="x",padx=20)
         self._vars={}
@@ -1943,7 +1943,7 @@ class _SakinDuzenle(tk.Toplevel):
             var=tk.StringVar(value=val)
             ent(form,textvariable=var,width=36).pack(fill="x",ipady=7)
             self._vars[key]=var
-        btn(self,"💾 Kaydet",self._kaydet,"gold").pack(pady=16,ipadx=20)
+        btn(self,"Kaydet Kaydet",self._kaydet,"gold").pack(pady=16,ipadx=20)
 
     def _kaydet(self):
         d=next((x for x in self.app.data["daireler"] if x["no"]==self.daire_no),None)
@@ -2009,7 +2009,7 @@ class App(tk.Tk):
         tk.Frame(bar,bg=T["gold"],width=4).pack(side="left",fill="y")
         left=frm(bar,bg=T["bg2"])
         left.pack(side="left",padx=14,pady=8)
-        lbl(left,"🏢",font=("Segoe UI Emoji",22),bg=T["bg2"],fg=T["gold"]).pack(side="left",padx=(0,10))
+        lbl(left,"Bina",font=("Segoe UI Emoji",22),bg=T["bg2"],fg=T["gold"]).pack(side="left",padx=(0,10))
         info=frm(left,bg=T["bg2"]); info.pack(side="left")
         b=self.data["bina"]
         lbl(info,b["adi"],font=("Segoe UI",13,"bold"),bg=T["bg2"]).pack(anchor="w")
@@ -2019,7 +2019,7 @@ class App(tk.Tk):
             f"Başlangıç: {ay_label(b['baslangic'])}",
             fg=T["text2"],font=("Segoe UI",9),bg=T["bg2"]).pack(anchor="w")
         right=frm(bar,bg=T["bg2"]); right.pack(side="right",padx=14)
-        lbl(right,datetime.date.today().strftime("📅 %B %Y"),
+        lbl(right,datetime.date.today().strftime("Takvim %B %Y"),
             bg=T["bg3"],fg=T["gold2"],font=("Segoe UI",9,"bold"),
             padx=10,pady=5).pack(side="left",padx=6)
 
@@ -2028,14 +2028,14 @@ class App(tk.Tk):
         nav=frm(self,bg=T["bg2"]); nav.pack(fill="x")
         tk.Frame(nav,bg=T["border"],height=1).pack(fill="x")
         tabs=[
-            ("dashboard",      "📊  Genel Bakış"),
-            ("daireler",       "🏠  Daireler"),
-            ("gelir_gider",    "💰  Gelir / Gider"),
-            ("ortak_giderler", "🔧  Ortak Giderler"),
-            ("alacaklilar",    "📋  Alacaklılar"),
-            ("raporlar",       "📈  Raporlar"),
-            ("detay_rapor",    "🗂️  Detaylı Raporlar"),
-            ("ayarlar",        "⚙️  Ayarlar"),
+            ("dashboard",      "Grafik  Genel Bakış"),
+            ("daireler",       "Ev  Daireler"),
+            ("gelir_gider",    "Para  Gelir / Gider"),
+            ("ortak_giderler", "Arac  Ortak Giderler"),
+            ("alacaklilar",    "Liste  Alacaklılar"),
+            ("raporlar",       "Yukari  Raporlar"),
+            ("detay_rapor",    "Klasor  Detaylı Raporlar"),
+            ("ayarlar",        "Ayar  Ayarlar"),
         ]
         self._nav_btns={}
         tb=frm(nav,bg=T["bg2"]); tb.pack(fill="x",padx=8)
@@ -2075,7 +2075,7 @@ class App(tk.Tk):
         result  = [False]
 
         dlg = tk.Toplevel(self)
-        dlg.title("🔒  Ayarlar — Şifre Gerekli")
+        dlg.title("Kilitli  Ayarlar — Şifre Gerekli")
         dlg.configure(bg=T["bg"])
         dlg.resizable(False, False)
         dlg.grab_set()
@@ -2084,7 +2084,7 @@ class App(tk.Tk):
         dlg.geometry(f"360x250+{(sw-360)//2}+{(sh-250)//2}")
 
         tk.Frame(dlg, bg=T["gold"], height=3).pack(fill="x")
-        lbl(dlg, "🔒  Ayarlara Giriş",
+        lbl(dlg, "Kilitli  Ayarlara Giriş",
             font=("Segoe UI",13,"bold")).pack(pady=(16,4), padx=20, anchor="w")
         lbl(dlg, "Ayarlar sekmesine erişmek için şifrenizi girin.",
             fg=T["text2"], font=("Segoe UI",9)).pack(padx=20, anchor="w")
@@ -2105,13 +2105,13 @@ class App(tk.Tk):
                 result[0] = True
                 dlg.destroy()
             else:
-                msg_lbl.config(text="❌  Yanlış şifre, tekrar deneyin.")
+                msg_lbl.config(text="X  Yanlış şifre, tekrar deneyin.")
                 sifre_var.set("")
                 e.focus_set()
 
         bf = frm(dlg); bf.pack(fill="x", padx=20, pady=14)
-        btn(bf, "❌ İptal", dlg.destroy, "gray").pack(side="right", padx=(6,0))
-        btn(bf, "✅ Giriş",  dogrula,    "gold").pack(side="right")
+        btn(bf, "X İptal", dlg.destroy, "gray").pack(side="right", padx=(6,0))
+        btn(bf, "OK Giriş",  dogrula,    "gold").pack(side="right")
         e.bind("<Return>", dogrula)
         dlg.wait_window()
         return result[0]
@@ -2157,14 +2157,14 @@ class App(tk.Tk):
 
         stats=frm(outer); stats.pack(fill="x",pady=(0,12))
         cards=[
-            ("⚠️  Toplam Borç",    fmt(topBorcToplam),
+            ("Uyari  Toplam Borç",    fmt(topBorcToplam),
              f"Aidat:{fmt(topB+topF)}  Alacak:{fmt(topAlacak)}", "red"),
-            ("💳  Bu Ay Tahsilat", fmt(tah),
+            ("Kart  Bu Ay Tahsilat", fmt(tah),
              f"%{oran}  •  Beklenen:{fmt(bek)}", "gold"),
-            ("📈  Toplam Gelir",   fmt(topG), "Tüm zamanlar", "green"),
-            ("💼  Net Bakiye",     fmt(net),  "Gelir — Gider",
+            ("Yukari  Toplam Gelir",   fmt(topG), "Tüm zamanlar", "green"),
+            ("Canta  Net Bakiye",     fmt(net),  "Gelir — Gider",
              "blue" if net>=0 else "red"),
-            ("🕐  Ödenmemiş Aidat",fmt(odenmemis_toplam),
+            ("Saat  Ödenmemiş Aidat",fmt(odenmemis_toplam),
              "Tüm geçmiş ödenmemiş dönemler", "orange"),
         ]
         for i,(title,val,sub,color) in enumerate(cards):
@@ -2175,7 +2175,7 @@ class App(tk.Tk):
         pw=pane(outer,orient="horizontal")
         pw.pack(fill="both",expand=True)
 
-        sol=card_panel(pw,"💳  Bu Ay Yapılan Ödemeler","Bu ay tahsil edilenler (tüm dönemler)")
+        sol=card_panel(pw,"Kart  Bu Ay Yapılan Ödemeler","Bu ay tahsil edilenler (tüm dönemler)")
         pw.add(sol,weight=1)
         si=frm(sol,bg=T["bg2"]); si.pack(fill="both",expand=True,padx=8,pady=8)
         sf,ts=scrolled(si,[("Daire",70),("Dönem",130),("Yöntem",100),("Tutar",100),("Tarih",110)])
@@ -2189,7 +2189,7 @@ class App(tk.Tk):
             ts.insert("","end",tags=("normal",),
                 values=("Bu ay henüz ödeme yok","","","",""))
 
-        sag=card_panel(pw,"⚠️  Gecikmiş Aidatlar","Tüm ödenmemiş dönemler — daire ve ay bazında")
+        sag=card_panel(pw,"Uyari  Gecikmiş Aidatlar","Tüm ödenmemiş dönemler — daire ve ay bazında")
         pw.add(sag,weight=1)
         ri=frm(sag,bg=T["bg2"]); ri.pack(fill="both",expand=True,padx=8,pady=8)
         rf,tr=scrolled(ri,[
@@ -2214,7 +2214,7 @@ class App(tk.Tk):
                     satirsayac+=1
         if satirsayac==0:
             tr.insert("","end",tags=("odendi",),
-                values=("✅ Gecikmiş aidat yok","","","","",""))
+                values=("OK Gecikmiş aidat yok","","","","",""))
 
     # ── DAİRELER ──────────────────────────────────────────────────────────────
     def _tab_daireler(self):
@@ -2223,14 +2223,14 @@ class App(tk.Tk):
 
         # ── Başlık + üst butonlar ─────────────────────────────────────────
         hdr=frm(outer); hdr.pack(fill="x",pady=(0,8))
-        lbl(hdr,"🏠  Daire Listesi  —  Çift tıkla: detay / tahsilat ekranı",
+        lbl(hdr,"Ev  Daire Listesi  —  Çift tıkla: detay / tahsilat ekranı",
             font=("Segoe UI",13,"bold")).pack(side="left")
         bf=frm(hdr); bf.pack(side="right")
-        btn(bf,"👥 Sakin Listesi",self._sakin_listesi,"blue").pack(side="left",padx=4)
-        btn(bf,"📅 Özel Aidat Yönetimi",
+        btn(bf," Sakin Listesi",self._sakin_listesi,"blue").pack(side="left",padx=4)
+        btn(bf,"Takvim Özel Aidat Yönetimi",
             lambda: OzelAidatPencere(self,self.data,callback=self.refresh_all),
             "purple").pack(side="left",padx=4)
-        btn(bf,"🔄 Faiz Hesapla",self._faiz,"orange").pack(side="left",padx=4)
+        btn(bf,"Yenile Faiz Hesapla",self._faiz,"orange").pack(side="left",padx=4)
 
         pw=pane(outer,orient="vertical")
         pw.pack(fill="both",expand=True)
@@ -2253,7 +2253,7 @@ class App(tk.Tk):
 
         # ── ALT SEKME 1: Genel İşlemler ──────────────────────────────────
         t_genel = frm(alt_nb, bg=T["bg2"])
-        alt_nb.add(t_genel, text="  👆  Seçili Daire  ")
+        alt_nb.add(t_genel, text="    Seçili Daire  ")
 
         gi = frm(t_genel, bg=T["bg2"])
         gi.pack(fill="both", expand=True, padx=14, pady=10)
@@ -2265,12 +2265,12 @@ class App(tk.Tk):
         self._daire_bilgi_lbl.pack(anchor="w", pady=(0,8))
 
         gb = frm(gi, bg=T["bg2"]); gb.pack(anchor="w")
-        btn(gb,"📂 Detay & Tahsilat", self._daire_ac,  "gold").pack(side="left",padx=(0,8))
-        btn(gb,"👤 Sakin Düzenle",    self._sakin_ac,  "gray").pack(side="left",padx=(0,8))
+        btn(gb,"Klasor Detay & Tahsilat", self._daire_ac,  "gold").pack(side="left",padx=(0,8))
+        btn(gb,"Kisi Sakin Düzenle",    self._sakin_ac,  "gray").pack(side="left",padx=(0,8))
 
         # ── ALT SEKME 2: Makbuz Merkezi ───────────────────────────────────
         t_makbuz = frm(alt_nb, bg=T["bg2"])
-        alt_nb.add(t_makbuz, text="  🖨️  Makbuz Merkezi  ")
+        alt_nb.add(t_makbuz, text="  Yazdir  Makbuz Merkezi  ")
 
         # Üst: seçili daire + filtre çubuğu
         mk_top = frm(t_makbuz, bg=T["bg3"],
@@ -2305,7 +2305,7 @@ class App(tk.Tk):
         mk_list_hdr = frm(mk_tbl_frm, bg=T["bg2"]); mk_list_hdr.pack(fill="x")
         tk.Frame(mk_list_hdr, bg=T["gold"], height=2).pack(fill="x")
         mk_lhf = frm(mk_list_hdr, bg=T["bg2"]); mk_lhf.pack(fill="x", padx=10, pady=5)
-        lbl(mk_lhf,"🧾  Makbuz Listesi",
+        lbl(mk_lhf,"Makbuz  Makbuz Listesi",
             font=("Segoe UI",10,"bold"),bg=T["bg2"]).pack(side="left")
         lbl(mk_lhf,"  Çift tıkla veya butona bas → makbuzu aç",
             fg=T["text3"],bg=T["bg2"],font=("Segoe UI",8)).pack(side="left",padx=6)
@@ -2325,18 +2325,18 @@ class App(tk.Tk):
         mk_btn_row = frm(t_makbuz, bg=T["bg2"])
         mk_btn_row.pack(fill="x", padx=10, pady=(6,10))
 
-        btn(mk_btn_row,"🖨️  Makbuzu Yazdır",
+        btn(mk_btn_row,"Yazdir  Makbuzu Yazdır",
             self._mk_yazdir, "gold").pack(side="left", ipadx=10, ipady=4)
-        btn(mk_btn_row,"✏️  Düzenle / Sil",
+        btn(mk_btn_row,"Duzenle  Düzenle / Sil",
             self._mk_gecmis_duzenle, "blue").pack(side="left", padx=6, ipadx=8, ipady=4)
-        btn(mk_btn_row,"🖨️  Tüm Aidatlar",
+        btn(mk_btn_row,"Yazdir  Tüm Aidatlar",
             self._mk_tumunu_yazdir_aidat, "gray").pack(side="left", padx=6, ipadx=8, ipady=4)
-        btn(mk_btn_row,"🖨️  Tüm Ortak Giderler",
+        btn(mk_btn_row,"Yazdir  Tüm Ortak Giderler",
             self._mk_tumunu_yazdir_og, "purple").pack(side="left", ipadx=8, ipady=4)
 
         # ── ALT SEKME 3: Uyarı Yazısı ────────────────────────────────────
         t_uyari = frm(alt_nb, bg=T["bg2"])
-        alt_nb.add(t_uyari, text="  ✉️  Uyarı Yazısı  ")
+        alt_nb.add(t_uyari, text="  Mektup  Uyarı Yazısı  ")
 
         uw_top = frm(t_uyari, bg=T["bg3"],
             highlightthickness=1, highlightbackground=T["border"])
@@ -2362,9 +2362,9 @@ class App(tk.Tk):
 
         uw_btn_row = frm(t_uyari, bg=T["bg2"])
         uw_btn_row.pack(fill="x", padx=10, pady=(6,10))
-        btn(uw_btn_row, "📄 Uyarı Yazısı Oluştur (PDF)",
+        btn(uw_btn_row, "Dosya Uyarı Yazısı Oluştur (PDF)",
             self._daire_uyari_yazisi_pdf, "gold").pack(side="left", ipadx=10, ipady=4)
-        btn(uw_btn_row, "📝 Word Olarak Kaydet",
+        btn(uw_btn_row, "Not Word Olarak Kaydet",
             self._daire_uyari_yazisi_docx, "blue").pack(side="left", padx=8, ipadx=8, ipady=4)
 
         self._daire_doldur()
@@ -2390,16 +2390,16 @@ class App(tk.Tk):
             borclu = sum(1 for ay in tum
                          if not any(o["daireNo"]==no and o["ay"]==ay
                                     for o in self.data["odemeler"]))
-            durum = f"✘ {borclu} ödenmemiş ay" if borclu else "✔ Tüm aidatlar ödendi"
+            durum = f"✘ {borclu} ödenmemiş ay" if borclu else "v Tüm aidatlar ödendi"
             self._daire_bilgi_lbl.config(
                 text=f"Daire {no}  —  {isim}  •  {durum}")
         # Makbuz sekmesi etiketi
         if hasattr(self,"_mk_daire_lbl"):
-            self._mk_daire_lbl.config(text=f"🏠  Daire {no}  —  {isim}")
+            self._mk_daire_lbl.config(text=f"Ev  Daire {no}  —  {isim}")
         self._mk_listele()
         # Uyarı yazısı sekmesi etiketleri
         if hasattr(self,"_uw_daire_lbl"):
-            self._uw_daire_lbl.config(text=f"🏠  Daire {no}  —  {isim}")
+            self._uw_daire_lbl.config(text=f"Ev  Daire {no}  —  {isim}")
         if hasattr(self,"_uw_borc_lbl"):
             _b  = self.data["bina"]
             _ba = buay()
@@ -2420,7 +2420,7 @@ class App(tk.Tk):
             if _toplam > 0:
                 self._uw_borc_lbl.config(text=f"Toplam Borç: {fmt(_toplam)}")
             else:
-                self._uw_borc_lbl.config(text="✔ Borç yok")
+                self._uw_borc_lbl.config(text="v Borç yok")
 
     def _mk_seçili_daire_no(self):
         sel = self._tv.selection()
@@ -2442,7 +2442,7 @@ class App(tk.Tk):
                 self._mk_tree.insert("","end",
                     iid=f"a_{o['id']}", tags=("odendi",),
                     values=(
-                        "💳 Aidat",
+                        "Kart Aidat",
                         ay_label(o["ay"]),
                         fmt(o["tutar"]),
                         tarih_str(o["tarih"]),
@@ -2461,7 +2461,7 @@ class App(tk.Tk):
                     self._mk_tree.insert("","end",
                         iid=f"og_{a['id']}_{p['id']}", tags=("ozel",),
                         values=(
-                            "🔧 Ortak Gider",
+                            "Arac Ortak Gider",
                             gider_adi,
                             fmt(p["tutar"]),
                             tarih_str(p["tarih"]),
@@ -2535,7 +2535,7 @@ class App(tk.Tk):
         for o in sorted(aidatlar, key=lambda x: x["ay"]):
             rows += f"""
             <div class="makbuz">
-              <div class="mbadge">💳 AİDAT MAKBUZU — {o['makbuzNo']}</div>
+              <div class="mbadge">Kart AİDAT MAKBUZU — {o['makbuzNo']}</div>
               <table>
                 <tr><td>Daire</td><td><b>Daire {o['daireNo']}</b></td></tr>
                 <tr><td>Sakin</td><td>{isim}</td></tr>
@@ -2575,7 +2575,7 @@ class App(tk.Tk):
                 kalan_o  = round(toplam - odenen_o, 2)
                 rows += f"""
             <div class="makbuz og">
-              <div class="mbadge og-badge">🔧 ORTAK GİDER MAKBUZU — {mkb_no}</div>
+              <div class="mbadge og-badge">Arac ORTAK GİDER MAKBUZU — {mkb_no}</div>
               <div class="gider-adi">{gider_adi}</div>
               <table>
                 <tr><td>Daire</td><td><b>Daire {no}</b></td></tr>
@@ -2585,7 +2585,7 @@ class App(tk.Tk):
                 {"<tr><td>Not</td><td>" + (p.get('not_') or '') + "</td></tr>" if p.get('not_') else ""}
               </table>
               <div class="tutar og-tutar"><p>BU ÖDEMEDE ÖDENEN</p><h3>{fmt(p['tutar'])}</h3></div>
-              {"<div class='kalan-kart kalan-var'><p>Kalan Borç</p><h4>" + fmt(kalan_o) + "</h4></div>" if kalan_o > 0.01 else "<div class='kalan-kart kalan-tamam'><p>✅ Borç Tamamen Kapatıldı</p><h4>✔ Sıfırlandı</h4></div>"}
+              {"<div class='kalan-kart kalan-var'><p>Kalan Borç</p><h4>" + fmt(kalan_o) + "</h4></div>" if kalan_o > 0.01 else "<div class='kalan-kart kalan-tamam'><p>OK Borç Tamamen Kapatıldı</p><h4>v Sıfırlandı</h4></div>"}
             </div>"""
         html = _toplu_makbuz_html(b, isim, no, "Ortak Gider Makbuzları", rows)
         _makbuz_tarayici_ac(html)
@@ -2620,9 +2620,9 @@ class App(tk.Tk):
             faiz_top=round(faiz_top, 2)
             top=round(anapara+faiz_top, 2)
 
-            if odeme_bu_ay: tag,durum="odendi","✔ Ödendi"
+            if odeme_bu_ay: tag,durum="odendi","v Ödendi"
             elif borclu_ay>0: tag,durum="borclu","✘ Borçlu"
-            else: tag,durum="bekliyor","⚠ Bekliyor"
+            else: tag,durum="bekliyor","Uyari Bekliyor"
 
             self._tv.insert("","end",iid=str(d["no"]),tags=(tag,),
                 values=(f"Daire {d['no']}",d.get("isim") or "—",durum,
@@ -2680,9 +2680,9 @@ class App(tk.Tk):
         nb=ttk.Notebook(outer,style="Dark.TNotebook")
         nb.pack(fill="both",expand=True)
         for tip,label,turler,color in [
-            ("gelir","  📈  Gelirler  ",
+            ("gelir","  Yukari  Gelirler  ",
              ["Aidat","Kira","Banka Faizi","Diğer"],"green"),
-            ("gider","  📉  Giderler  ",
+            ("gider","  Asagi  Giderler  ",
              ["Elektrik","Su","Doğalgaz","Asansör Bakım",
               "Temizlik","Güvenlik","Tamir/Tadilat","Sigorta","Diğer"],"red"),
         ]:
@@ -2756,7 +2756,7 @@ class App(tk.Tk):
 
         btn(form,"+ Ekle",ekle,color).grid(row=1,column=4,padx=(10,4))
         btn_r=frm(parent,bg=T["bg2"]); btn_r.pack(fill="x",padx=12,pady=(0,8))
-        btn(btn_r,"🗑️ Seçili Kaydı Sil",sil,"red").pack(side="left")
+        btn(btn_r,"Sil Seçili Kaydı Sil",sil,"red").pack(side="left")
         self._ie_guncelle(tree,tip)
 
     def _ie_guncelle(self,tree,tip):
@@ -2779,10 +2779,10 @@ class App(tk.Tk):
 
         # Başlık + buton satırı
         hdr = frm(outer); hdr.pack(fill="x", pady=(0,10))
-        lbl(hdr, "🔧  Ortak Giderler / Tadilat Takibi",
+        lbl(hdr, "Arac  Ortak Giderler / Tadilat Takibi",
             font=("Segoe UI",13,"bold")).pack(side="left")
         bf = frm(hdr); bf.pack(side="right")
-        btn(bf, "➕  Yeni Ortak Gider",
+        btn(bf, "+  Yeni Ortak Gider",
             lambda: OrtakGiderPencere(self, self.data,
                                       callback=self.refresh_all),
             "gold").pack(side="left", ipadx=12, ipady=5)
@@ -2792,7 +2792,7 @@ class App(tk.Tk):
         nb.pack(fill="both", expand=True)
 
         # ── SEKME 1: Gider Listesi ──────────────────────────────────────────
-        t1 = frm(nb, bg=T["bg2"]); nb.add(t1, text="  📋  Ortak Gider Listesi  ")
+        t1 = frm(nb, bg=T["bg2"]); nb.add(t1, text="  Liste  Ortak Gider Listesi  ")
 
         pw = pane(t1, orient="vertical")
         pw.pack(fill="both", expand=True, padx=4, pady=4)
@@ -2802,7 +2802,7 @@ class App(tk.Tk):
         hdr2 = frm(ust, bg=T["bg2"]); hdr2.pack(fill="x")
         tk.Frame(hdr2, bg=T["gold"], height=2).pack(fill="x")
         h2f = frm(hdr2, bg=T["bg2"]); h2f.pack(fill="x", padx=10, pady=6)
-        lbl(h2f, "📋  Kayıtlı Ortak Giderler",
+        lbl(h2f, "Liste  Kayıtlı Ortak Giderler",
             font=("Segoe UI",11,"bold"), bg=T["bg2"]).pack(side="left")
         lbl(h2f, "  Çift tıkla = düzenle",
             fg=T["text3"], bg=T["bg2"], font=("Segoe UI",8)).pack(side="left", padx=6)
@@ -2817,8 +2817,8 @@ class App(tk.Tk):
         self._og_tree.bind("<<TreeviewSelect>>", self._og_sec)
 
         btn_row = frm(ust); btn_row.pack(fill="x", padx=8, pady=(0,4))
-        btn(btn_row, "✏️ Düzenle", self._og_duzenle, "blue").pack(side="left", padx=(0,8), ipadx=8, ipady=4)
-        btn(btn_row, "🗑️ Sil",    self._og_sil,     "red" ).pack(side="left", ipadx=8, ipady=4)
+        btn(btn_row, "Duzenle Düzenle", self._og_duzenle, "blue").pack(side="left", padx=(0,8), ipadx=8, ipady=4)
+        btn(btn_row, "Sil Sil",    self._og_sil,     "red" ).pack(side="left", ipadx=8, ipady=4)
 
         # Alt bölme: taksit detayı (sol) + daire özet (sağ) — seçili gidere göre
         alt = frm(pw); pw.add(alt, weight=45)
@@ -2826,7 +2826,7 @@ class App(tk.Tk):
         ahdr = frm(alt, bg=T["bg2"]); ahdr.pack(fill="x")
         tk.Frame(ahdr, bg=T["gold"], height=2).pack(fill="x")
         lbl(frm(ahdr, bg=T["bg2"]).pack(fill="x",padx=10,pady=6) or ahdr,
-            "📅  Detay (Seçili Kayıt) — Taksitler ve Daire Ödemeleri",
+            "Takvim  Detay (Seçili Kayıt) — Taksitler ve Daire Ödemeleri",
             font=("Segoe UI",10,"bold"), bg=T["bg2"]).pack(anchor="w", padx=10, pady=6)
 
         alt_pw = pane(alt, orient="horizontal")
@@ -2849,11 +2849,11 @@ class App(tk.Tk):
         ], height=6)
         tf3.pack(fill="both", expand=True)
         btn_og1_row = frm(daire_frm, bg=T["bg3"]); btn_og1_row.pack(anchor="w", padx=4, pady=(4,2))
-        btn(btn_og1_row, "💳 Ödeme Yap",    self._og_daire_odeme_yap,  "gold").pack(side="left", ipadx=8, ipady=3)
-        btn(btn_og1_row, "📜 Geçmiş/Düzenle", self._og_daire1_gecmis, "blue").pack(side="left", padx=6, ipadx=6, ipady=3)
+        btn(btn_og1_row, "Kart Ödeme Yap",    self._og_daire_odeme_yap,  "gold").pack(side="left", ipadx=8, ipady=3)
+        btn(btn_og1_row, " Geçmiş/Düzenle", self._og_daire1_gecmis, "blue").pack(side="left", padx=6, ipadx=6, ipady=3)
 
         # ── SEKME 2: Daire Bazlı Ödeme Takibi ──────────────────────────────
-        t2 = frm(nb, bg=T["bg2"]); nb.add(t2, text="  🏠  Daire Bazlı Ödemeler  ")
+        t2 = frm(nb, bg=T["bg2"]); nb.add(t2, text="  Ev  Daire Bazlı Ödemeler  ")
 
         t2hdr = frm(t2, bg=T["bg2"]); t2hdr.pack(fill="x", padx=10, pady=8)
         lbl(t2hdr, "Ortak Gider:", fg=T["text2"], bg=T["bg2"],
@@ -2862,7 +2862,7 @@ class App(tk.Tk):
         self._og_sec_cb  = ttk.Combobox(t2hdr, textvariable=self._og_sec_var,
             style="Dark.TCombobox", font=("Segoe UI",10), width=44, state="readonly")
         self._og_sec_cb.pack(side="left", padx=8, ipady=5)
-        btn(t2hdr, "🔍 Göster", self._og_daire_yenile, "blue").pack(side="left", ipadx=8, ipady=4)
+        btn(t2hdr, "Ara Göster", self._og_daire_yenile, "blue").pack(side="left", ipadx=8, ipady=4)
 
         # Özet şerit
         self._og_ozet_frm = frm(t2, bg=T["bg3"],
@@ -2873,7 +2873,7 @@ class App(tk.Tk):
         lhdr = frm(t2, bg=T["bg2"]); lhdr.pack(fill="x", padx=0)
         tk.Frame(lhdr, bg=T["gold"], height=2).pack(fill="x")
         lhf  = frm(lhdr, bg=T["bg2"]); lhf.pack(fill="x", padx=10, pady=6)
-        lbl(lhf, "🏠  Tüm Daireler — Ödeme Takibi",
+        lbl(lhf, "Ev  Tüm Daireler — Ödeme Takibi",
             font=("Segoe UI",11,"bold"), bg=T["bg2"]).pack(side="left")
 
         tf4, self._og_daire2_tree = scrolled(t2, [
@@ -2884,8 +2884,8 @@ class App(tk.Tk):
         self._og_daire2_tree.bind("<Double-1>", lambda e: self._og_daire2_odeme_yap())
 
         btn_row2 = frm(t2); btn_row2.pack(fill="x", padx=8, pady=(0,8))
-        btn(btn_row2, "💳 Ödeme Yap",    self._og_daire2_odeme_yap, "gold").pack(side="left", ipadx=8, ipady=4)
-        btn(btn_row2, "📜 Ödeme Geçmişi",self._og_daire2_gecmis,   "blue").pack(side="left", padx=8, ipadx=8, ipady=4)
+        btn(btn_row2, "Kart Ödeme Yap",    self._og_daire2_odeme_yap, "gold").pack(side="left", ipadx=8, ipady=4)
+        btn(btn_row2, " Ödeme Geçmişi",self._og_daire2_gecmis,   "blue").pack(side="left", padx=8, ipadx=8, ipady=4)
 
         self._og_guncelle()
         self._og_daire_listesi_doldur()
@@ -2906,13 +2906,13 @@ class App(tk.Tk):
                     round(a["tutar"] - sum(p["tutar"] for p in a.get("odemeler",[])), 2) <= 0)
                     and sum(p["tutar"] for p in a.get("odemeler",[])) > 0)
                 if tam_odenen == len(al_kayitlar):
-                    durum_txt, durum_tag = "✅ Tümü Ödendi", "odendi"
+                    durum_txt, durum_tag = "OK Tümü Ödendi", "odendi"
                 elif tam_odenen > 0 or kismi_odenen > 0:
-                    durum_txt, durum_tag = f"⚡ Kısmi ({tam_odenen}/{len(al_kayitlar)})", "bekliyor"
+                    durum_txt, durum_tag = f"! Kısmi ({tam_odenen}/{len(al_kayitlar)})", "bekliyor"
                 else:
-                    durum_txt, durum_tag = "⏳ Bekliyor", "borclu"
+                    durum_txt, durum_tag = "... Bekliyor", "borclu"
             else:
-                durum_txt, durum_tag = "📋 Kaydedildi", "normal"
+                durum_txt, durum_tag = "Liste Kaydedildi", "normal"
 
             daire_sayisi = len(g.get("daire_nos", []))
             kapsam_txt = "Tüm Daireler" if g.get("kapsam") == "tum" else f"{daire_sayisi} Daire"
@@ -3036,15 +3036,15 @@ class App(tk.Tk):
                 kalan  = round(a["tutar"] - odenen, 2)
                 tam    = a.get("odendi", False) or kalan <= 0
                 if tam:
-                    durum, tag = "✔ Ödendi", "odendi"
+                    durum, tag = "v Ödendi", "odendi"
                 elif odenen > 0:
-                    durum, tag = "⚡ Kısmi", "bekliyor"
+                    durum, tag = "! Kısmi", "bekliyor"
                 else:
-                    durum, tag = "⏳ Bekliyor", "borclu"
+                    durum, tag = "... Bekliyor", "borclu"
                 tree.insert("", "end", iid=f"d{dno}_{g['id']}", tags=(tag,),
                     values=(f"Daire {dno}", isim, fmt(a["tutar"]),
                             fmt(odenen) if odenen > 0 else "—",
-                            fmt(kalan)  if kalan  > 0 else "✔",
+                            fmt(kalan)  if kalan  > 0 else "v",
                             durum))
             else:
                 tree.insert("", "end", iid=f"d{dno}_{g['id']}", tags=("normal",),
@@ -3154,16 +3154,16 @@ class App(tk.Tk):
                 kalan  = round(a["tutar"] - odenen, 2)
                 tam    = a.get("odendi", False) or kalan <= 0
                 if tam:
-                    durum, tag = "✔ Ödendi", "odendi"
+                    durum, tag = "v Ödendi", "odendi"
                 elif odenen > 0:
-                    durum, tag = "⚡ Kısmi", "bekliyor"
+                    durum, tag = "! Kısmi", "bekliyor"
                 else:
-                    durum, tag = "⏳ Bekliyor", "borclu"
+                    durum, tag = "... Bekliyor", "borclu"
                 self._og_daire2_tree.insert("", "end",
                     iid=f"d2_{dno}_{g['id']}", tags=(tag,),
                     values=(f"Daire {dno}", isim, fmt(a["tutar"]),
                             fmt(odenen) if odenen > 0 else "—",
-                            fmt(kalan)  if kalan  > 0 else "✔", durum))
+                            fmt(kalan)  if kalan  > 0 else "v", durum))
             elif dno in daire_nos_in_gider:
                 # Bu gidere dahil ama alacaklı kaydı yok (uygulama yapılmamış)
                 self._og_daire2_tree.insert("", "end",
@@ -3223,7 +3223,7 @@ class App(tk.Tk):
         outer.pack(fill="both", expand=True, padx=18, pady=14)
 
         hdr = frm(outer); hdr.pack(fill="x", pady=(0,10))
-        lbl(hdr, "📋  Alacaklılar", font=("Segoe UI",13,"bold")).pack(side="left")
+        lbl(hdr, "Liste  Alacaklılar", font=("Segoe UI",13,"bold")).pack(side="left")
         al = self.data.get("alacaklilar", [])
         top_kalan = sum(max(0, round(a["tutar"]-sum(p["tutar"] for p in a.get("odemeler",[])),2))
                         for a in al if not (a.get("odendi",False) or
@@ -3241,7 +3241,7 @@ class App(tk.Tk):
         pw.pack(fill="both", expand=True)
 
         # ── ÜST: Giriş formu ─────────────────────────────────────────────
-        form_pnl = card_panel(pw, "➕  Yeni Alacaklı Kaydı", "Gelen fatura veya nakit harcama")
+        form_pnl = card_panel(pw, "+  Yeni Alacaklı Kaydı", "Gelen fatura veya nakit harcama")
         pw.add(form_pnl, weight=24)
         form_inner = frm(form_pnl, bg=T["bg2"])
         form_inner.pack(fill="both", expand=True, padx=12, pady=10)
@@ -3267,7 +3267,7 @@ class App(tk.Tk):
             fg=T["text3"],bg=T["bg2"],font=("Segoe UI",8)).pack(anchor="w",pady=(6,0))
 
         # ── ALT: Liste ───────────────────────────────────────────────────
-        tbl_pnl = card_panel(pw, "📋  Alacaklı Listesi", "Çift tıkla → Ödeme yap")
+        tbl_pnl = card_panel(pw, "Liste  Alacaklı Listesi", "Çift tıkla → Ödeme yap")
         pw.add(tbl_pnl, weight=76)
         tbl_inner = frm(tbl_pnl, bg=T["bg2"])
         tbl_inner.pack(fill="both", expand=True, padx=8, pady=8)
@@ -3290,11 +3290,11 @@ class App(tk.Tk):
         self._al_tree.bind("<Double-1>", self._al_cift_tik)
 
         alt_f = frm(tbl_inner,bg=T["bg2"]); alt_f.pack(fill="x",pady=(8,0))
-        btn(alt_f,"💳 Ödeme Yap",       self._al_odeme_yap,    "gold"  ).pack(side="left",padx=(0,6))
-        btn(alt_f,"📜 Ödeme Geçmişi",   self._al_gecmis_goster,"blue"  ).pack(side="left",padx=(0,6))
-        btn(alt_f,"✅ Tamamen Ödendi",   self._al_tam_odendi,   "green" ).pack(side="left",padx=(0,6))
+        btn(alt_f,"Kart Ödeme Yap",       self._al_odeme_yap,    "gold"  ).pack(side="left",padx=(0,6))
+        btn(alt_f," Ödeme Geçmişi",   self._al_gecmis_goster,"blue"  ).pack(side="left",padx=(0,6))
+        btn(alt_f,"OK Tamamen Ödendi",   self._al_tam_odendi,   "green" ).pack(side="left",padx=(0,6))
         btn(alt_f,"↩️ Ödemeleri Sıfırla",self._al_sifirla,     "orange").pack(side="left",padx=(0,6))
-        btn(alt_f,"🗑️ Sil",            self._al_sil,          "red"   ).pack(side="left")
+        btn(alt_f,"Sil Sil",            self._al_sil,          "red"   ).pack(side="left")
         self._al_guncelle()
 
     @staticmethod
@@ -3316,9 +3316,9 @@ class App(tk.Tk):
             odenen = sum(p["tutar"] for p in a.get("odemeler",[]))
             kalan  = round(a["tutar"]-odenen,2)
             tam    = a.get("odendi",False) or kalan<=0
-            if tam:          durum,tag = "✔ Tamamlandı","odendi"
-            elif odenen>0:   durum,tag = "⚡ Kısmi","bekliyor"
-            else:            durum,tag = "⏳ Bekliyor","borclu"
+            if tam:          durum,tag = "v Tamamlandı","odendi"
+            elif odenen>0:   durum,tag = "! Kısmi","bekliyor"
+            else:            durum,tag = "... Bekliyor","borclu"
             if filtre=="Bekleyen"     and (tam or odenen>0): continue
             if filtre=="Kısmi Ödendi" and (tam or odenen==0): continue
             if filtre=="Tamamlandı"   and not tam: continue
@@ -3333,7 +3333,7 @@ class App(tk.Tk):
                 values=(tarih_str(ft), grup, aciklama_txt, daire_txt,
                         fmt(a["tutar"]),
                         fmt(odenen) if odenen>0 else "—",
-                        fmt(kalan) if kalan>0 else "✔ Tamam",
+                        fmt(kalan) if kalan>0 else "v Tamam",
                         durum))
         al = self.data.get("alacaklilar",[])
         tk2 = sum(max(0,self._al_kalan(a)) for a in al if not a.get("odendi",False) and self._al_kalan(a)>0 and a.get("tur") != "Ortak Gider")
@@ -3420,14 +3420,14 @@ class App(tk.Tk):
         outer=frm(self._content)
         outer.pack(fill="both",expand=True,padx=18,pady=14)
         hdr=frm(outer); hdr.pack(fill="x",pady=(0,10))
-        lbl(hdr,"📈  Raporlar",font=("Segoe UI",13,"bold")).pack(side="left")
-        btn(hdr,"🖨️ Özet Raporu Yazdır",self._rapor_yazdir,"gold").pack(side="right")
+        lbl(hdr,"Yukari  Raporlar",font=("Segoe UI",13,"bold")).pack(side="left")
+        btn(hdr,"Yazdir Özet Raporu Yazdır",self._rapor_yazdir,"gold").pack(side="right")
 
         pw=pane(outer,orient="vertical")
         pw.pack(fill="both",expand=True)
 
         # 7. Gider Dağılımı ÜSTTE
-        alt=card_panel(pw,"💸  Gider Dağılımı","Kategoriye göre harcama")
+        alt=card_panel(pw,"Para  Gider Dağılımı","Kategoriye göre harcama")
         pw.add(alt,weight=30)
         ai=frm(alt,bg=T["bg2"]); ai.pack(fill="both",expand=True,padx=12,pady=8)
         gtur={}
@@ -3449,7 +3449,7 @@ class App(tk.Tk):
             lbl(ai,"Gider kaydı yok.",fg=T["text3"],bg=T["bg2"]).pack(pady=20)
 
         # Aylık Özet ORTADA
-        ust=card_panel(pw,"📋  Aylık Özet","Gelir, gider, tahsilat")
+        ust=card_panel(pw,"Liste  Aylık Özet","Gelir, gider, tahsilat")
         pw.add(ust,weight=40)
         ui=frm(ust,bg=T["bg2"]); ui.pack(fill="both",expand=True,padx=8,pady=8)
         tf,to=scrolled(ui,[("Ay",160),("Gelir",140),("Gider",140),("Net",140),("Tahsilat %",110)],height=8)
@@ -3470,7 +3470,7 @@ class App(tk.Tk):
                 values=(ay_label(ay),fmt(gel),fmt(gid),fmt(net),f"%{oran}"))
 
         # 2. Alacaklılar özet tablosu ALTTA
-        alacak_pnl=card_panel(pw,"📋  Alacaklılar Özeti","Fatura ve nakit harcamalar")
+        alacak_pnl=card_panel(pw,"Liste  Alacaklılar Özeti","Fatura ve nakit harcamalar")
         pw.add(alacak_pnl,weight=30)
         alai=frm(alacak_pnl,bg=T["bg2"]); alai.pack(fill="both",expand=True,padx=8,pady=8)
         altf,altr=scrolled(alai,[
@@ -3484,12 +3484,12 @@ class App(tk.Tk):
                 odenen=sum(p["tutar"] for p in a.get("odemeler",[]))
                 kalan=round(a["tutar"]-odenen,2)
                 tam=a.get("odendi",False) or kalan<=0
-                if tam:       durum,tag="✔ Tamamlandı","odendi"
-                elif odenen>0:durum,tag="⚡ Kısmi","bekliyor"
-                else:         durum,tag="⏳ Bekliyor","borclu"
+                if tam:       durum,tag="v Tamamlandı","odendi"
+                elif odenen>0:durum,tag="! Kısmi","bekliyor"
+                else:         durum,tag="... Bekliyor","borclu"
                 ft=a.get("fatura_tarihi") or a.get("kayit_tarihi","")
                 if a.get("tur")=="Ortak Gider":
-                    grup="🔧 Ortak Gider"
+                    grup="Arac Ortak Gider"
                     dno=a.get("daire_no"); daire_txt=f"Daire {dno}" if dno else "—"
                     acik_txt=a.get("kisi") or a.get("aciklama") or "—"
                 else:
@@ -3499,7 +3499,7 @@ class App(tk.Tk):
                     values=(tarih_str(ft),grup,acik_txt,daire_txt,
                             fmt(a["tutar"]),
                             fmt(odenen) if odenen>0 else "—",
-                            fmt(kalan) if kalan>0 else "✔ Tamam",
+                            fmt(kalan) if kalan>0 else "v Tamam",
                             durum))
         else:
             altr.insert("","end",tags=("normal",),
@@ -3542,27 +3542,27 @@ class App(tk.Tk):
         stat_cards_html = f"""
 <div class="stat-grid">
   <div class="stat-card stat-red">
-    <div class="stat-title">⚠️  Toplam Borç</div>
+    <div class="stat-title">Uyari  Toplam Borç</div>
     <div class="stat-val">{fmt(topBorcToplam)}</div>
     <div class="stat-sub">Aidat: {fmt(topB+topF)} &nbsp;|&nbsp; Alacak: {fmt(topAlacak)}</div>
   </div>
   <div class="stat-card stat-gold">
-    <div class="stat-title">💳  Bu Ayki Tahsilat</div>
+    <div class="stat-title">Kart  Bu Ayki Tahsilat</div>
     <div class="stat-val">{fmt(tah_buay)}</div>
     <div class="stat-sub">%{oran_buay} &nbsp;|&nbsp; Beklenen: {fmt(bek)}</div>
   </div>
   <div class="stat-card stat-green">
-    <div class="stat-title">📈  Toplam Gelir</div>
+    <div class="stat-title">Yukari  Toplam Gelir</div>
     <div class="stat-val">{fmt(topG)}</div>
     <div class="stat-sub">Tüm zamanlar</div>
   </div>
   <div class="stat-card" style="border-top:3px solid {net_renk}">
-    <div class="stat-title">💼  Net Bakiye</div>
+    <div class="stat-title">Canta  Net Bakiye</div>
     <div class="stat-val" style="color:{net_renk}">{fmt(net)}</div>
     <div class="stat-sub">Gelir — Gider</div>
   </div>
   <div class="stat-card stat-orange">
-    <div class="stat-title">🕐  Ödenmemiş Borç</div>
+    <div class="stat-title">Saat  Ödenmemiş Borç</div>
     <div class="stat-val">{fmt(odenmemis_toplam)}</div>
     <div class="stat-sub">Tüm geçmiş ödenmemiş dönemler</div>
   </div>
@@ -3616,12 +3616,12 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
   .stat-card{{border:1px solid #ddd;}}
 }}
 </style></head><body>
-<div class="np"><button onclick="window.print()">🖨️ Yazdır / PDF</button></div>
+<div class="np"><button onclick="window.print()">Yazdir Yazdır / PDF</button></div>
 <div class="card">
-  <h2>🏢 {b['adi']} — Özet Rapor</h2>
+  <h2>Bina {b['adi']} — Özet Rapor</h2>
   <p class="meta">Oluşturma tarihi: {datetime.datetime.now().strftime('%d.%m.%Y %H:%M')}</p>
   {stat_cards_html}
-  <h3>📋 Aylık Özet</h3>
+  <h3>Liste Aylık Özet</h3>
   <table>
     <tr><th>Ay</th><th>Gelir</th><th>Gider</th><th>Net</th><th>Tahsilat %</th></tr>
     {rows}
@@ -3638,7 +3638,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
 
         # Başlık + filtre bar
         hdr = frm(outer); hdr.pack(fill="x", pady=(0,10))
-        lbl(hdr, "🗂️  Detaylı Raporlar",
+        lbl(hdr, "Klasor  Detaylı Raporlar",
             font=("Segoe UI",13,"bold")).pack(side="left")
 
         # Ay filtresi
@@ -3650,9 +3650,9 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         lbl(fil, " — ", fg=T["text2"]).pack(side="left", padx=4)
         self._dr_son = AySecici(fil, initial=buay())
         self._dr_son.pack(side="left")
-        btn(fil, "🔍 Filtrele", lambda: self._dr_yenile(nb), "gold").pack(
+        btn(fil, "Ara Filtrele", lambda: self._dr_yenile(nb), "gold").pack(
             side="left", padx=(10,0))
-        btn(fil, "🖨️ Tümünü Yazdır", lambda: self._dr_yazdir(), "blue").pack(
+        btn(fil, "Yazdir Tümünü Yazdır", lambda: self._dr_yazdir(), "blue").pack(
             side="left", padx=(6,0))
 
         # Notebook — 4 sekme
@@ -3660,19 +3660,19 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         nb.pack(fill="both", expand=True)
 
         # ── Sekme 1: Aidat Ödeyenler ──────────────────────────────────────
-        t1 = frm(nb, bg=T["bg2"]); nb.add(t1, text="  ✅  Aidat Ödeyenler  ")
+        t1 = frm(nb, bg=T["bg2"]); nb.add(t1, text="  OK  Aidat Ödeyenler  ")
 
         t1_hdr = frm(t1, bg=T["bg2"]); t1_hdr.pack(fill="x", padx=12, pady=8)
         self._dr_lbl_odeyenler = lbl(t1_hdr, "", fg=T["green"],
             bg=T["bg2"], font=("Segoe UI",10,"bold"))
         self._dr_lbl_odeyenler.pack(side="left")
-        btn(t1_hdr, "🖨️ Bu Listeyi Yazdır",
+        btn(t1_hdr, "Yazdir Bu Listeyi Yazdır",
             lambda: self._dr_yazdir("odeyenler"), "green").pack(side="right")
 
         t1pw = pane(t1, orient="vertical"); t1pw.pack(fill="both", expand=True, padx=8, pady=(0,8))
 
         # Üst: Dönemsel özet
-        t1ust = card_panel(t1pw, "📅  Dönemsel Tahsilat Özeti", "Ay bazında ödeme oranı")
+        t1ust = card_panel(t1pw, "Takvim  Dönemsel Tahsilat Özeti", "Ay bazında ödeme oranı")
         t1pw.add(t1ust, weight=40)
         t1ui = frm(t1ust, bg=T["bg2"]); t1ui.pack(fill="both", expand=True, padx=8, pady=6)
         t1f, self._dr_tree_ay_ozet = scrolled(t1ui, [
@@ -3682,7 +3682,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t1f.pack(fill="both", expand=True)
 
         # Alt: Ödeyen daireler listesi
-        t1alt = card_panel(t1pw, "🏠  Ödeme Yapan Daireler", "Seçili dönem içindeki tüm ödemeler")
+        t1alt = card_panel(t1pw, "Ev  Ödeme Yapan Daireler", "Seçili dönem içindeki tüm ödemeler")
         t1pw.add(t1alt, weight=60)
         t1ai = frm(t1alt, bg=T["bg2"]); t1ai.pack(fill="both", expand=True, padx=8, pady=6)
         t1af, self._dr_tree_odeyenler = scrolled(t1ai, [
@@ -3692,19 +3692,19 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t1af.pack(fill="both", expand=True)
 
         # ── Sekme 2: Aidat Ödemeyenler ────────────────────────────────────
-        t2 = frm(nb, bg=T["bg2"]); nb.add(t2, text="  ❌  Aidat Ödemeyenler  ")
+        t2 = frm(nb, bg=T["bg2"]); nb.add(t2, text="  X  Aidat Ödemeyenler  ")
 
         t2_hdr = frm(t2, bg=T["bg2"]); t2_hdr.pack(fill="x", padx=12, pady=8)
         self._dr_lbl_odemeyenler = lbl(t2_hdr, "", fg=T["red"],
             bg=T["bg2"], font=("Segoe UI",10,"bold"))
         self._dr_lbl_odemeyenler.pack(side="left")
-        btn(t2_hdr, "🖨️ Bu Listeyi Yazdır",
+        btn(t2_hdr, "Yazdir Bu Listeyi Yazdır",
             lambda: self._dr_yazdir("odemeyenler"), "red").pack(side="right")
 
         t2pw = pane(t2, orient="vertical"); t2pw.pack(fill="both", expand=True, padx=8, pady=(0,8))
 
         # Üst: Ay bazında ödemeyen özet
-        t2ust = card_panel(t2pw, "📅  Dönemsel Borç Özeti", "Ay bazında ödenmemiş aidatlar")
+        t2ust = card_panel(t2pw, "Takvim  Dönemsel Borç Özeti", "Ay bazında ödenmemiş aidatlar")
         t2pw.add(t2ust, weight=40)
         t2ui = frm(t2ust, bg=T["bg2"]); t2ui.pack(fill="both", expand=True, padx=8, pady=6)
         t2f, self._dr_tree_borclu_ay = scrolled(t2ui, [
@@ -3714,7 +3714,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t2f.pack(fill="both", expand=True)
 
         # Alt: Borçlu daireler detay
-        t2alt = card_panel(t2pw, "🏠  Borçlu Daire Detayı", "Seçili dönem içinde hiç ödeme yapmayan veya eksik ödeyen daireler")
+        t2alt = card_panel(t2pw, "Ev  Borçlu Daire Detayı", "Seçili dönem içinde hiç ödeme yapmayan veya eksik ödeyen daireler")
         t2pw.add(t2alt, weight=60)
         t2ai = frm(t2alt, bg=T["bg2"]); t2ai.pack(fill="both", expand=True, padx=8, pady=6)
         t2af, self._dr_tree_odemeyenler = scrolled(t2ai, [
@@ -3724,19 +3724,19 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t2af.pack(fill="both", expand=True)
 
         # ── Sekme 3: Gelir Raporu ──────────────────────────────────────────
-        t3 = frm(nb, bg=T["bg2"]); nb.add(t3, text="  📈  Gelir Raporu  ")
+        t3 = frm(nb, bg=T["bg2"]); nb.add(t3, text="  Yukari  Gelir Raporu  ")
 
         t3_hdr = frm(t3, bg=T["bg2"]); t3_hdr.pack(fill="x", padx=12, pady=8)
         self._dr_lbl_gelir = lbl(t3_hdr, "", fg=T["green"],
             bg=T["bg2"], font=("Segoe UI",10,"bold"))
         self._dr_lbl_gelir.pack(side="left")
-        btn(t3_hdr, "🖨️ Gelir Raporunu Yazdır",
+        btn(t3_hdr, "Yazdir Gelir Raporunu Yazdır",
             lambda: self._dr_yazdir("gelir"), "green").pack(side="right")
 
         t3pw = pane(t3, orient="vertical"); t3pw.pack(fill="both", expand=True, padx=8, pady=(0,8))
 
         # Üst: Kategoriye göre gelir özeti
-        t3ust = card_panel(t3pw, "📊  Gelir Kategorisi Özeti", "Tür bazında toplam")
+        t3ust = card_panel(t3pw, "Grafik  Gelir Kategorisi Özeti", "Tür bazında toplam")
         t3pw.add(t3ust, weight=38)
         t3ui = frm(t3ust, bg=T["bg2"]); t3ui.pack(fill="both", expand=True, padx=8, pady=6)
         t3f, self._dr_tree_gelir_kat = scrolled(t3ui, [
@@ -3745,7 +3745,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t3f.pack(fill="both", expand=True)
 
         # Alt: Tüm gelir kayıtları
-        t3alt = card_panel(t3pw, "📋  Tüm Gelir Kayıtları", "")
+        t3alt = card_panel(t3pw, "Liste  Tüm Gelir Kayıtları", "")
         t3pw.add(t3alt, weight=62)
         t3ai = frm(t3alt, bg=T["bg2"]); t3ai.pack(fill="both", expand=True, padx=8, pady=6)
         t3af, self._dr_tree_gelirler = scrolled(t3ai, [
@@ -3754,19 +3754,19 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t3af.pack(fill="both", expand=True)
 
         # ── Sekme 4: Gider Raporu ──────────────────────────────────────────
-        t4 = frm(nb, bg=T["bg2"]); nb.add(t4, text="  📉  Gider Raporu  ")
+        t4 = frm(nb, bg=T["bg2"]); nb.add(t4, text="  Asagi  Gider Raporu  ")
 
         t4_hdr = frm(t4, bg=T["bg2"]); t4_hdr.pack(fill="x", padx=12, pady=8)
         self._dr_lbl_gider = lbl(t4_hdr, "", fg=T["red"],
             bg=T["bg2"], font=("Segoe UI",10,"bold"))
         self._dr_lbl_gider.pack(side="left")
-        btn(t4_hdr, "🖨️ Gider Raporunu Yazdır",
+        btn(t4_hdr, "Yazdir Gider Raporunu Yazdır",
             lambda: self._dr_yazdir("gider"), "red").pack(side="right")
 
         t4pw = pane(t4, orient="vertical"); t4pw.pack(fill="both", expand=True, padx=8, pady=(0,8))
 
         # Üst: Kategoriye göre gider özeti + bar grafik
-        t4ust = card_panel(t4pw, "📊  Gider Kategorisi Özeti", "Tür bazında toplam")
+        t4ust = card_panel(t4pw, "Grafik  Gider Kategorisi Özeti", "Tür bazında toplam")
         t4pw.add(t4ust, weight=38)
         t4ui = frm(t4ust, bg=T["bg2"]); t4ui.pack(fill="both", expand=True, padx=8, pady=6)
         t4f, self._dr_tree_gider_kat = scrolled(t4ui, [
@@ -3775,7 +3775,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t4f.pack(fill="both", expand=True)
 
         # Alt: Tüm gider kayıtları
-        t4alt = card_panel(t4pw, "📋  Tüm Gider Kayıtları", "")
+        t4alt = card_panel(t4pw, "Liste  Tüm Gider Kayıtları", "")
         t4pw.add(t4alt, weight=62)
         t4ai = frm(t4alt, bg=T["bg2"]); t4ai.pack(fill="both", expand=True, padx=8, pady=6)
         t4af, self._dr_tree_giderler = scrolled(t4ai, [
@@ -3784,19 +3784,19 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t4af.pack(fill="both", expand=True)
 
         # ── Sekme 5: Alacaklılar ──────────────────────────────────────────
-        t5 = frm(nb, bg=T["bg2"]); nb.add(t5, text="  📋  Alacaklılar  ")
+        t5 = frm(nb, bg=T["bg2"]); nb.add(t5, text="  Liste  Alacaklılar  ")
 
         t5_hdr = frm(t5, bg=T["bg2"]); t5_hdr.pack(fill="x", padx=12, pady=8)
         self._dr_lbl_alacak = lbl(t5_hdr, "", fg=T["orange"],
             bg=T["bg2"], font=("Segoe UI",10,"bold"))
         self._dr_lbl_alacak.pack(side="left")
-        btn(t5_hdr, "🖨️ Alacaklılar Raporunu Yazdır",
+        btn(t5_hdr, "Yazdir Alacaklılar Raporunu Yazdır",
             lambda: self._dr_yazdir("alacaklilar"), "orange").pack(side="right")
 
         t5pw = pane(t5, orient="vertical"); t5pw.pack(fill="both", expand=True, padx=8, pady=(0,8))
 
         # Üst: Tür bazında özet
-        t5ust = card_panel(t5pw, "📊  Alacaklı Özeti", "Tür bazında toplam / ödenen / kalan")
+        t5ust = card_panel(t5pw, "Grafik  Alacaklı Özeti", "Tür bazında toplam / ödenen / kalan")
         t5pw.add(t5ust, weight=35)
         t5ui = frm(t5ust, bg=T["bg2"]); t5ui.pack(fill="both", expand=True, padx=8, pady=6)
         t5f, self._dr_tree_alacak_ozet = scrolled(t5ui, [
@@ -3806,7 +3806,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t5f.pack(fill="both", expand=True)
 
         # Alt: Tüm alacaklılar
-        t5alt = card_panel(t5pw, "📋  Tüm Alacaklı Kayıtları", "Çift tıkla → ödeme yap")
+        t5alt = card_panel(t5pw, "Liste  Tüm Alacaklı Kayıtları", "Çift tıkla → ödeme yap")
         t5pw.add(t5alt, weight=65)
         t5ai = frm(t5alt, bg=T["bg2"]); t5ai.pack(fill="both", expand=True, padx=8, pady=6)
         t5af, self._dr_tree_alacaklar = scrolled(t5ai, [
@@ -3816,19 +3816,19 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t5af.pack(fill="both", expand=True)
 
         # ── Sekme 6: Ortak Giderler ───────────────────────────────────────
-        t6 = frm(nb, bg=T["bg2"]); nb.add(t6, text="  🔧  Ortak Giderler  ")
+        t6 = frm(nb, bg=T["bg2"]); nb.add(t6, text="  Arac  Ortak Giderler  ")
 
         t6_hdr = frm(t6, bg=T["bg2"]); t6_hdr.pack(fill="x", padx=12, pady=8)
         self._dr_lbl_og = lbl(t6_hdr, "", fg=T["gold2"],
             bg=T["bg2"], font=("Segoe UI",10,"bold"))
         self._dr_lbl_og.pack(side="left")
-        btn(t6_hdr, "🖨️ Ortak Giderler Raporunu Yazdır",
+        btn(t6_hdr, "Yazdir Ortak Giderler Raporunu Yazdır",
             lambda: self._dr_yazdir("ortak_giderler"), "gold").pack(side="right")
 
         t6pw = pane(t6, orient="vertical"); t6pw.pack(fill="both", expand=True, padx=8, pady=(0,8))
 
         # Üst: Özet kart listesi
-        t6ust = card_panel(t6pw, "📊  Ortak Gider Özeti", "Gider adı bazında toplam / ödenen / kalan")
+        t6ust = card_panel(t6pw, "Grafik  Ortak Gider Özeti", "Gider adı bazında toplam / ödenen / kalan")
         t6pw.add(t6ust, weight=35)
         t6ui = frm(t6ust, bg=T["bg2"]); t6ui.pack(fill="both", expand=True, padx=8, pady=6)
         t6f, self._dr_tree_og_ozet = scrolled(t6ui, [
@@ -3838,7 +3838,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t6f.pack(fill="both", expand=True)
 
         # Alt: Daire bazlı ödeme takibi
-        t6alt = card_panel(t6pw, "🏠  Daire Bazlı Ortak Gider Ödemeleri", "Seçili dönem içindeki tüm ortak gider kayıtları")
+        t6alt = card_panel(t6pw, "Ev  Daire Bazlı Ortak Gider Ödemeleri", "Seçili dönem içindeki tüm ortak gider kayıtları")
         t6pw.add(t6alt, weight=65)
         t6ai = frm(t6alt, bg=T["bg2"]); t6ai.pack(fill="both", expand=True, padx=8, pady=6)
         t6af, self._dr_tree_og_daire = scrolled(t6ai, [
@@ -3848,15 +3848,15 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t6af.pack(fill="both", expand=True)
 
         # ── Sekme 7: Uyarı Yazısı ─────────────────────────────────────────
-        t7 = frm(nb, bg=T["bg2"]); nb.add(t7, text="  ✉️  Uyarı Yazısı  ")
+        t7 = frm(nb, bg=T["bg2"]); nb.add(t7, text="  Mektup  Uyarı Yazısı  ")
 
         t7_hdr = frm(t7, bg=T["bg2"]); t7_hdr.pack(fill="x", padx=12, pady=8)
         lbl(t7_hdr, "Borçlu daireler için Word uyarı yazısı oluşturun.",
             fg=T["text2"], bg=T["bg2"], font=("Segoe UI",10)).pack(side="left")
-        btn(t7_hdr, "🖨️ Tümü → PDF", self._uyari_tumu_pdf, "gold").pack(side="right", padx=(0,4))
-        btn(t7_hdr, "📁 Tümü → Word", self._uyari_tumu_yazdir, "purple").pack(side="right", padx=(0,4))
+        btn(t7_hdr, "Yazdir Tümü → PDF", self._uyari_tumu_pdf, "gold").pack(side="right", padx=(0,4))
+        btn(t7_hdr, "Klasor Tümü → Word", self._uyari_tumu_yazdir, "purple").pack(side="right", padx=(0,4))
 
-        t7_card = card_panel(t7, "🏠  Borçlu Daireler", "Seçili daireye uyarı yazısı oluşturun")
+        t7_card = card_panel(t7, "Ev  Borçlu Daireler", "Seçili daireye uyarı yazısı oluşturun")
         t7_card.pack(fill="both", expand=True, padx=8, pady=(0,8))
         t7_ic = frm(t7_card, bg=T["bg2"]); t7_ic.pack(fill="both", expand=True, padx=8, pady=6)
 
@@ -3871,11 +3871,11 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         t7_tf.pack(fill="both", expand=True)
 
         t7_btn_row = frm(t7_card, bg=T["bg2"]); t7_btn_row.pack(fill="x", padx=8, pady=(4,10))
-        btn(t7_btn_row, "📄 Seçili → PDF",
+        btn(t7_btn_row, "Dosya Seçili → PDF",
             self._uyari_secili_yazdir, "blue").pack(side="left", ipadx=10, ipady=4)
-        btn(t7_btn_row, "📝 Seçili → Word",
+        btn(t7_btn_row, "Not Seçili → Word",
             self._uyari_secili_word, "gray").pack(side="left", padx=6, ipadx=8, ipady=4)
-        btn(t7_btn_row, "🖨️ Tümü → PDF (Toplu)",
+        btn(t7_btn_row, "Yazdir Tümü → PDF (Toplu)",
             self._uyari_tumu_pdf, "gold").pack(side="left", padx=6, ipadx=8, ipady=4)
 
         # İlk yükleme
@@ -3988,9 +3988,9 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
 
         # Özet etiketleri
         self._dr_lbl_odeyenler.config(
-            text=f"✅  Dönemde {toplam_odeyenler} ödeme  •  Toplam Tahsilat: {fmt(toplam_tahsilat)}")
+            text=f"OK  Dönemde {toplam_odeyenler} ödeme  •  Toplam Tahsilat: {fmt(toplam_tahsilat)}")
         self._dr_lbl_odemeyenler.config(
-            text=f"❌  Dönemde {toplam_odemeyenler} ödenmemiş aidat  •  Toplam Borç: {fmt(toplam_borclu_tutar)}")
+            text=f"X  Dönemde {toplam_odemeyenler} ödenmemiş aidat  •  Toplam Borç: {fmt(toplam_borclu_tutar)}")
 
         # ── 2. Gelir Analizi ──────────────────────────────────────────────
         self._dr_tree_gelir_kat.delete(*self._dr_tree_gelir_kat.get_children())
@@ -4022,7 +4022,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
                         g.get("aciklama") or "—", fmt(g["tutar"])))
 
         self._dr_lbl_gelir.config(
-            text=f"📈  {len(filtreli_gelirler)} kayıt  •  Toplam Gelir: {fmt(toplam_gelir)}")
+            text=f"Yukari  {len(filtreli_gelirler)} kayıt  •  Toplam Gelir: {fmt(toplam_gelir)}")
 
         # ── 3. Gider Analizi ──────────────────────────────────────────────
         self._dr_tree_gider_kat.delete(*self._dr_tree_gider_kat.get_children())
@@ -4054,7 +4054,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
                         g.get("aciklama") or "—", fmt(g["tutar"])))
 
         self._dr_lbl_gider.config(
-            text=f"📉  {len(filtreli_giderler)} kayıt  •  Toplam Gider: {fmt(toplam_gider)}")
+            text=f"Asagi  {len(filtreli_giderler)} kayıt  •  Toplam Gider: {fmt(toplam_gider)}")
 
         # ── 4. Alacaklılar Analizi ────────────────────────────────────────
         if not hasattr(self, "_dr_tree_alacak_ozet"):
@@ -4097,13 +4097,13 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
             od    = sum(p["tutar"] for p in a.get("odemeler",[]))
             kalan = round(a["tutar"]-od, 2)
             tam   = a.get("odendi",False) or kalan<=0
-            if tam:       durum,tag = "✔ Tamamlandı","odendi"
-            elif od > 0:  durum,tag = "⚡ Kısmi",      "bekliyor"
-            else:         durum,tag = "⏳ Bekliyor",    "borclu"
+            if tam:       durum,tag = "v Tamamlandı","odendi"
+            elif od > 0:  durum,tag = "! Kısmi",      "bekliyor"
+            else:         durum,tag = "... Bekliyor",    "borclu"
             if not tam:   toplam_al_kalan += kalan
             ft = a.get("fatura_tarihi") or a.get("kayit_tarihi","")
             if a.get("tur") == "Ortak Gider":
-                grup = "🔧 Ortak Gider"
+                grup = "Arac Ortak Gider"
                 dno = a.get("daire_no"); daire_txt = f"Daire {dno}" if dno else "—"
                 acik_txt = a.get("kisi") or a.get("aciklama") or "—"
             else:
@@ -4113,12 +4113,12 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
                 values=(tarih_str(ft), grup, acik_txt, daire_txt,
                         fmt(a["tutar"]),
                         fmt(od) if od>0 else "—",
-                        fmt(kalan) if kalan>0 else "✔ Tamam",
+                        fmt(kalan) if kalan>0 else "v Tamam",
                         durum))
 
         if hasattr(self, "_dr_lbl_alacak"):
             self._dr_lbl_alacak.config(
-                text=f"📋  {len(filtreli_al)} kayıt  •  Toplam Kalan: {fmt(toplam_al_kalan)}")
+                text=f"Liste  {len(filtreli_al)} kayıt  •  Toplam Kalan: {fmt(toplam_al_kalan)}")
 
         # ── 5. Ortak Giderler Analizi ─────────────────────────────────────
         if not hasattr(self, "_dr_tree_og_ozet"):
@@ -4149,23 +4149,23 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
                 tam_sayi   = sum(1 for a in al_g if a.get("odendi") or
                                  round(a["tutar"]-sum(p["tutar"] for p in a.get("odemeler",[])),2)<=0)
                 if tam_sayi == len(al_g):
-                    durum_txt, durum_tag = "✅ Tümü Ödendi", "odendi"
+                    durum_txt, durum_tag = "OK Tümü Ödendi", "odendi"
                 elif tam_sayi > 0 or odenen_top > 0:
-                    durum_txt, durum_tag = f"⚡ Kısmi ({tam_sayi}/{len(al_g)})", "bekliyor"
+                    durum_txt, durum_tag = f"! Kısmi ({tam_sayi}/{len(al_g)})", "bekliyor"
                 else:
-                    durum_txt, durum_tag = "⏳ Bekliyor", "borclu"
+                    durum_txt, durum_tag = "... Bekliyor", "borclu"
                 toplam_og_kalan  += kalan_top
                 toplam_og_fatura += fatura_top
             else:
                 fatura_top = 0; odenen_top = 0; kalan_top = 0
-                durum_txt, durum_tag = "📋 Kaydedildi", "normal"
+                durum_txt, durum_tag = "Liste Kaydedildi", "normal"
 
             kapsam_txt = "Tüm Daireler" if g.get("kapsam") == "tum" else f"{len(g.get('daire_nos',[]))} Daire"
             self._dr_tree_og_ozet.insert("", "end", tags=(durum_tag,),
                 values=(g.get("ad",""), tarih_str(g.get("tarih","")),
                         kapsam_txt, fmt(fatura_top),
                         fmt(odenen_top) if odenen_top > 0 else "—",
-                        fmt(kalan_top) if kalan_top > 0 else "✔",
+                        fmt(kalan_top) if kalan_top > 0 else "v",
                         durum_txt))
 
             # Daire bazlı satırlar
@@ -4175,21 +4175,21 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
                 od_a  = sum(p["tutar"] for p in a.get("odemeler",[]))
                 kal_a = round(a["tutar"] - od_a, 2)
                 tam_a = a.get("odendi", False) or kal_a <= 0
-                if tam_a:   dtag, dtxt = "odendi",  "✔ Ödendi"
-                elif od_a>0: dtag, dtxt = "bekliyor", "⚡ Kısmi"
-                else:        dtag, dtxt = "borclu",  "⏳ Bekliyor"
+                if tam_a:   dtag, dtxt = "odendi",  "v Ödendi"
+                elif od_a>0: dtag, dtxt = "bekliyor", "! Kısmi"
+                else:        dtag, dtxt = "borclu",  "... Bekliyor"
                 self._dr_tree_og_daire.insert("", "end", tags=(dtag,),
                     values=(g.get("ad",""),
                             f"Daire {a.get('daire_no','?')}",
                             isim,
                             fmt(a["tutar"]),
                             fmt(od_a) if od_a > 0 else "—",
-                            fmt(kal_a) if kal_a > 0 else "✔",
+                            fmt(kal_a) if kal_a > 0 else "v",
                             dtxt))
 
         if hasattr(self, "_dr_lbl_og"):
             self._dr_lbl_og.config(
-                text=f"🔧  {len(filtreli_og)} gider  •  Toplam Kalan: {fmt(toplam_og_kalan)}")
+                text=f"Arac  {len(filtreli_og)} gider  •  Toplam Kalan: {fmt(toplam_og_kalan)}")
 
         self._uw_tree_doldur()
 
@@ -4226,7 +4226,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
                 sat_det.append(self._dr_tree_odeyenler.item(iid)["values"])
 
             bolumler.append(
-                "<h2 style='color:#2ecc71'>✅ Aidat Ödeyenler</h2>" +
+                "<h2 style='color:#2ecc71'>OK Aidat Ödeyenler</h2>" +
                 "<h3>Dönemsel Tahsilat Özeti</h3>" +
                 tablo(["Dönem","Toplam Daire","Ödeyen","Ödemeyen","Tahsilat %",
                         "Tahsil Edilen","Beklenen"], sat_ozet, "#1a5c2a") +
@@ -4247,7 +4247,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
                 sat_bod.append(self._dr_tree_odemeyenler.item(iid)["values"])
 
             bolumler.append(
-                "<h2 style='color:#e74c3c'>❌ Aidat Ödemeyenler</h2>" +
+                "<h2 style='color:#e74c3c'>X Aidat Ödemeyenler</h2>" +
                 "<h3>Dönemsel Borç Özeti</h3>" +
                 tablo(["Dönem","Ödemeyen Daire","Toplam Borç","Toplam Faiz",
                         "Kaybedilen Gelir"], sat_bay, "#7a1a1a") +
@@ -4288,7 +4288,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
             )
 
             bolumler.append(
-                "<h2 style='color:#2ecc71'>📈 Gelir Raporu</h2>" +
+                "<h2 style='color:#2ecc71'>Yukari Gelir Raporu</h2>" +
                 "<h3>Gelir Kategorisi Özeti</h3>" +
                 ozet_tablo +
                 "<div class='no-print'><h3>Tüm Gelir Kayıtları</h3>" +
@@ -4308,7 +4308,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
                 sat_gid.append(self._dr_tree_giderler.item(iid)["values"])
 
             bolumler.append(
-                "<h2 style='color:#e74c3c'>📉 Gider Raporu</h2>" +
+                "<h2 style='color:#e74c3c'>Asagi Gider Raporu</h2>" +
                 "<h3>Gider Kategorisi Özeti</h3>" +
                 tablo(["Kategori","Kayıt Sayısı","Toplam","Oran %"], sat_gik, "#7a1a1a") +
                 "<h3>Tüm Gider Kayıtları</h3>" +
@@ -4327,7 +4327,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
                 sat_ad.append(self._dr_tree_alacaklar.item(iid)["values"])
 
             bolumler.append(
-                "<h2 style='color:#f39c12'>📋 Alacaklılar Raporu</h2>" +
+                "<h2 style='color:#f39c12'>Liste Alacaklılar Raporu</h2>" +
                 "<h3>Alacaklı Özeti</h3>" +
                 tablo(["Tür","Kayıt","Toplam Fatura","Toplam Ödenen",
                         "Toplam Kalan","Tamamlanan"], sat_ao, "#7a4a00") +
@@ -4348,7 +4348,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
                 sat_od.append(self._dr_tree_og_daire.item(iid)["values"])
 
             bolumler.append(
-                "<h2 style='color:#c9a84c'>🔧 Ortak Giderler Raporu</h2>" +
+                "<h2 style='color:#c9a84c'>Arac Ortak Giderler Raporu</h2>" +
                 "<h3>Ortak Gider Özeti</h3>" +
                 tablo(["Gider Adı","Tarih","Kapsam","Toplam Fatura",
                         "Ödenen","Kalan","Durum"], sat_oo, "#4a3a00") +
@@ -4392,10 +4392,10 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
                 h2{{page-break-before:auto;}} table{{page-break-inside:auto;}}}}
 </style></head><body>
 <div class="np">
-  <button onclick="window.print()">🖨️ Yazdır / PDF</button>
+  <button onclick="window.print()">Yazdir Yazdır / PDF</button>
 </div>
 <div class="card">
-  <h1>🏢 {b['adi']} — {sayfa_baslik}</h1>
+  <h1>Bina {b['adi']} — {sayfa_baslik}</h1>
   <p class="meta">Dönem: {donem} &nbsp;|&nbsp; Oluşturma: {tarih_now}</p>
   {icerik}
 </div>
@@ -5146,7 +5146,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
         pw=pane(outer,orient="horizontal")
         pw.pack(fill="both",expand=True)
 
-        sol=card_panel(pw,"⚙️  Bina Ayarları","")
+        sol=card_panel(pw,"Ayar  Bina Ayarları","")
         pw.add(sol,weight=1)
         si=frm(sol,bg=T["bg2"]); si.pack(fill="both",expand=True,padx=20,pady=10)
         b=self.data["bina"]
@@ -5199,23 +5199,23 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
 
             for w in self.winfo_children(): w.destroy()
             self._build()
-        btn(si,"💾  Ayarları Kaydet",kaydet,"gold").pack(anchor="w",pady=(16,4),ipadx=16,ipady=4)
+        btn(si,"Kaydet  Ayarları Kaydet",kaydet,"gold").pack(anchor="w",pady=(16,4),ipadx=16,ipady=4)
 
         tk.Frame(si,bg=T["border"],height=1).pack(fill="x",pady=(8,8))
 
         # ── Aidat Periyodu Ayarı ─────────────────────────────────────
-        lbl(si,"📅  Aidat Periyodu Ayarı",fg=T["text2"],bg=T["bg2"],
+        lbl(si,"Takvim  Aidat Periyodu Ayarı",fg=T["text2"],bg=T["bg2"],
             font=("Segoe UI",9,"bold")).pack(anchor="w",pady=(0,4))
         lbl(si,"Belirli ay aralığına özel aidat tutarı uygula",
             fg=T["text3"],bg=T["bg2"],font=("Segoe UI",8)).pack(anchor="w",pady=(0,8))
-        btn(si,"🗓️  Aylık / Yıllık Aidat Planla",
+        btn(si,"Takvim  Aylık / Yıllık Aidat Planla",
             lambda: AidatPeriyotPencere(self,self.data,callback=self.refresh_all),
             "purple").pack(anchor="w",ipadx=12,ipady=4)
 
         tk.Frame(si,bg=T["border"],height=1).pack(fill="x",pady=(14,10))
 
         # ── Şifre Değiştirme ──────────────────────────────────────────────
-        lbl(si,"🔑  Ayarlar Şifresi",fg=T["text2"],bg=T["bg2"],
+        lbl(si,"Anahtar  Ayarlar Şifresi",fg=T["text2"],bg=T["bg2"],
             font=("Segoe UI",10,"bold")).pack(anchor="w",pady=(0,3))
         lbl(si,"Ayarlar sekmesine giriş şifresini değiştir",
             fg=T["text3"],bg=T["bg2"],font=("Segoe UI",8)).pack(anchor="w",pady=(0,10))
@@ -5245,11 +5245,11 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
             ev.set(""); nv.set(""); tv.set("")
             messagebox.showinfo("Başarılı","Şifre başarıyla değiştirildi.",parent=self)
 
-        btn(sf,"🔑 Değiştir",sifre_degistir,"gold").grid(
+        btn(sf,"Anahtar Değiştir",sifre_degistir,"gold").grid(
             row=1,column=3,padx=(10,0),ipady=4)
 
         # ── Uyarı Yazısı Şablonu ──────────────────────────────────────────
-        uw=card_panel(pw,"✉️  Uyarı Yazısı Şablonu","Daire No ve Toplam Borç otomatik doldurulur")
+        uw=card_panel(pw,"Mektup  Uyarı Yazısı Şablonu","Daire No ve Toplam Borç otomatik doldurulur")
         pw.add(uw,weight=1)
         ui=frm(uw,bg=T["bg2"]); ui.pack(fill="both",expand=True,padx=20,pady=10)
 
@@ -5294,7 +5294,7 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
              sablon.get("imza", "{bina_adi} Yönetimi"), 2),
         ]
 
-        lbl(ui, "💡  {daire_no} ve {toplam_borc} ve {bina_adi} otomatik değiştirilir.",
+        lbl(ui, "Ipucu  {daire_no} ve {toplam_borc} ve {bina_adi} otomatik değiştirilir.",
             fg=T["text3"], bg=T["bg2"], font=("Segoe UI",8)).pack(anchor="w", pady=(0,8))
 
         uw_scroll_frm = frm(ui, bg=T["bg2"])
@@ -5332,12 +5332,12 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
 
         uw_btn_row = frm(ui, bg=T["bg2"])
         uw_btn_row.pack(anchor="w", pady=(10,0))
-        btn(uw_btn_row, "💾 Şablonu Kaydet", uw_kaydet, "gold").pack(
+        btn(uw_btn_row, "Kaydet Şablonu Kaydet", uw_kaydet, "gold").pack(
             side="left", ipadx=12, ipady=4)
         btn(uw_btn_row, "↺ Varsayılana Döndür", uw_sifirla, "gray").pack(
             side="left", padx=8, ipadx=8, ipady=4)
 
-        sag=card_panel(pw,"💾  Yedekleme & Geri Yükleme","")
+        sag=card_panel(pw,"Kaydet  Yedekleme & Geri Yükleme","")
         pw.add(sag,weight=1)
         ri=frm(sag,bg=T["bg2"]); ri.pack(fill="both",expand=True,padx=20,pady=10)
 
@@ -5346,13 +5346,13 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
 
         # Buton 1 — ZIP Yedeği
         zip_row=frm(ri,bg=T["bg2"]); zip_row.pack(anchor="w",fill="x",pady=(0,6))
-        btn(zip_row,"🗜️  ZIP Yedeği Al (.zip)",self._zip_yedek_al,"blue").pack(side="left",ipadx=14,ipady=5)
+        btn(zip_row,"️  ZIP Yedeği Al (.zip)",self._zip_yedek_al,"blue").pack(side="left",ipadx=14,ipady=5)
         lbl(zip_row,"  Tüm JSON dosyalarını tek ZIP'e sıkıştırır.\nYedekten geri yükleme için bu formatı kullanın.",
             fg=T["text3"],bg=T["bg2"],font=("Segoe UI",9),justify="left").pack(side="left",padx=(10,0))
 
         # Buton 2 — Excel Yedeği
         xl_row=frm(ri,bg=T["bg2"]); xl_row.pack(anchor="w",fill="x",pady=(0,4))
-        btn(xl_row,"📊  Excel'e Aktar (.xlsx)",self._yedek_al,"green").pack(side="left",ipadx=14,ipady=5)
+        btn(xl_row,"Grafik  Excel'e Aktar (.xlsx)",self._yedek_al,"green").pack(side="left",ipadx=14,ipady=5)
         lbl(xl_row,"  Tüm veriler Excel formatına dönüştürülür.\nDoğrudan Excel'de açılabilir (geri yükleme desteklenmez).",
             fg=T["text3"],bg=T["bg2"],font=("Segoe UI",9),justify="left").pack(side="left",padx=(10,0))
 
@@ -5368,8 +5368,8 @@ button{{padding:9px 22px;background:#111;color:#fff;border:none;border-radius:4p
 
         lbl(ri,"⛔  Tehlikeli Bölge",fg=T["red"],bg=T["bg2"],
             font=("Segoe UI",10,"bold")).pack(anchor="w",pady=(0,6))
-        btn(ri,"🗑️  Sistemi Sıfırla",self._sifirla,"red").pack(anchor="w",ipadx=10,ipady=4)
-        lbl(ri,f"\n💾 Veri Klasörü:\n{DATA_DIR}",fg=T["text3"],bg=T["bg2"],
+        btn(ri,"Sil  Sistemi Sıfırla",self._sifirla,"red").pack(anchor="w",ipadx=10,ipady=4)
+        lbl(ri,f"\nKaydet Veri Klasörü:\n{DATA_DIR}",fg=T["text3"],bg=T["bg2"],
             font=("Segoe UI",9),justify="left").pack(anchor="w",pady=(10,0))
 
     def _sifirla(self):
@@ -5736,7 +5736,7 @@ class AlacakliOdemePencere(tk.Toplevel):
 
         kalan = round(alacakli["tutar"] -
                       sum(p["tutar"] for p in alacakli.get("odemeler",[])), 2)
-        self.title(f"💳  Ödeme Yap — {alacakli.get('kisi') or alacakli['tur']}")
+        self.title(f"Kart  Ödeme Yap — {alacakli.get('kisi') or alacakli['tur']}")
         self.configure(bg=T["bg"])
         self.resizable(False, False)
         self.grab_set()
@@ -5751,7 +5751,7 @@ class AlacakliOdemePencere(tk.Toplevel):
         tk.Frame(self, bg=T["gold"], height=3).pack(fill="x")
 
         # Başlık
-        lbl(self, "💳  Ödeme Yap", font=("Segoe UI",13,"bold")).pack(
+        lbl(self, "Kart  Ödeme Yap", font=("Segoe UI",13,"bold")).pack(
             pady=(14,4), padx=20, anchor="w")
 
         # Özet kartı
@@ -5827,8 +5827,8 @@ class AlacakliOdemePencere(tk.Toplevel):
         # Butonlar
         tk.Frame(self, bg=T["border"], height=1).pack(fill="x", padx=20, pady=(10,0))
         btn_f = frm(self); btn_f.pack(fill="x", padx=20, pady=12)
-        btn(btn_f, "❌ İptal",    self.destroy,  "gray").pack(side="right", padx=(6,0))
-        btn(btn_f, "✅ Ödemeyi Kaydet", self._kaydet, "gold").pack(side="right")
+        btn(btn_f, "X İptal",    self.destroy,  "gray").pack(side="right", padx=(6,0))
+        btn(btn_f, "OK Ödemeyi Kaydet", self._kaydet, "gold").pack(side="right")
 
     def _guncelle_kalan(self, *_):
         try:
@@ -5836,11 +5836,11 @@ class AlacakliOdemePencere(tk.Toplevel):
             sonraki_kalan = round(self._kalan_toplam - odenen, 2)
             if sonraki_kalan < 0:
                 self._kalan_lbl.config(
-                    text=f"⚠ Fazla ödeme: {fmt(abs(sonraki_kalan))}",
+                    text=f"Uyari Fazla ödeme: {fmt(abs(sonraki_kalan))}",
                     fg=T["orange"])
             elif sonraki_kalan == 0:
                 self._kalan_lbl.config(
-                    text="✅ Borç tamamen kapanacak", fg=T["green"])
+                    text="OK Borç tamamen kapanacak", fg=T["green"])
             else:
                 self._kalan_lbl.config(
                     text=f"Bu ödemeden sonra kalan: {fmt(sonraki_kalan)}",
@@ -5949,7 +5949,7 @@ class AlacakliGecmisPencere(tk.Toplevel):
         a = alacakli
         is_og = (a.get("tur") == "Ortak Gider")
         baslik = a.get("kisi") or a.get("aciklama","") or a["tur"]
-        self.title(f"📜  Ödeme Geçmişi — {baslik}")
+        self.title(f"  Ödeme Geçmişi — {baslik}")
         self.configure(bg=T["bg"])
         w, h = (720, 520) if is_og else (620, 440)
         self.geometry(f"{w}x{h}"); self.minsize(560, 380)
@@ -5967,7 +5967,7 @@ class AlacakliGecmisPencere(tk.Toplevel):
         hdr_frm = frm(self, bg=T["bg2"]); hdr_frm.pack(fill="x")
         hf = frm(hdr_frm, bg=T["bg2"]); hf.pack(fill="x", padx=14, pady=8)
         baslik_txt = a.get("kisi") or a.get("aciklama","") or a["tur"]
-        lbl(hf, f"📜  {baslik_txt}",
+        lbl(hf, f"  {baslik_txt}",
             font=("Segoe UI",13,"bold"), bg=T["bg2"]).pack(side="left")
         if is_og and a.get("daire_no"):
             lbl(hf, f"  •  Daire {a['daire_no']}",
@@ -5996,10 +5996,10 @@ class AlacakliGecmisPencere(tk.Toplevel):
         # Butonlar
         btn_row = frm(self); btn_row.pack(fill="x", padx=16, pady=(8,12))
         if is_og and self.data is not None:
-            btn(btn_row, "✏️  Düzenle",   self._duzenle, "blue"  ).pack(side="left", ipadx=8, ipady=4)
-            btn(btn_row, "🗑️  Sil",       self._sil,     "red"   ).pack(side="left", padx=6, ipadx=8, ipady=4)
-            btn(btn_row, "🖨️  Makbuz",    self._makbuz,  "gray"  ).pack(side="left", ipadx=8, ipady=4)
-        btn(btn_row, "✅ Kapat", self.destroy, "gold").pack(side="right", ipadx=16, ipady=4)
+            btn(btn_row, "Duzenle  Düzenle",   self._duzenle, "blue"  ).pack(side="left", ipadx=8, ipady=4)
+            btn(btn_row, "Sil  Sil",       self._sil,     "red"   ).pack(side="left", padx=6, ipadx=8, ipady=4)
+            btn(btn_row, "Yazdir  Makbuz",    self._makbuz,  "gray"  ).pack(side="left", ipadx=8, ipady=4)
+        btn(btn_row, "OK Kapat", self.destroy, "gold").pack(side="right", ipadx=16, ipady=4)
 
     # ── Yardımcılar ───────────────────────────────────────────────────────────
     def _ozet_guncelle(self):
@@ -6012,7 +6012,7 @@ class AlacakliGecmisPencere(tk.Toplevel):
         for ltext, val, fg in [
             ("Fatura Tutarı",  fmt(a["tutar"]),                               T["text"]),
             ("Toplam Ödenen",  fmt(toplam_odenen),                            T["green"]),
-            ("Kalan",          fmt(kalan) if kalan > 0 else "✔ Tamam",
+            ("Kalan",          fmt(kalan) if kalan > 0 else "v Tamam",
                                T["red"] if kalan > 0 else T["green"]),
         ]:
             cf = frm(oi, bg=T["bg3"]); cf.pack(side="left", expand=True, anchor="w")
@@ -6130,7 +6130,7 @@ class OGOdemeDuzenle(tk.Toplevel):
         self.odeme     = odeme
         self.callback  = callback
         gider_adi = alacakli.get("kisi") or alacakli.get("aciklama","") or "Ortak Gider"
-        self.title(f"✏️  Ödeme Düzenle — {gider_adi}")
+        self.title(f"Duzenle  Ödeme Düzenle — {gider_adi}")
         self.configure(bg=T["bg"])
         self.resizable(False, False)
         self.grab_set()
@@ -6143,7 +6143,7 @@ class OGOdemeDuzenle(tk.Toplevel):
         p  = self.odeme
         a  = self.alacakli
         tk.Frame(self, bg=T["gold"], height=3).pack(fill="x")
-        lbl(self, "✏️  Ortak Gider Ödemesi Düzenle",
+        lbl(self, "Duzenle  Ortak Gider Ödemesi Düzenle",
             font=("Segoe UI",13,"bold")).pack(pady=(14,2), padx=20, anchor="w")
         lbl(self, f"{gider_adi}  •  Daire {a.get('daire_no','?')}  •  Toplam: {fmt(a['tutar'])}",
             fg=T["text2"], font=("Segoe UI",9)).pack(padx=20, anchor="w", pady=(0,8))
@@ -6175,9 +6175,9 @@ class OGOdemeDuzenle(tk.Toplevel):
 
         tk.Frame(self, bg=T["border"], height=1).pack(fill="x")
         bf = frm(self); bf.pack(fill="x", padx=20, pady=12)
-        btn(bf,"❌ İptal",  self.destroy,  "gray").pack(side="right", padx=(6,0))
-        btn(bf,"✅ Kaydet", self._kaydet,  "gold").pack(side="right")
-        btn(bf,"🖨️ Makbuz",self._makbuz,  "gray").pack(side="left")
+        btn(bf,"X İptal",  self.destroy,  "gray").pack(side="right", padx=(6,0))
+        btn(bf,"OK Kaydet", self._kaydet,  "gold").pack(side="right")
+        btn(bf,"Yazdir Makbuz",self._makbuz,  "gray").pack(side="left")
 
     def _kaydet(self):
         try:
@@ -6306,7 +6306,7 @@ class OrtakGiderPencere(tk.Toplevel):
         self.data     = data
         self.callback = callback
         self.duzenle  = duzenle   # None = yeni kayıt, dict = mevcut kaydı düzenle
-        baslık = "✏️  Ortak Gider Düzenle" if duzenle else "➕  Yeni Ortak Gider / Tadilat"
+        baslık = "Duzenle  Ortak Gider Düzenle" if duzenle else "+  Yeni Ortak Gider / Tadilat"
         self.title(baslık)
         self.configure(bg=T["bg"])
         self.geometry("700x660")
@@ -6329,7 +6329,7 @@ class OrtakGiderPencere(tk.Toplevel):
         # Başlık
         hdr = frm(self, bg=T["bg2"]); hdr.pack(fill="x")
         lf  = frm(hdr, bg=T["bg2"]); lf.pack(fill="x", padx=14, pady=10)
-        lbl(lf, "🔧  Ortak Gider / Tadilat Tanımla",
+        lbl(lf, "Arac  Ortak Gider / Tadilat Tanımla",
             font=("Segoe UI",13,"bold"), bg=T["bg2"]).pack(side="left")
         tk.Frame(hdr, bg=T["border"], height=1).pack(fill="x")
 
@@ -6483,9 +6483,9 @@ class OrtakGiderPencere(tk.Toplevel):
         # ── Butonlar
         bf = frm(inner, bg=T["bg"])
         bf.pack(fill="x", padx=14, pady=12)
-        btn(bf, "✅  Kaydet ve Daireye Ata", self._kaydet_uygula, "gold"
+        btn(bf, "OK  Kaydet ve Daireye Ata", self._kaydet_uygula, "gold"
             ).pack(side="left", ipadx=14, ipady=6)
-        btn(bf, "❌  İptal",                self.destroy,        "gray"
+        btn(bf, "X  İptal",                self.destroy,        "gray"
             ).pack(side="left", padx=8, ipadx=10, ipady=6)
 
         self._odeme_degis()
@@ -6713,7 +6713,7 @@ class SakinListePencere(tk.Toplevel):
     def __init__(self, parent, data):
         super().__init__(parent)
         self.data = data
-        self.title("👥  Bina Sakin Listesi")
+        self.title("  Bina Sakin Listesi")
         self.configure(bg=T["bg"])
         self.geometry("820x560")
         self.minsize(640, 400)
@@ -6730,13 +6730,13 @@ class SakinListePencere(tk.Toplevel):
         hdr = frm(self, bg=T["bg2"]); hdr.pack(fill="x")
         hf  = frm(hdr, bg=T["bg2"]); hf.pack(fill="x", padx=14, pady=10)
 
-        lbl(hf, "👥  Bina Sakin Listesi",
+        lbl(hf, "  Bina Sakin Listesi",
             font=("Segoe UI", 13, "bold"), bg=T["bg2"]).pack(side="left")
 
         # Dışa aktarma butonu sağda
         bf = frm(hf, bg=T["bg2"]); bf.pack(side="right")
-        btn(bf, "📊  Excel Kaydet", self._excel_kaydet, "green").pack(side="left", padx=4)
-        btn(bf, "❌  Kapat",      self.destroy,     "gray").pack(side="left", padx=4)
+        btn(bf, "Grafik  Excel Kaydet", self._excel_kaydet, "green").pack(side="left", padx=4)
+        btn(bf, "X  Kapat",      self.destroy,     "gray").pack(side="left", padx=4)
 
         tk.Frame(hdr, bg=T["border"], height=1).pack(fill="x")
 
@@ -6746,7 +6746,7 @@ class SakinListePencere(tk.Toplevel):
         ara_frm.pack(fill="x", padx=14, pady=(10,0))
         ara_ic = frm(ara_frm, bg=T["bg3"]); ara_ic.pack(fill="x", padx=12, pady=8)
 
-        lbl(ara_ic, "🔍 Ara:", fg=T["text2"], bg=T["bg3"],
+        lbl(ara_ic, "Ara Ara:", fg=T["text2"], bg=T["bg3"],
             font=("Segoe UI", 9, "bold")).pack(side="left", padx=(0,6))
         self._ara_var = tk.StringVar()
         self._ara_var.trace_add("write", lambda *_: self._doldur())
@@ -6768,7 +6768,7 @@ class SakinListePencere(tk.Toplevel):
         tbl_hdr = frm(tbl_frm, bg=T["bg2"]); tbl_hdr.pack(fill="x")
         tk.Frame(tbl_hdr, bg=T["gold"], height=2).pack(fill="x")
         lhf = frm(tbl_hdr, bg=T["bg2"]); lhf.pack(fill="x", padx=10, pady=6)
-        lbl(lhf, "📋  Sakin Tablosu",
+        lbl(lhf, "Liste  Sakin Tablosu",
             font=("Segoe UI", 10, "bold"), bg=T["bg2"]).pack(side="left")
         self._sayac_lbl = lbl(lhf, "",
             fg=T["text3"], bg=T["bg2"], font=("Segoe UI", 9))
@@ -6808,7 +6808,7 @@ class SakinListePencere(tk.Toplevel):
                     and ara not in str(d["no"]):
                 continue
 
-            durum = "✔ Dolu" if dolu else "— Boş"
+            durum = "v Dolu" if dolu else "— Boş"
             tag   = "sakinli" if dolu else "bos"
             self._tree.insert("", "end",
                 iid=str(d["no"]),
@@ -6821,7 +6821,7 @@ class SakinListePencere(tk.Toplevel):
         bos_say   = len(self.data["daireler"]) - dolu_say
         self._sayac_lbl.config(
             text=f"  {toplam} kayıt gösteriliyor  •  "
-                 f"✔ {dolu_say} dolu  •  — {bos_say} boş")
+                 f"v {dolu_say} dolu  •  — {bos_say} boş")
 
     def _excel_kaydet(self):
         import tkinter.filedialog as fd
@@ -6872,7 +6872,7 @@ class SakinListePencere(tk.Toplevel):
             # ── Başlık satırı (1. satır) ──────────────────────────────────
             ws.merge_cells("A1:F1")
             bas = ws["A1"]
-            bas.value       = f"🏢  {bina_adi}  —  Sakin Listesi"
+            bas.value       = f"Bina  {bina_adi}  —  Sakin Listesi"
             bas.font        = Font(name="Arial", bold=True, size=14, color=ALTIN)
             bas.fill        = dolu_dolgu(KOYU_BG)
             bas.alignment   = Alignment(horizontal="center", vertical="center")
@@ -6978,7 +6978,7 @@ class AidatPeriyotPencere(tk.Toplevel):
     def __init__(self, parent, data, callback=None):
         super().__init__(parent)
         self.data = data; self.callback = callback
-        self.title("🗓️  Aylık / Yıllık Aidat Planı")
+        self.title("Takvim  Aylık / Yıllık Aidat Planı")
         self.configure(bg=T["bg"])
         self.geometry("760x600"); self.minsize(660,500)
         self.grab_set()
@@ -6994,7 +6994,7 @@ class AidatPeriyotPencere(tk.Toplevel):
 
         hdr=frm(self,bg=T["bg2"]); hdr.pack(fill="x")
         lf=frm(hdr,bg=T["bg2"]); lf.pack(fill="x",padx=14,pady=10)
-        lbl(lf,"🗓️  Aidat Periyot Planı",
+        lbl(lf,"Takvim  Aidat Periyot Planı",
             font=("Segoe UI",13,"bold"),bg=T["bg2"]).pack(side="left")
         lbl(lf,f"  Mevcut varsayılan: {fmt(b['aidat'])}",
             fg=T["text3"],bg=T["bg2"],font=("Segoe UI",9)).pack(side="left",padx=8)
@@ -7066,15 +7066,15 @@ class AidatPeriyotPencere(tk.Toplevel):
 
         # Butonlar
         bf=frm(form,bg=T["bg3"]); bf.grid(row=6,column=0,columnspan=2,sticky="w",pady=(12,0))
-        btn(bf,"✅  Uygula",self._uygula,"gold").pack(side="left",ipadx=14,ipady=5)
-        btn(bf,"❌  Kapat",self.destroy,"gray").pack(side="left",padx=8,ipadx=10,ipady=5)
+        btn(bf,"OK  Uygula",self._uygula,"gold").pack(side="left",ipadx=14,ipady=5)
+        btn(bf,"X  Kapat",self.destroy,"gray").pack(side="left",padx=8,ipadx=10,ipady=5)
 
         # Tablo — mevcut özel aidatlar
         tbl_wrap=frm(self); tbl_wrap.pack(fill="both",expand=True,padx=14,pady=(0,12))
         t_hdr=frm(tbl_wrap,bg=T["bg2"]); t_hdr.pack(fill="x")
         tk.Frame(t_hdr,bg=T["gold"],height=2).pack(fill="x")
         lbl(frm(t_hdr,bg=T["bg2"]).pack(fill="x",padx=10,pady=6) or t_hdr,
-            "📋  Mevcut Özel Aidat Planı",
+            "Liste  Mevcut Özel Aidat Planı",
             font=("Segoe UI",10,"bold"),bg=T["bg2"]).pack(anchor="w",padx=10,pady=6)
         tf3,self._tree=scrolled(tbl_wrap,[
             ("Dönem",150),("Tür",120),("Tutar",120),("Varsayılan",130),("Fark",100)],height=8)
@@ -7111,7 +7111,7 @@ class AidatPeriyotPencere(tk.Toplevel):
         try:
             tutar=float(self._tutar.get())
         except:
-            self._onizle_lbl.config(text="⚠ Geçersiz tutar"); return
+            self._onizle_lbl.config(text="Uyari Geçersiz tutar"); return
         aylar=self._hedef_aylar()
         ozel=self.data["bina"].get("ozel_aidatlar",{})
         kapsam=self._kapsam.get()
@@ -7152,7 +7152,7 @@ class AidatPeriyotPencere(tk.Toplevel):
         for ay in reversed(tum):
             ov=ozel.get(ay)
             if ov is None: continue
-            durum="🔵 İleri" if ay>today else "⭐ Özel"
+            durum="o İleri" if ay>today else "* Özel"
             fark=round(ov-b["aidat"],2)
             fs=(f"+{fmt(fark)}" if fark>0 else fmt(fark)) if fark!=0 else "—"
             self._tree.insert("","end",iid=ay,tags=("ozel",),
