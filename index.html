@@ -1,0 +1,3183 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bina Yönetim Portalı</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --bg2: #161b27;
+  --bg3: #1e2535;
+  --bg4: #252d3d;
+  --border: #2a3550;
+  --gold: #c9a84c;
+  --gold2: #e8c97a;
+  --text: #e8eaf0;
+  --text2: #8a9ab5;
+  --text3: #4a5a7a;
+  --green: #2ecc71;
+  --green-bg: #1a3a2a;
+  --red: #e74c3c;
+  --red-bg: #3a1a1a;
+  --orange: #f39c12;
+  --orange-bg: #3a2a0a;
+  --blue: #3498db;
+  --blue-bg: #1a2a3a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── LOGIN ──────────────────────────────────────── */
+#login-page {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 30% 30%, #1e2535 0%, #0f1117 70%);
+}
+
+.login-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 48px 40px;
+  width: 420px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold2), var(--gold));
+}
+
+.login-logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-logo .icon {
+  font-size: 48px; margin-bottom: 12px;
+}
+
+.login-logo h1 {
+  font-size: 20px; font-weight: 700; color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.login-logo p {
+  font-size: 12px; color: var(--text3); margin-top: 4px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 11px; font-weight: 600;
+  color: var(--text2);
+  text-transform: uppercase; letter-spacing: 0.8px;
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s;
+}
+
+.form-group input:focus {
+  border-color: var(--gold);
+}
+
+.btn-login {
+  width: 100%;
+  background: var(--gold);
+  color: #0f1117;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-family: 'Sora', sans-serif;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer;
+  transition: opacity .2s, transform .1s;
+  margin-top: 8px;
+}
+
+.btn-login:hover { opacity: .9; }
+.btn-login:active { transform: scale(.99); }
+
+.login-error {
+  background: var(--red-bg);
+  border: 1px solid var(--red);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--red);
+  font-size: 13px;
+  margin-top: 14px;
+  display: none;
+}
+
+/* ── PORTAL ─────────────────────────────────────── */
+#portal-page { display: none; }
+
+.topbar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+
+.topbar-left {
+  display: flex; align-items: center; gap: 16px;
+}
+
+.topbar-logo {
+  font-size: 20px;
+}
+
+.topbar-title {
+  font-size: 15px; font-weight: 700;
+  color: var(--gold2);
+}
+
+.topbar-sub {
+  font-size: 11px; color: var(--text3);
+}
+
+.topbar-right {
+  display: flex; align-items: center; gap: 12px;
+}
+
+.user-badge {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px; color: var(--text2);
+}
+
+.user-badge span {
+  color: var(--gold2); font-weight: 600;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px; font-family: 'Sora', sans-serif;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+/* Nav tabs */
+.nav-tabs {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  display: flex; overflow-x: auto;
+  padding: 0 16px;
+}
+
+.nav-tab {
+  padding: 14px 20px;
+  font-size: 13px; font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color .2s, border-color .2s;
+}
+
+.nav-tab:hover { color: var(--text); }
+.nav-tab.active { color: var(--gold2); border-bottom-color: var(--gold); }
+
+/* Main content */
+.main-content {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Sections */
+.section { display: none; }
+.section.active { display: block; }
+
+/* Cards grid */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+
+.stat-card.gold::before  { background: var(--gold); }
+.stat-card.green::before { background: var(--green); }
+.stat-card.red::before   { background: var(--red); }
+.stat-card.blue::before  { background: var(--blue); }
+.stat-card.orange::before { background: var(--orange); }
+
+.stat-label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.6px; }
+.stat-value { font-size: 26px; font-weight: 700; margin: 8px 0 4px; }
+.stat-sub   { font-size: 11px; color: var(--text3); }
+
+.stat-card.gold .stat-value   { color: var(--gold2); }
+.stat-card.green .stat-value  { color: var(--green); }
+.stat-card.red .stat-value    { color: var(--red); }
+.stat-card.blue .stat-value   { color: var(--blue); }
+.stat-card.orange .stat-value { color: var(--orange); }
+
+/* Panel */
+.panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.panel-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.panel-title {
+  font-size: 14px; font-weight: 700; color: var(--text);
+}
+
+.panel-body { padding: 16px 20px; }
+
+/* Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.data-table th {
+  background: var(--bg3);
+  color: var(--text2);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.data-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(255,255,255,.02); }
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px; font-weight: 600;
+}
+
+.badge-green  { background: var(--green-bg);  color: var(--green); }
+.badge-red    { background: var(--red-bg);    color: var(--red); }
+.badge-orange { background: var(--orange-bg); color: var(--orange); }
+.badge-blue   { background: var(--blue-bg);   color: var(--blue); }
+
+/* Money */
+.money { font-family: 'IBM Plex Mono', monospace; }
+.money-green { color: var(--green); }
+.money-red   { color: var(--red); }
+
+/* Password Change Form */
+.password-form {
+  max-width: 480px;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: #0f1117;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+
+.btn-primary:hover { opacity: .85; }
+
+.form-group select {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--text);
+  font-family: 'Sora', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s;
+}
+
+.form-group select:focus { border-color: var(--gold); }
+
+.alert {
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.alert-success {
+  background: var(--green-bg);
+  border: 1px solid var(--green);
+  color: var(--green);
+}
+
+.alert-error {
+  background: var(--red-bg);
+  border: 1px solid var(--red);
+  color: var(--red);
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  color: var(--text3);
+}
+
+.empty-state .ei { font-size: 36px; margin-bottom: 12px; }
+.empty-state p { font-size: 13px; }
+
+/* Config panel (admin only) */
+.config-notice {
+  background: var(--orange-bg);
+  border: 1px solid var(--orange);
+  border-radius: 8px;
+  padding: 14px 18px;
+  color: var(--orange);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+hr.sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+/* Section grid 2col */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+/* Scrollable table container */
+.table-wrap { overflow-x: auto; }
+
+.section-title {
+  font-size: 18px; font-weight: 700; margin-bottom: 20px;
+  color: var(--text);
+}
+
+.section-title small {
+  font-size: 12px; font-weight: 400;
+  color: var(--text3); margin-left: 8px;
+}
+
+/* Tabs inner */
+.inner-tabs {
+  display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
+}
+
+.inner-tab {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  background: var(--bg3);
+  transition: .2s;
+}
+
+.inner-tab.active {
+  background: var(--gold);
+  color: #0f1117;
+  border-color: var(--gold);
+}
+
+/* First-time banner */
+.first-login-banner {
+  background: linear-gradient(135deg, var(--orange-bg), var(--bg3));
+  border: 1px solid var(--orange);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  display: none;
+}
+
+.first-login-banner h3 {
+  color: var(--orange);
+  font-size: 14px; font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.first-login-banner p {
+  color: var(--text2);
+  font-size: 12px;
+}
+
+.file-guide {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px; color: var(--text3);
+  font-family: 'IBM Plex Mono', monospace;
+}
+.file-guide.loaded {
+  border-color: var(--green);
+  color: var(--green);
+  background: var(--green-bg);
+}
+.file-item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+.file-item .fi-name { flex:1; color:var(--text); font-family:'IBM Plex Mono',monospace; }
+.file-item .fi-type { font-size:11px; color:var(--gold2); background:var(--bg4); border-radius:4px; padding:2px 8px; }
+#drop-zone.drag-over { border-color:var(--gold); background:rgba(201,168,76,.06); }
+@keyframes pulse {
+  0%,100% { opacity:1; }
+  50%      { opacity:.3; }
+}
+
+/* ── SETUP MODAL ──────────────────────────────────────── */
+#setup-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.85);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+}
+.setup-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 48px 40px;
+  width: 460px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.7);
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp .3s ease;
+}
+.setup-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold2), var(--gold));
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.setup-card h2 {
+  font-size:20px; font-weight:700; color:var(--text);
+  margin-bottom:8px;
+}
+.setup-card p {
+  font-size:13px; color:var(--text2);
+  margin-bottom:28px; line-height:1.6;
+}
+.setup-result {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-top: 20px;
+  display: none;
+}
+.setup-result .sr-title {
+  font-size:11px; font-weight:600; color:var(--text3);
+  text-transform:uppercase; letter-spacing:.7px; margin-bottom:12px;
+}
+.setup-result .sr-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size:13px;
+}
+.setup-result .sr-row:last-child { border-bottom:none; }
+.setup-result .sr-user { color:var(--text2); font-family:'IBM Plex Mono',monospace; }
+.setup-result .sr-pass { color:var(--gold2); font-family:'IBM Plex Mono',monospace; font-weight:600; }
+.setup-result-scroll { max-height:260px; overflow-y:auto; }
+
+/* ── ADMIN DANGER ZONE ─────────────────────────────────── */
+.danger-zone {
+  background: var(--red-bg);
+  border: 1px solid var(--red);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-top: 24px;
+}
+.danger-zone h3 {
+  font-size:13px; font-weight:700; color:var(--red);
+  margin-bottom:8px;
+}
+.danger-zone p {
+  font-size:12px; color:var(--text2); margin-bottom:14px; line-height:1.5;
+}
+.btn-danger {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: 'Sora', sans-serif;
+  font-size:13px; font-weight:700;
+  cursor:pointer;
+  transition: opacity .2s;
+}
+.btn-danger:hover { opacity:.85; }
+.btn-danger + .btn-danger { margin-left:10px; }
+.btn-goto-pw {
+  margin-top: 12px;
+  display: inline-block;
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-family: 'Sora', sans-serif;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer;
+}
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ SETUP MODAL ══════════════ -->
+<div id="setup-overlay" style="display:none;">
+  <!-- ADIM 1: Klasör seçimi -->
+  <div class="setup-card" id="setup-step-klasor" style="max-width:500px;">
+    <div style="font-size:42px;text-align:center;margin-bottom:12px;">📂</div>
+    <h2 style="text-align:center;margin-bottom:8px;">Bina Yönetim Portalı</h2>
+    <p style="text-align:center;margin-bottom:24px;">Başlamadan önce verilerin saklanacağı klasörü seçin. Bu klasör tüm bina verilerini ve kurulum dosyasını içerecektir.</p>
+    <div style="background:var(--bg3);border:2px dashed var(--border);border-radius:12px;padding:32px 20px;text-align:center;margin-bottom:16px;">
+      <div style="font-size:32px;margin-bottom:10px;">🗂️</div>
+      <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;">Veri Klasörünü Seçin</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:16px;">Örn: <span style="font-family:'IBM Plex Mono',monospace;color:var(--text2);">c:\bina_yonetim_data</span></div>
+      <button class="btn-primary" onclick="document.getElementById('setup-folder-picker').click()" style="padding:12px 28px;font-size:14px;">🗂️ Klasör Seç</button>
+      <input type="file" id="setup-folder-picker" webkitdirectory multiple accept=".json" style="display:none" onchange="window.onSetupFolderPicked(event)">
+    </div>
+    <div id="setup-klasor-secildi" style="display:none;background:var(--green-bg);border:1px solid var(--green);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--green);margin-bottom:14px;word-break:break-all;"></div>
+    <div id="setup-klasor-kurulum-bulundu" style="display:none;background:var(--blue-bg);border:1px solid var(--blue);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--blue);margin-bottom:14px;"></div>
+    <button class="btn-primary" id="btn-setup-devam" onclick="window.setupKlasorDevam()" style="width:100%;display:none;">Devam Et →</button>
+    <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px;">
+      <div style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:8px;">Mevcut kurulum dosyanız var mı?</div>
+      <button onclick="document.getElementById('setup-kurulum-yukleme-input').click()"
+        style="width:100%;background:var(--bg3);border:1px dashed var(--border);color:var(--text2);border-radius:8px;padding:10px;font-family:'Sora',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:.2s;"
+        onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+        📋 bina_kurulum.json Yükle
+      </button>
+      <input type="file" id="setup-kurulum-yukleme-input" accept=".json" style="display:none" onchange="window.loadKurulumDosyasiSetup(event)">
+      <div id="setup-kurulum-yukleme-msg" style="display:none;margin-top:8px;font-size:12px;text-align:center;"></div>
+    </div>
+    <button onclick="window.setupAtlaKlasor()" style="width:100%;margin-top:10px;background:transparent;border:1px solid var(--border);color:var(--text3);border-radius:8px;padding:10px;font-family:'Sora',sans-serif;font-size:12px;cursor:pointer;">Klasör seçmeden, elle girerek devam et</button>
+  </div>
+
+  <!-- ADIM 2: Kurulum formu -->
+  <div class="setup-card" id="setup-step-form" style="display:none;">
+    <div style="font-size:42px;text-align:center;margin-bottom:16px;">🏢</div>
+    <h2 style="text-align:center;">Bina Kurulumu</h2>
+    <p style="text-align:center;">Klasör seçilmedi veya daire sayısı tespit edilemedi. Binanızdaki toplam daire sayısını girin — sistem her daire için otomatik şifre oluşturacak ve PDF sunacak.</p>
+    <div class="form-group">
+      <label>Daire Adedi</label>
+      <input type="number" id="setup-daire-adet" min="1" max="500" placeholder="Örn: 24" style="font-size:20px;text-align:center;padding:14px;" onkeydown="if(event.key==='Enter') window.doSetup()">
+    </div>
+    <button class="btn-login" onclick="window.doSetup()">⚙️ Kurulumu Başlat</button>
+    <div id="setup-error" class="login-error"></div>
+    <div class="setup-result" id="setup-result">
+      <div class="sr-title">✅ Oluşturulan Kullanıcılar &amp; Şifreler</div>
+      <div class="setup-result-scroll" id="setup-result-rows"></div>
+      <div style="background:var(--orange-bg);border:1px solid var(--orange);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--orange);margin-top:14px;">
+        ⬇️ <strong>Kurulum dosyasını indirin ve data klasörünüze kaydedin.</strong>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;">
+        <button class="btn-primary" onclick="window.downloadKurulumDosyasi()" style="background:var(--gold2);color:#0f1117;">⬇️ Kurulum Dosyasını İndir</button>
+        <button class="btn-primary" onclick="window.pdfSifreTabloDirect()" style="background:var(--blue);color:#fff;">🖨️ PDF Tekrar Aç</button>
+        <button class="btn-primary" onclick="window.finishSetup()" style="grid-column:span 2;">Giriş Ekranına Geç →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<!-- YÜKLENİYOR -->
+<div id="fb-loading-overlay" style="display:none;position:fixed;inset:0;background:rgba(10,13,24,.93);z-index:99999;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+  <div style="width:44px;height:44px;border:3px solid #2a3248;border-top-color:#c9a84c;border-radius:50%;animation:spin .8s linear infinite;"></div>
+  <div id="fb-loading-msg" style="color:#8899b4;font-size:13px;font-family:'Sora',sans-serif;">Yükleniyor...</div>
+</div>
+<div id="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="icon">🏢</div>
+      <h1>Bina Yönetim Portalı</h1>
+      <p>Sisteme erişmek için giriş yapın</p>
+    </div>
+    <div id="login-shared-notice" style="display:none;background:var(--green-bg);border:1px solid var(--green);border-radius:8px;padding:10px 14px;margin-bottom:18px;font-size:12px;color:var(--green);">
+      ✅ Yönetici tarafından yüklenmiş veri mevcut
+    </div>
+    <div class="form-group">
+      <label>Kullanıcı Adı</label>
+      <input type="text" id="inp-user" placeholder="yonetici veya daire1" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>Şifre</label>
+      <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-login" onclick="window.doLogin()">Giriş Yap</button>
+    <div class="login-error" id="login-error">Kullanıcı adı veya şifre hatalı.</div>
+
+  </div>
+</div>
+
+<!-- ══════════════ ZORUNLU ŞİFRE DEĞİŞTİR MODAL ══════════════ -->
+<div id="zorunlu-sifre-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9998;align-items:center;justify-content:center;">
+  <div style="background:var(--bg2);border:1px solid var(--orange);border-radius:16px;padding:40px 36px;width:420px;box-shadow:0 24px 64px rgba(0,0,0,.7);position:relative;overflow:hidden;">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),#f5c842,var(--orange));"></div>
+    <div style="font-size:36px;text-align:center;margin-bottom:12px;">🔐</div>
+    <h2 style="text-align:center;font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;">Şifrenizi Değiştirin</h2>
+    <p style="text-align:center;font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.5;">
+      İlk girişiniz! Güvenliğiniz için şifrenizi değiştirmeniz zorunludur.<br>
+      <span style="color:var(--text3);font-size:11px;">Bu adımı atlayamazsınız.</span>
+    </p>
+    <div class="form-group">
+      <label>Mevcut Şifre</label>
+      <input type="password" id="zorunlu-eski" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div class="form-group">
+      <label>Yeni Şifre <span style="color:var(--text3);font-weight:400;">(en az 6 karakter)</span></label>
+      <input type="password" id="zorunlu-yeni" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')window.doZorunluSifreChange()">
+    </div>
+    <div class="form-group">
+      <label>Yeni Şifre (Tekrar)</label>
+      <input type="password" id="zorunlu-tekrar" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')window.doZorunluSifreChange()">
+    </div>
+    <div id="zorunlu-msg" style="display:none;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px;"></div>
+    <button class="btn-primary" onclick="window.doZorunluSifreChange()" style="width:100%;padding:13px;font-size:14px;">
+      ✅ Şifreyi Değiştir ve Devam Et
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════ BORÇ UYARI MODAL ══════════════ -->
+<div id="borc-uyari-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9997;align-items:center;justify-content:center;">
+  <div style="background:var(--bg2);border:1px solid var(--orange);border-radius:16px;padding:36px 32px;width:440px;max-width:94vw;box-shadow:0 24px 64px rgba(0,0,0,.7);position:relative;overflow:hidden;">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),#f5c842,var(--orange));"></div>
+    <div style="font-size:40px;text-align:center;margin-bottom:10px;">⚠️</div>
+    <h2 style="text-align:center;font-size:17px;font-weight:700;color:var(--text);margin-bottom:6px;">Ödenmemiş Aidatınız Var</h2>
+    <p style="text-align:center;font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6;">
+      Aşağıdaki dönemlere ait aidatlarınız sistemimize <strong style="color:var(--orange);">yansımamıştır.</strong><br>
+      <span style="font-size:11px;color:var(--text3);">Ödeme yaptıysanız bu uyarıyı dikkate almayın.</span>
+    </p>
+    <div id="borc-uyari-liste" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:20px;max-height:200px;overflow-y:auto;font-size:13px;"></div>
+    <div id="borc-uyari-toplam" style="text-align:right;font-size:14px;font-weight:700;color:var(--orange);margin-bottom:20px;font-family:'IBM Plex Mono',monospace;"></div>
+    <button onclick="document.getElementById('borc-uyari-overlay').style.display='none'"
+      style="width:100%;background:var(--orange);color:#0f1117;border:none;border-radius:8px;padding:13px;font-family:'Sora',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">
+      Anladım, Kapat
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════ PORTAL ══════════════ -->
+<div id="portal-page">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-logo">🏢</span>
+      <div>
+        <div class="topbar-title" id="bina-adi-topbar">Bina Yönetim Sistemi</div>
+        <div class="topbar-sub" id="topbar-sub">Bina Yönetim Portalı</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="user-badge">Hoş geldiniz, <span id="user-display-name">—</span></div>
+      <button class="btn-logout" onclick="window.doLogout()">Çıkış</button>
+    </div>
+  </div>
+
+  <!-- Nav tabs — rendered by JS -->
+  <div class="nav-tabs" id="nav-tabs"></div>
+
+  <div class="main-content">
+
+    <!-- First login banner -->
+    <div class="first-login-banner" id="first-login-banner">
+      <h3>⚠️ İlk Girişiniz!</h3>
+      <p>Güvenliğiniz için lütfen şifrenizi değiştirin. İlk verilen şifreler genel belgede listelenmiştir.</p>
+      <button class="btn-goto-pw" onclick="window.showSection('sifre'); setActiveTab('sifre')">Şifreyi Değiştir →</button>
+    </div>
+
+    <!-- ── ÖZET (Dashboard) ── -->
+    <div class="section" id="sec-ozet">
+      <div class="section-title">📊 Genel Bakış</div>
+      <div class="stat-grid" id="stat-grid"></div>
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">💳 Bu Ay Tahsilat</span></div>
+          <div class="panel-body">
+            <div class="table-wrap">
+              <table class="data-table" id="tbl-bu-ay"></table>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">⚠️ Gecikmiş Aidatlar</span></div>
+          <div class="panel-body">
+            <div class="table-wrap">
+              <table class="data-table" id="tbl-gecikmis"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AİDAT ── -->
+    <div class="section" id="sec-aidat">
+      <div class="section-title">💳 Aidat Bilgileri <small id="aidat-title-sub"></small></div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title" id="aidat-panel-title">Aidat Geçmişi</span>
+          <div id="aidat-wp-btn-area" style="display:none;">
+            <button onclick="window.sendAidatHatirlatma()" style="background:var(--green-bg);border:1px solid var(--green);color:var(--green);border-radius:7px;padding:7px 14px;font-family:'Sora',sans-serif;font-size:12px;font-weight:700;cursor:pointer;" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+              📲 WhatsApp Hatırlatma Gönder
+            </button>
+          </div>
+        </div>
+        <div id="aidat-gecikme-banner" style="display:none;padding:10px 20px;background:var(--orange-bg);border-bottom:1px solid var(--orange);color:var(--orange);font-size:13px;"></div>
+        <div class="panel-body">
+          <div class="table-wrap">
+            <table class="data-table" id="tbl-aidat"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ORTAK GİDER ── -->
+    <div class="section" id="sec-og">
+      <div class="section-title">🔧 Ortak Giderler <small id="og-title-sub"></small></div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title" id="og-panel-title">Ortak Gider Durumu</span></div>
+        <div class="panel-body">
+          <div class="table-wrap">
+            <table class="data-table" id="tbl-og"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── GELİR/GİDER (admin + daire) ── -->
+    <div class="section" id="sec-gelir">
+      <div class="section-title">💰 Gelir &amp; Gider</div>
+      <div class="inner-tabs">
+        <div class="inner-tab active" onclick="window.innerTab(this,'gelir-tab-gelir')">📈 Gelirler</div>
+        <div class="inner-tab" onclick="window.innerTab(this,'gelir-tab-gider')">📉 Giderler</div>
+      </div>
+      <div id="gelir-tab-gelir">
+        <!-- Tahsilat Özet Kartları -->
+        <div id="tahsilat-ozet" style="display:none;margin-bottom:20px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;">📊 Tahsilat Özeti</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;" id="tahsilat-cards"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">📈 Gelir Kayıtları</span></div>
+          <div class="panel-body">
+            <div class="table-wrap">
+              <table class="data-table" id="tbl-gelir"></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daire bazlı tahsilat tabloları (sadece admin) -->
+        <div id="daire-tahsilat-section" style="display:none;margin-top:20px;">
+          <div class="two-col">
+            <div class="panel">
+              <div class="panel-header"><span class="panel-title">💳 Daire Aidat Ödemeleri</span></div>
+              <div class="panel-body">
+                <div class="table-wrap">
+                  <table class="data-table" id="tbl-daire-aidat"></table>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header"><span class="panel-title">🔧 Daire OG Tahsilatları</span></div>
+              <div class="panel-body">
+                <div class="table-wrap">
+                  <table class="data-table" id="tbl-daire-og"></table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /gelir-tab-gelir -->
+
+      <div id="gelir-tab-gider" style="display:none">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">📉 Gider Kayıtları</span></div>
+          <div class="panel-body">
+            <div class="table-wrap">
+              <table class="data-table" id="tbl-gider"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DAİRELER (admin) ── -->
+    <div class="section" id="sec-daireler">
+      <div class="section-title">🏠 Daire Listesi</div>
+      <div class="panel">
+        <div class="panel-body">
+          <div class="table-wrap">
+            <table class="data-table" id="tbl-daireler"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ALACAKLILAR (admin) ── -->
+    <div class="section" id="sec-alacaklilar">
+      <div class="section-title">📋 Alacaklılar</div>
+      <div class="panel">
+        <div class="panel-body">
+          <div class="table-wrap">
+            <table class="data-table" id="tbl-alacaklilar"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ŞİFRE DEĞİŞTİR ── -->
+    <div class="section" id="sec-sifre">
+      <div class="section-title">🔑 Şifre Değiştir</div>
+      <div class="panel">
+        <div class="panel-body">
+          <div class="password-form">
+            <div class="form-group" id="admin-target-group" style="display:none">
+              <label>Hangi Kullanıcının Şifresini Değiştir?</label>
+              <select id="sifre-target" onchange="window.onSifreTargetChange()">
+                <option value="">-- Kullanıcı seçin --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Mevcut Şifre</label>
+              <input type="password" id="sifre-eski" placeholder="••••••••">
+            </div>
+            <div class="form-group">
+              <label>Yeni Şifre (min. 6 karakter)</label>
+              <input type="password" id="sifre-yeni" placeholder="••••••••">
+            </div>
+            <div class="form-group">
+              <label>Yeni Şifre (Tekrar)</label>
+              <input type="password" id="sifre-tekrar" placeholder="••••••••">
+            </div>
+            <button class="btn-primary" onclick="window.doPasswordChange()">🔑 Şifreyi Değiştir</button>
+            <div id="sifre-msg"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AYARLAR (admin) ── -->
+    <div class="section" id="sec-ayarlar">
+      <div class="section-title">⚙️ Sistem Ayarları</div>
+
+      <!-- Kurulum bilgisi -->
+      <div id="setup-info-bar" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:12px;align-items:center;gap:12px;"></div>
+
+      <!-- Paylaşılan veri bilgi çubuğu -->
+      <div id="shared-data-bar" style="display:none;background:var(--green-bg);border:1px solid var(--green);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+        <span style="font-size:20px;">🔗</span>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:var(--green);">Paylaşılan Veri Aktif</div>
+          <div id="shared-data-info" style="font-size:11px;color:var(--text3);margin-top:2px;">—</div>
+        </div>
+        <button onclick="window.doClearDB()" style="background:transparent;border:1px solid var(--red);color:var(--red);border-radius:6px;padding:6px 12px;font-size:11px;font-family:'Sora',sans-serif;cursor:pointer;">
+          🗑️ Temizle
+        </button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">📂 Veri Klasörü</span>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div id="watch-indicator" style="display:none;align-items:center;gap:6px;font-size:12px;color:var(--green);">
+              <span id="watch-dot" style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 2s infinite;"></span>
+              Takip ediliyor
+            </div>
+            <button id="btn-stop-watch" onclick="window.stopWatching()" style="display:none;background:transparent;border:1px solid var(--red);color:var(--red);border-radius:6px;padding:4px 10px;font-size:11px;font-family:'Sora',sans-serif;cursor:pointer;">
+              ⏹ Durdur
+            </button>
+          </div>
+        </div>
+        <div class="panel-body">
+
+          <!-- Klasör seç butonu -->
+          <div id="folder-select-area">
+            <div style="background:var(--bg3);border:2px dashed var(--border);border-radius:12px;padding:40px 24px;text-align:center;margin-bottom:20px;">
+              <div style="font-size:40px;margin-bottom:14px;">🗂️</div>
+              <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">Veri Klasörünü Seçin</div>
+              <div style="font-size:12px;color:var(--text3);margin-bottom:20px;">
+                Masaüstü programının kaydettiği klasörü seçin.<br>
+                <span style="font-family:'IBM Plex Mono',monospace;color:var(--text2);">c:\123\bina_yonetim_data</span> gibi
+              </div>
+              <button class="btn-primary" onclick="window.selectFolder()" style="padding:12px 28px;font-size:14px;">
+                🗂️ Klasör Seç
+              </button>
+              <input type="file" id="folder-picker" webkitdirectory multiple accept=".json" style="display:none" onchange="window.onFolderPicked(event)">
+            </div>
+
+            <div style="font-size:12px;color:var(--text3);background:var(--bg3);border-radius:8px;padding:12px 16px;">
+              💡 Klasör seçtikten sonra portal dosyaları otomatik okur ve her
+              <strong style="color:var(--gold);">30 saniyede bir</strong> yeniler.
+              Masaüstü programda değişiklik yaptığınızda portal güncellenecektir.
+            </div>
+          </div>
+
+          <!-- Klasör bilgisi (seçildikten sonra) -->
+          <div id="folder-info" style="display:none;">
+
+            <div id="folder-path-bar" style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+              <span style="font-size:20px;">🗂️</span>
+              <div style="flex:1;">
+                <div style="font-size:11px;color:var(--text3);margin-bottom:2px;">Seçili Klasör</div>
+                <div id="folder-path-text" style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--gold2);"></div>
+              </div>
+              <button onclick="window.selectFolder()" style="background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:6px;padding:6px 12px;font-size:11px;font-family:'Sora',sans-serif;cursor:pointer;">
+                Klasörü Değiştir
+              </button>
+            </div>
+
+            <!-- Son yükleme ve yenile -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+              <div style="font-size:12px;color:var(--text3);">
+                Son güncelleme: <span id="last-refresh-time" style="color:var(--text2);">—</span>
+              </div>
+              <button onclick="window.refreshFromFolder()" style="background:var(--bg3);border:1px solid var(--border);color:var(--text2);border-radius:6px;padding:6px 14px;font-size:12px;font-family:'Sora',sans-serif;cursor:pointer;transition:.2s;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+                🔄 Şimdi Yenile
+              </button>
+            </div>
+
+            <!-- Dosya durumu grid -->
+            <div style="margin-bottom:16px;">
+              <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;">Dosya Durumu</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="file-status-grid">
+              </div>
+            </div>
+
+            <div id="ayar-msg" class="alert" style="display:none;"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+      <!-- ── ŞİFRELERİ GÖRÜNTÜLE (sadece admin, sec-ayarlar içinde) ── -->
+      <div id="sifre-goruntule-panel" style="display:none;margin-top:16px;margin-bottom:16px;">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">🔐 Kurulum Şifreleri</span>
+            <div style="display:flex;gap:8px;">
+              <button onclick="window.sendAllWhatsapp()" id="btn-wp-all"
+                style="background:var(--green-bg);border:1px solid var(--green);color:var(--green);border-radius:6px;padding:6px 14px;font-size:12px;font-family:'Sora',sans-serif;cursor:pointer;">
+                📲 Hepsine WhatsApp
+              </button>
+              <button onclick="window.pdfSifreTabloDirect()"
+                style="background:var(--blue-bg);border:1px solid var(--blue);color:var(--blue);border-radius:6px;padding:6px 14px;font-size:12px;font-family:'Sora',sans-serif;cursor:pointer;">
+                🖨️ PDF İndir
+              </button>
+              <button onclick="window.toggleKurulumSifreleri()" id="btn-sifre-goster"
+                style="background:var(--bg3);border:1px solid var(--border);color:var(--text2);border-radius:6px;padding:6px 14px;font-size:12px;font-family:'Sora',sans-serif;cursor:pointer;">
+                👁 Şifreleri Göster
+              </button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div id="kurulum-sifreler-container" style="display:none;">
+              <div style="background:var(--orange-bg);border:1px solid var(--orange);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--orange);margin-bottom:12px;">
+                ⚠️ Bu şifreler gizli tutulmalıdır. Kullanıcılar ilk girişte şifrelerini değiştirmelidir.
+              </div>
+              <div id="kurulum-sifreler-list" style="overflow-x:auto;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TEHLİKE BÖLGESİ (sadece admin, sec-ayarlar içinde) ── -->
+      <div class="danger-zone" id="danger-zone-panel" style="display:none;">
+        <h3>⚠️ Tehlike Bölgesi</h3>
+        <p>Bu işlemler geri alınamaz. Dikkatli olun.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <button class="btn-danger" onclick="window.doSilTumVeriler()">🗑️ Tüm Bina Verilerini Sil</button>
+          <button class="btn-danger" onclick="window.doSilKullanicilar()">👤 Kullanıcıları Sıfırla</button>
+          <button class="btn-danger" onclick="window.doSilTamamen()" style="background:#7d1a1a;">💣 Her Şeyi Sil &amp; Yeniden Kur</button>
+        </div>
+        <div id="danger-msg" class="alert" style="display:none;margin-top:12px;"></div>
+      </div>
+    </div>
+
+  </div><!-- /main-content -->
+</div><!-- /portal-page -->
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const _fbApp = initializeApp({
+  apiKey: "AIzaSyCXfVVuRMzBEoI0ik5313TiA5SiMmRMjAs",
+  authDomain: "bina-yonetim-3a90b.firebaseapp.com",
+  projectId: "bina-yonetim-3a90b",
+  storageBucket: "bina-yonetim-3a90b.firebasestorage.app",
+  messagingSenderId: "306832846652",
+  appId: "1:306832846652:web:222900a5c60cc104643f12"
+});
+const _db = getFirestore(_fbApp);
+console.log("✅ Firebase bağlandı");
+
+// ── Firebase CRUD yardımcıları ──────────────────────────────────
+async function fbSaveDB(data) {
+  try { await setDoc(doc(_db,'bina','db'), {payload:JSON.stringify(data), t:new Date().toISOString()}); return true; }
+  catch(e) { console.error('fbSaveDB',e); return false; }
+}
+async function fbLoadDB() {
+  try { const s=await getDoc(doc(_db,'bina','db')); return s.exists()?JSON.parse(s.data().payload):null; }
+  catch(e) { console.error('fbLoadDB',e); return null; }
+}
+async function fbSaveUsers(u) {
+  try { await setDoc(doc(_db,'bina','users'), {payload:JSON.stringify(u), t:new Date().toISOString()}); return true; }
+  catch(e) { console.error('fbSaveUsers',e); return false; }
+}
+async function fbLoadUsers() {
+  try { const s=await getDoc(doc(_db,'bina','users')); return s.exists()?JSON.parse(s.data().payload):null; }
+  catch(e) { console.error('fbLoadUsers',e); return null; }
+}
+async function fbSaveSetup(cfg) {
+  try { await setDoc(doc(_db,'bina','setup'), {payload:JSON.stringify(cfg), t:new Date().toISOString()}); return true; }
+  catch(e) { console.error('fbSaveSetup',e); return false; }
+}
+async function fbLoadSetup() {
+  try { const s=await getDoc(doc(_db,'bina','setup')); return s.exists()?JSON.parse(s.data().payload):null; }
+  catch(e) { console.error('fbLoadSetup',e); return null; }
+}
+function fbListenDB(cb) {
+  return onSnapshot(doc(_db,'bina','db'), s => { if(s.exists()) try{cb(JSON.parse(s.data().payload));}catch(e){} });
+}
+
+// ════════════════════════════════════════
+//  SIMPLE HASH (non-cryptographic, client-side only)
+// ════════════════════════════════════════
+function hashStr(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charCodeAt(i);
+    h = ((h << 5) - h) + c;
+    h |= 0;
+  }
+  return h.toString(36);
+}
+
+function showLoadingOverlay(msg) {
+  const el=document.getElementById('fb-loading-overlay');
+  if(el){el.style.display='flex';}
+  const m=document.getElementById('fb-loading-msg');
+  if(m) m.textContent=msg||'Yükleniyor...';
+}
+function hideLoadingOverlay() {
+  const el=document.getElementById('fb-loading-overlay');
+  if(el) el.style.display='none';
+}
+window.showLoadingOverlay=showLoadingOverlay;
+window.hideLoadingOverlay=hideLoadingOverlay;
+
+// ════════════════════════════════════════
+//  CONFIGURATION — EDIT HERE
+// ════════════════════════════════════════
+
+// Default users DB (stored in localStorage, overridable)
+const DEFAULT_USERS = {
+  "yonetici": { role: "admin", daire_no: null, display: "Yönetici", passwordHash: hashStr("ZwKf2EJY"), firstLogin: true },
+  "daire1": { role: "daire", daire_no: 1, display: "Daire 1", passwordHash: hashStr("zcj2GGDw"), firstLogin: true },
+  "daire2": { role: "daire", daire_no: 2, display: "Daire 2", passwordHash: hashStr("qMDZ7xlh"), firstLogin: true },
+  "daire3": { role: "daire", daire_no: 3, display: "Daire 3", passwordHash: hashStr("EYpwi1YM"), firstLogin: true },
+  "daire4": { role: "daire", daire_no: 4, display: "Daire 4", passwordHash: hashStr("rlb42osK"), firstLogin: true },
+  "daire5": { role: "daire", daire_no: 5, display: "Daire 5", passwordHash: hashStr("oMOZv0sm"), firstLogin: true },
+  "daire6": { role: "daire", daire_no: 6, display: "Daire 6", passwordHash: hashStr("3XE6hcC3"), firstLogin: true },
+  "daire7": { role: "daire", daire_no: 7, display: "Daire 7", passwordHash: hashStr("f2uTn6Pw"), firstLogin: true },
+  "daire8": { role: "daire", daire_no: 8, display: "Daire 8", passwordHash: hashStr("umv6jmcM"), firstLogin: true },
+  "daire9": { role: "daire", daire_no: 9, display: "Daire 9", passwordHash: hashStr("JH4ImLCY"), firstLogin: true },
+  "daire10": { role: "daire", daire_no: 10, display: "Daire 10", passwordHash: hashStr("boHHWWW0"), firstLogin: true },
+  "daire11": { role: "daire", daire_no: 11, display: "Daire 11", passwordHash: hashStr("bJE156ZA"), firstLogin: true },
+  "daire12": { role: "daire", daire_no: 12, display: "Daire 12", passwordHash: hashStr("DkgE7kmZ"), firstLogin: true },
+  "daire13": { role: "daire", daire_no: 13, display: "Daire 13", passwordHash: hashStr("04QvbZVt"), firstLogin: true },
+  "daire14": { role: "daire", daire_no: 14, display: "Daire 14", passwordHash: hashStr("uQgb4y4U"), firstLogin: true },
+  "daire15": { role: "daire", daire_no: 15, display: "Daire 15", passwordHash: hashStr("2Ycxv1sA"), firstLogin: true },
+  "daire16": { role: "daire", daire_no: 16, display: "Daire 16", passwordHash: hashStr("N66Ma109"), firstLogin: true },
+  "daire17": { role: "daire", daire_no: 17, display: "Daire 17", passwordHash: hashStr("GEX3gGjw"), firstLogin: true },
+  "daire18": { role: "daire", daire_no: 18, display: "Daire 18", passwordHash: hashStr("9u8ywVIf"), firstLogin: true },
+  "daire19": { role: "daire", daire_no: 19, display: "Daire 19", passwordHash: hashStr("JYp4uMa2"), firstLogin: true },
+  "daire20": { role: "daire", daire_no: 20, display: "Daire 20", passwordHash: hashStr("6w1rqjFt"), firstLogin: true },
+  "daire21": { role: "daire", daire_no: 21, display: "Daire 21", passwordHash: hashStr("Hgp66sI8"), firstLogin: true },
+  "daire22": { role: "daire", daire_no: 22, display: "Daire 22", passwordHash: hashStr("IQGtVy0B"), firstLogin: true },
+  "daire23": { role: "daire", daire_no: 23, display: "Daire 23", passwordHash: hashStr("Bnh24L6T"), firstLogin: true },
+  "daire24": { role: "daire", daire_no: 24, display: "Daire 24", passwordHash: hashStr("zqc7Hezw"), firstLogin: true },
+  "daire25": { role: "daire", daire_no: 25, display: "Daire 25", passwordHash: hashStr("tY9YCGu1"), firstLogin: true },
+  "daire26": { role: "daire", daire_no: 26, display: "Daire 26", passwordHash: hashStr("Xyhj8g58"), firstLogin: true },
+  "daire27": { role: "daire", daire_no: 27, display: "Daire 27", passwordHash: hashStr("XXm8aIiK"), firstLogin: true },
+  "daire28": { role: "daire", daire_no: 28, display: "Daire 28", passwordHash: hashStr("37wdUQjR"), firstLogin: true },
+  "daire29": { role: "daire", daire_no: 29, display: "Daire 29", passwordHash: hashStr("fiJWog2a"), firstLogin: true },
+  "daire30": { role: "daire", daire_no: 30, display: "Daire 30", passwordHash: hashStr("5Byu6Jrd"), firstLogin: true },
+  "daire31": { role: "daire", daire_no: 31, display: "Daire 31", passwordHash: hashStr("ndC4A9iC"), firstLogin: true },
+  "daire32": { role: "daire", daire_no: 32, display: "Daire 32", passwordHash: hashStr("hRc5ktUF"), firstLogin: true },
+  "daire33": { role: "daire", daire_no: 33, display: "Daire 33", passwordHash: hashStr("wgP1PixN"), firstLogin: true },
+  "daire34": { role: "daire", daire_no: 34, display: "Daire 34", passwordHash: hashStr("e54oHSAb"), firstLogin: true },
+  "daire35": { role: "daire", daire_no: 35, display: "Daire 35", passwordHash: hashStr("dIX5Llk0"), firstLogin: true },
+  "daire36": { role: "daire", daire_no: 36, display: "Daire 36", passwordHash: hashStr("gmm2iXkK"), firstLogin: true },
+  "daire37": { role: "daire", daire_no: 37, display: "Daire 37", passwordHash: hashStr("nz3YzDvZ"), firstLogin: true },
+  "daire38": { role: "daire", daire_no: 38, display: "Daire 38", passwordHash: hashStr("iMahK4LW"), firstLogin: true },
+};
+
+// ════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════
+let currentUser = null;  // { username, role, daire_no, display }
+let DB = {};             // bina data: { bina, daireler, odemeler, gelirler, giderler, alacaklilar, ortak_giderler }
+
+// Users — Firebase + localStorage yedek
+async function getUsers() {
+  const data = await fbLoadUsers();
+  if (data) { try{localStorage.setItem('bina_users_v1',JSON.stringify(data));}catch(e){} return data; }
+  try { const r=localStorage.getItem('bina_users_v1'); if(r) return JSON.parse(r); } catch(e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_USERS));
+}
+
+async function saveUsers(users) {
+  try { localStorage.setItem('bina_users_v1', JSON.stringify(users)); } catch(e) {}
+  await fbSaveUsers(users);
+}
+
+// ════════════════════════════════════════
+//  DEMO DATA (used if no JSON loaded)
+// ════════════════════════════════════════
+function initDemoData() {
+  const today = new Date();
+  const thisMonth = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
+  const prevMonth = today.getMonth() === 0
+    ? `${today.getFullYear()-1}-12`
+    : `${today.getFullYear()}-${String(today.getMonth()).padStart(2,'0')}`;
+
+  DB = {
+    bina: { adi: "Örnek Apartmanı", daire: 20, aidat: 750, faiz: 2, son_gun: 10, baslangic: prevMonth, ozel_aidatlar: {} },
+    daireler: Array.from({length:20}, (_,i) => ({
+      no: i+1, isim: "", tel: "", email: "", borc: 0, faiz: 0, son_odeme: "", odemeler: []
+    })),
+    odemeler: [
+      // Some sample payments
+      { id:1, daireNo:1, ay:thisMonth, tutar:750, yontem:"Havale/EFT", tarih:new Date().toISOString(), makbuzNo:"AID-2025-00001" },
+      { id:2, daireNo:2, ay:thisMonth, tutar:750, yontem:"Nakit", tarih:new Date().toISOString(), makbuzNo:"AID-2025-00002" },
+      { id:3, daireNo:3, ay:prevMonth, tutar:750, yontem:"Havale/EFT", tarih:new Date(Date.now()-30*86400000).toISOString(), makbuzNo:"AID-2025-00003" },
+    ],
+    gelirler: [
+      { id:10, tur:"Kira", aciklama:"Ortak alan kira geliri", tarih:new Date().toISOString(), tutar:1200, fatura_tarihi:new Date().toISOString() },
+    ],
+    giderler: [
+      { id:20, tur:"Elektrik", aciklama:"Ocak ayı ortak alan elektrik", tarih:new Date().toISOString(), tutar:850, fatura_tarihi:new Date().toISOString() },
+      { id:21, tur:"Temizlik", aciklama:"Aylık temizlik hizmeti", tarih:new Date().toISOString(), tutar:600, fatura_tarihi:new Date().toISOString() },
+    ],
+    alacaklilar: [
+      { id:30, tur:"Fatura", kisi:"Elektrik A.Ş.", aciklama:"Ocak faturası", tutar:850, fatura_tarihi:new Date().toISOString(), kayit_tarihi:new Date().toISOString(), odendi:true, odemeler:[{id:31, tutar:850, tarih:new Date().toISOString()}] },
+    ],
+    ortak_giderler: [],
+    _alacaklilar_og: [],
+  };
+}
+
+// ════════════════════════════════════════
+//  SHARED DATA STORAGE — Firebase + localStorage yedek
+// ════════════════════════════════════════
+const DB_STORAGE_KEY = 'bina_db_v1';
+const DB_META_KEY    = 'bina_db_meta_v1';
+
+async function saveDBToStorage() {
+  try { localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(DB)); } catch(e) {}
+  try { localStorage.setItem(DB_META_KEY, JSON.stringify({savedAt:new Date().toISOString(),binaAdi:DB.bina?.adi||'',daireCount:(DB.daireler||[]).length})); } catch(e) {}
+  return await fbSaveDB(DB);
+}
+
+async function loadDBFromStorage() {
+  const data = await fbLoadDB();
+  if (data && data.bina) { DB = data; return true; }
+  try {
+    const raw = localStorage.getItem(DB_STORAGE_KEY);
+    if (!raw) return false;
+    const parsed = JSON.parse(raw);
+    if (!parsed || !parsed.bina) return false;
+    DB = parsed; return true;
+  } catch(e) { return false; }
+}
+
+function getDBMeta() {
+  try { const r=localStorage.getItem(DB_META_KEY); return r?JSON.parse(r):null; } catch{return null;}
+}
+
+async function clearDBStorage() {
+  localStorage.removeItem(DB_STORAGE_KEY);
+  localStorage.removeItem(DB_META_KEY);
+  await fbSaveDB({});
+}
+
+// ════════════════════════════════════════
+//  FORMAT HELPERS
+// ════════════════════════════════════════
+function fmt(v) {
+  try {
+    v = parseFloat(v) || 0;
+    const neg = v < 0;
+    const abs = Math.abs(v).toFixed(2);
+    const parts = abs.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return (neg ? '−₺' : '₺') + parts[0] + ',' + parts[1];
+  } catch { return '₺0,00'; }
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
+  } catch { return '—'; }
+}
+
+function thisMonth() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+}
+
+function monthLabel(ym) {
+  if (!ym) return '—';
+  const months = ['','Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  const [y,m] = ym.split('-');
+  return `${months[parseInt(m)]} ${y}`;
+}
+
+// ════════════════════════════════════════
+//  LOGIN / LOGOUT
+// ════════════════════════════════════════
+document.getElementById('inp-pass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+function pdfSifreTabloDirect() {
+  const cfg = getSetupConfig();
+  const users = getUsers();
+  if (!cfg) { alert('Kurulum bilgisi bulunamadı.'); return; }
+  generateSifrePDF(cfg, users);
+}
+
+function goToSetup() {
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('setup-overlay').style.display = 'flex';
+  document.getElementById('setup-step-klasor').style.display = 'block';
+  document.getElementById('setup-step-form').style.display = 'none';
+}
+
+async function doLogin() {
+  const username = document.getElementById('inp-user').value.trim().toLowerCase();
+  const password = document.getElementById('inp-pass').value;
+  const errEl = document.getElementById('login-error');
+
+  const users = await getUsers();
+  const user = users[username];
+
+  if (!user || user.passwordHash !== hashStr(password)) {
+    errEl.style.display = 'block';
+    document.getElementById('inp-pass').value = '';
+    return;
+  }
+
+  errEl.style.display = 'none';
+  currentUser = { username, role: user.role, daire_no: user.daire_no, display: user.display, firstLogin: user.firstLogin };
+
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('portal-page').style.display = 'block';
+
+  document.getElementById('user-display-name').textContent = user.display;
+
+  // Firebase'den veri yükle
+  showLoadingOverlay('Veriler yükleniyor...');
+  if (!(await loadDBFromStorage())) initDemoData();
+  hideLoadingOverlay();
+  buildNav();
+  // Paneller başlangıçta hep gizli — renderAyarlar admin için açar
+  const _dz2 = document.getElementById('danger-zone-panel');
+  const _sp2 = document.getElementById('sifre-goruntule-panel');
+  if (_dz2) _dz2.style.display = 'none';
+  if (_sp2) _sp2.style.display = 'none';
+  showSection(currentUser.role === 'admin' ? 'ozet' : 'aidat');
+
+  // Gerçek zamanlı: başka cihazda yönetici veri değiştirirse anında güncelle
+  fbListenDB(function(newData) {
+    if (newData && newData.bina) {
+      DB = newData;
+      const active = document.querySelector('.section.active');
+      if (active) renderSection(active.id.replace('sec-',''));
+    }
+  });
+
+  if (user.firstLogin) {
+    // Zorunlu şifre değiştirme overlay'ini göster
+    const overlay = document.getElementById('zorunlu-sifre-overlay');
+    if (overlay) {
+      overlay.style.display = 'flex';
+      setTimeout(() => {
+        const el = document.getElementById('zorunlu-eski');
+        if (el) el.focus();
+      }, 100);
+    }
+  } else if (user.role === 'daire') {
+    // Daire girişi: ödenmemiş aidat varsa uyar
+    setTimeout(() => checkDaireBorcUyari(user.daire_no), 400);
+  }
+}
+
+function checkDaireBorcUyari(daireNo) {
+  const b = DB.bina || {};
+  const odemeler = DB.odemeler || [];
+  const ba = thisMonth();
+  const tum_ay = monthRange(b.baslangic || ba, ba);
+
+  const eksikAylar = tum_ay.filter(ay =>
+    !odemeler.some(o => o.daireNo == daireNo && o.ay === ay)
+  );
+
+  if (eksikAylar.length === 0) return; // Borç yok, uyarma
+
+  const liste = document.getElementById('borc-uyari-liste');
+  const toplam_el = document.getElementById('borc-uyari-toplam');
+  const overlay = document.getElementById('borc-uyari-overlay');
+
+  let toplamBorc = 0;
+  liste.innerHTML = eksikAylar.map(ay => {
+    const aidat = (b.ozel_aidatlar||{})[ay] || b.aidat || 0;
+    toplamBorc += aidat;
+    return `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);">
+      <span style="color:var(--text2);">${monthLabel(ay)}</span>
+      <span style="font-family:'IBM Plex Mono',monospace;color:var(--orange);">${fmt(aidat)}</span>
+    </div>`;
+  }).join('');
+
+  toplam_el.textContent = `Toplam: ${fmt(toplamBorc)}`;
+  overlay.style.display = 'flex';
+}
+
+async function doZorunluSifreChange() {
+  const msgEl = document.getElementById('zorunlu-msg');
+  const eski   = document.getElementById('zorunlu-eski').value;
+  const yeni   = document.getElementById('zorunlu-yeni').value;
+  const tekrar = document.getElementById('zorunlu-tekrar').value;
+
+  const users = await getUsers();
+  const user  = users[currentUser.username];
+
+  const showErr = (msg) => {
+    msgEl.className = 'alert alert-error';
+    msgEl.style.display = 'block';
+    msgEl.textContent = msg;
+  };
+
+  if (!user || user.passwordHash !== hashStr(eski)) {
+    showErr('Mevcut şifre hatalı.'); return;
+  }
+  if (yeni.length < 6) {
+    showErr('Yeni şifre en az 6 karakter olmalı.'); return;
+  }
+  if (yeni !== tekrar) {
+    showErr('Yeni şifreler eşleşmiyor.'); return;
+  }
+  if (eski === yeni) {
+    showErr('Yeni şifre mevcut şifreyle aynı olamaz.'); return;
+  }
+
+  // Save new password
+  user.passwordHash = hashStr(yeni);
+  user.firstLogin = false;
+  await saveUsers(users);
+  currentUser.firstLogin = false;
+
+  // Hide overlay and banner
+  document.getElementById('zorunlu-sifre-overlay').style.display = 'none';
+  document.getElementById('first-login-banner').style.display = 'none';
+
+  // Clear fields
+  document.getElementById('zorunlu-eski').value = '';
+  document.getElementById('zorunlu-yeni').value = '';
+  document.getElementById('zorunlu-tekrar').value = '';
+  msgEl.style.display = 'none';
+}
+
+function doLogout() {
+  currentUser = null;
+  document.getElementById('portal-page').style.display = 'none';
+  document.getElementById('login-page').style.display = 'flex';
+  document.getElementById('inp-user').value = '';
+  document.getElementById('inp-pass').value = '';
+}
+
+// ════════════════════════════════════════
+//  NAV
+// ════════════════════════════════════════
+const ADMIN_TABS = [
+  { id: 'ozet',        label: '📊 Özet' },
+  { id: 'aidat',       label: '💳 Aidatlar' },
+  { id: 'og',          label: '🔧 Ortak Giderler' },
+  { id: 'gelir',       label: '💰 Gelir/Gider' },
+  { id: 'daireler',    label: '🏠 Daireler' },
+  { id: 'alacaklilar', label: '📋 Alacaklılar' },
+  { id: 'sifre',       label: '🔑 Şifre Değiştir' },
+  { id: 'ayarlar',     label: '⚙️ Ayarlar' },
+];
+
+const DAIRE_TABS = [
+  { id: 'aidat', label: '💳 Aidatlarım' },
+  { id: 'og',    label: '🔧 Ortak Giderlerim' },
+  { id: 'gelir', label: '💰 Gelir/Gider' },
+  { id: 'sifre', label: '🔑 Şifre Değiştir' },
+];
+
+function buildNav() {
+  const tabs = currentUser.role === 'admin' ? ADMIN_TABS : DAIRE_TABS;
+  const nav = document.getElementById('nav-tabs');
+  nav.innerHTML = '';
+  tabs.forEach(t => {
+    const div = document.createElement('div');
+    div.className = 'nav-tab';
+    div.textContent = t.label;
+    div.dataset.id = t.id;
+    div.onclick = () => { showSection(t.id); setActiveTab(t.id); };
+    nav.appendChild(div);
+  });
+  setActiveTab(currentUser.role === 'admin' ? 'ozet' : 'aidat');
+
+  // Admin: populate sifre target select
+  if (currentUser.role === 'admin') {
+    const sel = document.getElementById('sifre-target');
+    sel.innerHTML = '<option value="">-- Kullanıcı seçin --</option>';
+    const users = getUsers();
+    Object.keys(users).forEach(un => {
+      const opt = document.createElement('option');
+      opt.value = un;
+      opt.textContent = users[un].display || un;
+      sel.appendChild(opt);
+    });
+    document.getElementById('admin-target-group').style.display = 'block';
+  } else {
+    document.getElementById('admin-target-group').style.display = 'none';
+  }
+}
+
+function setActiveTab(id) {
+  document.querySelectorAll('.nav-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.id === id);
+  });
+}
+
+function showSection(id) {
+  // Yalnızca admin erişebilecek sekmeler
+  const adminOnly = ['ayarlar','daireler','alacaklilar','ozet'];
+  if (adminOnly.includes(id) && (!currentUser || currentUser.role !== 'admin')) return;
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  // Ayarlar'a girmeden tehlike + şifre panellerini her zaman gizle
+  const _dz = document.getElementById('danger-zone-panel');
+  const _sp = document.getElementById('sifre-goruntule-panel');
+  if (_dz) _dz.style.display = 'none';
+  if (_sp) _sp.style.display = 'none';
+  const sec = document.getElementById('sec-' + id);
+  if (sec) {
+    sec.classList.add('active');
+    renderSection(id);
+  }
+}
+
+// ════════════════════════════════════════
+//  INNER TABS
+// ════════════════════════════════════════
+function innerTab(el, targetId) {
+  const parent = el.closest('.section') || el.parentElement.parentElement;
+  parent.querySelectorAll('.inner-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('[id^="gelir-tab-"]').forEach(d => d.style.display='none');
+  const target = document.getElementById(targetId);
+  if (target) target.style.display = 'block';
+  // Ensure tables are rendered when switching tabs
+  if (targetId === 'gelir-tab-gider' || targetId === 'gelir-tab-gelir') {
+    renderGelirGider();
+  }
+}
+
+// ════════════════════════════════════════
+//  RENDER SECTIONS
+// ════════════════════════════════════════
+function renderSection(id) {
+  switch(id) {
+    case 'ozet':        renderOzet(); break;
+    case 'aidat':       renderAidat(); break;
+    case 'og':          renderOG(); break;
+    case 'gelir':       renderGelirGider(); break;
+    case 'daireler':    renderDaireler(); break;
+    case 'alacaklilar': renderAlacaklilar(); break;
+    case 'sifre':       /* static */ break;
+    case 'ayarlar':     renderAyarlar(); break;
+  }
+}
+
+// ── ÖZET (admin only) ──────────────────
+function renderOzet() {
+  const b = DB.bina || {};
+  const odemeler = DB.odemeler || [];
+  const gelirler = DB.gelirler || [];
+  const giderler = DB.giderler || [];
+  const alacaklilar = DB.alacaklilar || [];
+  const ba = thisMonth();
+
+  // Update topbar
+  document.getElementById('bina-adi-topbar').textContent = b.adi || 'Bina Yönetim Sistemi';
+  document.getElementById('topbar-sub').textContent = `${b.daire || 0} Daire • Aylık Aidat: ${fmt(b.aidat || 0)}`;
+
+  // Stats
+  const tahsilat_buay = odemeler.filter(o => (o.tarih||'').startsWith(ba)).reduce((s,o)=>s+o.tutar,0);
+  const toplam_gelir  = gelirler.reduce((s,g)=>s+g.tutar,0);
+  const toplam_gider  = giderler.reduce((s,g)=>s+g.tutar,0);
+  const net           = toplam_gelir - toplam_gider;
+
+  // All months since start
+  const tum_ay = monthRange(b.baslangic || ba, ba);
+  let odenmemis = 0;
+  const daireler = DB.daireler || [];
+  tum_ay.forEach(ay => {
+    daireler.forEach(d => {
+      const odedi = odemeler.some(o => o.daireNo == d.no && o.ay === ay);
+      if (!odedi) odenmemis += (b.ozel_aidatlar||{})[ay] || b.aidat || 0;
+    });
+  });
+
+  const topAlacak = alacaklilar.filter(a => a.tur !== 'Ortak Gider').reduce((s,a) => {
+    const odenen = (a.odemeler||[]).reduce((x,p)=>x+p.tutar,0);
+    return s + Math.max(0, a.tutar - odenen);
+  }, 0);
+
+  const grid = document.getElementById('stat-grid');
+  grid.innerHTML = `
+    <div class="stat-card gold">
+      <div class="stat-label">Bu Ay Tahsilat</div>
+      <div class="stat-value money">${fmt(tahsilat_buay)}</div>
+      <div class="stat-sub">${monthLabel(ba)}</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Toplam Gelir</div>
+      <div class="stat-value money">${fmt(toplam_gelir)}</div>
+      <div class="stat-sub">Tüm zamanlar</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">Toplam Gider</div>
+      <div class="stat-value money">${fmt(toplam_gider)}</div>
+      <div class="stat-sub">Tüm zamanlar</div>
+    </div>
+    <div class="stat-card ${net>=0?'blue':'red'}">
+      <div class="stat-label">Net Bakiye</div>
+      <div class="stat-value money">${fmt(net)}</div>
+      <div class="stat-sub">Gelir − Gider</div>
+    </div>
+    <div class="stat-card orange">
+      <div class="stat-label">Ödenmemiş Aidat</div>
+      <div class="stat-value money">${fmt(odenmemis)}</div>
+      <div class="stat-sub">Tüm geçmiş dönemler</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">Alacaklılar Kalan</div>
+      <div class="stat-value money">${fmt(topAlacak)}</div>
+      <div class="stat-sub">Ödenmemiş faturalar</div>
+    </div>
+  `;
+
+  // Bu ay tablo
+  const buAyOdemeler = odemeler.filter(o => (o.tarih||'').startsWith(ba));
+  const tblBuAy = document.getElementById('tbl-bu-ay');
+  if (buAyOdemeler.length === 0) {
+    tblBuAy.innerHTML = '<tr><td colspan="4" style="color:var(--text3);text-align:center;padding:24px;">Bu ay henüz ödeme yok</td></tr>';
+  } else {
+    tblBuAy.innerHTML = `
+      <thead><tr>
+        <th>Daire</th><th>Tutar</th><th>Yöntem</th><th>Tarih</th>
+      </tr></thead>
+      <tbody>
+        ${buAyOdemeler.map(o => `
+          <tr>
+            <td>Daire ${o.daireNo}</td>
+            <td class="money money-green">${fmt(o.tutar)}</td>
+            <td>${o.yontem||'—'}</td>
+            <td>${fmtDate(o.tarih)}</td>
+          </tr>`).join('')}
+      </tbody>`;
+  }
+
+  // Gecikmiş tablo
+  const today = new Date();
+  const tblGec = document.getElementById('tbl-gecikmis');
+  const gecRows = [];
+  tum_ay.forEach(ay => {
+    // Skip current month if still early
+    if (ay === ba && today.getDate() < (b.son_gun||10)) return;
+    daireler.forEach(d => {
+      const odedi = odemeler.some(o => o.daireNo == d.no && o.ay === ay);
+      if (!odedi) {
+        const aidat = (b.ozel_aidatlar||{})[ay] || b.aidat || 0;
+        gecRows.push(`<tr>
+          <td>Daire ${d.no}</td>
+          <td>${d.isim||'—'}</td>
+          <td>${monthLabel(ay)}</td>
+          <td class="money money-red">${fmt(aidat)}</td>
+        </tr>`);
+      }
+    });
+  });
+  if (gecRows.length === 0) {
+    tblGec.innerHTML = '<tr><td colspan="4" style="color:var(--green);text-align:center;padding:24px;">✅ Gecikmiş aidat yok</td></tr>';
+  } else {
+    tblGec.innerHTML = `<thead><tr><th>Daire</th><th>Sakin</th><th>Dönem</th><th>Tutar</th></tr></thead><tbody>${gecRows.join('')}</tbody>`;
+  }
+}
+
+// ── AİDAT ─────────────────────────────────────────
+function renderAidat() {
+  const b = DB.bina || {};
+  const odemeler = DB.odemeler || [];
+  const daireler = DB.daireler || [];
+  const ba = thisMonth();
+  const tum_ay = monthRange(b.baslangic || ba, ba);
+
+  let rows = '';
+
+  // Show/hide WhatsApp button for admin based on unpaid this month
+  const ba_today = new Date();
+  const wpBtnArea = document.getElementById('aidat-wp-btn-area');
+  const gecBanner = document.getElementById('aidat-gecikme-banner');
+  if (currentUser.role === 'admin') {
+    const odenmemislar = (DB.daireler||[]).filter(d => !(DB.odemeler||[]).some(o=>o.daireNo==d.no && o.ay===ba));
+    if (wpBtnArea) wpBtnArea.style.display = odenmemislar.length > 0 ? 'block' : 'none';
+    if (gecBanner) {
+      if (ba_today.getDate() >= 25 && odenmemislar.length > 0) {
+        gecBanner.style.display = 'block';
+        gecBanner.textContent = `⚠️ Ayın 25'i geçti — ${odenmemislar.length} daire bu ay henüz ödeme yapmadı. WhatsApp ile hatırlatma gönderebilirsiniz.`;
+      } else if (odenmemislar.length > 0) {
+        gecBanner.style.display = 'block';
+        gecBanner.textContent = `ℹ️ ${odenmemislar.length} daire bu ay henüz ödeme yapmadı.`;
+      } else {
+        gecBanner.style.display = 'none';
+      }
+    }
+  } else {
+    if (wpBtnArea) wpBtnArea.style.display = 'none';
+    if (gecBanner) gecBanner.style.display = 'none';
+  }
+
+  if (currentUser.role === 'admin') {
+    // All daires, all months
+    document.getElementById('aidat-panel-title').textContent = 'Tüm Daireler — Aidat Durumu';
+    document.getElementById('aidat-title-sub').textContent = `${tum_ay.length} dönem`;
+
+    tum_ay.slice().reverse().forEach(ay => {
+      daireler.forEach(d => {
+        const odeme = odemeler.find(o => o.daireNo == d.no && o.ay === ay);
+        const aidat = (b.ozel_aidatlar||{})[ay] || b.aidat || 0;
+        const status = odeme
+          ? `<span class="badge badge-green">✔ Ödendi</span>`
+          : ay > ba
+            ? `<span class="badge badge-blue">İleri Dönem</span>`
+            : `<span class="badge badge-red">✘ Ödenmedi</span>`;
+        // WhatsApp per-row button for unpaid current/past months
+        let wpCell = '—';
+        if (!odeme && ay <= ba && d.tel) {
+          const tel2 = d.tel.replace(/[^0-9+]/g,'');
+          const intl2 = tel2.startsWith('+') ? tel2.substring(1) : '90'+tel2.replace(/^0/,'');
+          const msg2 = encodeURIComponent(`Sayın ${d.isim||('Daire '+d.no+' sakini')},\n\n${monthLabel(ay)} ayı aidat ödemeleriniz (${fmt(aidat)}) henüz sistemimize yansımamıştır.\n\nÖdemenizi gerçekleştirdiyseniz lütfen bu uyarıyı dikkate almayın.\n\nBina Yönetimi`);
+          wpCell = `<a href="https://wa.me/${intl2}?text=${msg2}" target="_blank" style="display:inline-block;background:var(--green-bg);border:1px solid var(--green);color:var(--green);border-radius:6px;padding:3px 9px;font-size:11px;font-family:'Sora',sans-serif;text-decoration:none;">📲</a>`;
+        } else if (!odeme && ay <= ba) {
+          wpCell = `<span style="color:var(--text3);font-size:11px;">Tel yok</span>`;
+        }
+        rows += `<tr>
+          <td>Daire ${d.no}</td>
+          <td>${d.isim||'—'}</td>
+          <td>${monthLabel(ay)}</td>
+          <td class="money">${fmt(aidat)}</td>
+          <td>${status}</td>
+          <td>${odeme ? fmtDate(odeme.tarih) : '—'}</td>
+          <td>${odeme ? odeme.yontem||'—' : '—'}</td>
+          <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${odeme ? odeme.makbuzNo||'—' : '—'}</td>
+          <td>${wpCell}</td>
+        </tr>`;
+      });
+    });
+
+    document.getElementById('tbl-aidat').innerHTML = `
+      <thead><tr>
+        <th>Daire</th><th>Sakin</th><th>Dönem</th><th>Aidat</th><th>Durum</th><th>Ödeme Tarihi</th><th>Yöntem</th><th>Makbuz No</th><th>WA</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>`;
+
+  } else {
+    // Only this daire's payments
+    const dno = currentUser.daire_no;
+    const d = daireler.find(x => x.no === dno) || {};
+    document.getElementById('aidat-panel-title').textContent = `Daire ${dno} — Aidat Geçmişi`;
+    document.getElementById('aidat-title-sub').textContent = d.isim ? `(${d.isim})` : '';
+
+    tum_ay.slice().reverse().forEach(ay => {
+      const odeme = odemeler.find(o => o.daireNo == dno && o.ay === ay);
+      const aidat = (b.ozel_aidatlar||{})[ay] || b.aidat || 0;
+      const status = odeme
+        ? `<span class="badge badge-green">✔ Ödendi</span>`
+        : ay > ba
+          ? `<span class="badge badge-blue">İleri Dönem</span>`
+          : `<span class="badge badge-red">✘ Ödenmedi</span>`;
+      rows += `<tr>
+        <td>${monthLabel(ay)}</td>
+        <td class="money">${fmt(aidat)}</td>
+        <td>${status}</td>
+        <td>${odeme ? fmtDate(odeme.tarih) : '—'}</td>
+        <td>${odeme ? odeme.yontem||'—' : '—'}</td>
+        <td>${odeme ? fmt(odeme.tutar) : '—'}</td>
+      </tr>`;
+    });
+
+    document.getElementById('tbl-aidat').innerHTML = `
+      <thead><tr>
+        <th>Dönem</th><th>Beklenen</th><th>Durum</th><th>Ödeme Tarihi</th><th>Yöntem</th><th>Ödenen Tutar</th>
+      </tr></thead>
+      <tbody>${rows||'<tr><td colspan="6" style="color:var(--text3);text-align:center;padding:24px;">Kayıt bulunamadı</td></tr>'}</tbody>`;
+  }
+}
+
+// ── ORTAK GİDER ────────────────────────────────────
+function renderOG() {
+  const alacaklilar = DB.alacaklilar || [];
+  const dno = currentUser.daire_no;
+  const daireler = DB.daireler || [];
+  let rows = '';
+
+  if (currentUser.role === 'admin') {
+    const ogKayitlar = alacaklilar.filter(a => a.tur === 'Ortak Gider');
+    document.getElementById('og-panel-title').textContent = 'Tüm Ortak Gider Kayıtları';
+    document.getElementById('og-title-sub').textContent = ogKayitlar.length > 0 ? `${ogKayitlar.length} kayıt` : '';
+    if (ogKayitlar.length === 0) {
+      const ogTanCount = (DB.ortak_giderler||[]).length;
+      const ogHint = ogTanCount > 0
+        ? `${ogTanCount} gider tanımı yüklendi ama daire borcu oluşturulmamış`
+        : 'Ortak gider kaydı bulunamadı — bina_ortak_giderler.json yükleyin';
+      rows = `<tr><td colspan="7" style="color:var(--text3);text-align:center;padding:24px;">${ogHint}</td></tr>`;
+    } else {
+      ogKayitlar.forEach(a => {
+        const odenen = (a.odemeler||[]).reduce((s,p)=>s+p.tutar,0);
+        const kalan = Math.max(0, a.tutar - odenen);
+        const tam = a.odendi || kalan <= 0;
+        const badge = tam
+          ? '<span class="badge badge-green">✔ Ödendi</span>'
+          : odenen > 0
+            ? '<span class="badge badge-orange">⚡ Kısmi</span>'
+            : '<span class="badge badge-red">⏳ Bekliyor</span>';
+        const d = daireler.find(x => x.no == a.daire_no) || {};
+        rows += `<tr>
+          <td>Daire ${a.daire_no}</td>
+          <td>${d.isim||'—'}</td>
+          <td>${a.kisi||a.aciklama||'—'}</td>
+          <td class="money">${fmt(a.tutar)}</td>
+          <td class="money money-green">${odenen>0?fmt(odenen):'—'}</td><!-- fixed -->
+          <td class="money ${kalan>0?'money-red':''}">${kalan>0?fmt(kalan):'✔'}</td>
+          <td>${badge}</td>
+        </tr>`;
+      });
+    }
+
+    document.getElementById('tbl-og').innerHTML = `
+      <thead><tr>
+        <th>Daire</th><th>Sakin</th><th>Gider Adı</th><th>Toplam</th><th>Ödenen</th><th>Kalan</th><th>Durum</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>`;
+
+  } else {
+    // Only this daire
+    const myOG = alacaklilar.filter(a => a.tur === 'Ortak Gider' && a.daire_no == dno);
+    document.getElementById('og-panel-title').textContent = `Daire ${dno} — Ortak Gider Borçları`;
+    document.getElementById('og-title-sub').textContent = '';
+
+    if (myOG.length === 0) {
+      rows = '<tr><td colspan="5" style="color:var(--green);text-align:center;padding:24px;">✅ Ortak gider borcu bulunmuyor</td></tr>';
+    } else {
+      myOG.forEach(a => {
+        const odened = (a.odemeler||[]).reduce((s,p)=>s+p.tutar,0);
+        const kalan = Math.max(0, a.tutar - odened);
+        const tam = a.odendi || kalan <= 0;
+        const badge = tam
+          ? '<span class="badge badge-green">✔ Ödendi</span>'
+          : odened > 0
+            ? '<span class="badge badge-orange">⚡ Kısmi</span>'
+            : '<span class="badge badge-red">⏳ Bekliyor</span>';
+        rows += `<tr>
+          <td>${a.kisi||a.aciklama||'—'}</td>
+          <td class="money">${fmt(a.tutar)}</td>
+          <td class="money money-green">${odened>0?fmt(odened):'—'}</td>
+          <td class="money ${kalan>0?'money-red':''}">${kalan>0?fmt(kalan):'✔ Tamam'}</td>
+          <td>${badge}</td>
+        </tr>`;
+      });
+    }
+
+    document.getElementById('tbl-og').innerHTML = `
+      <thead><tr>
+        <th>Gider Adı</th><th>Toplam</th><th>Ödenen</th><th>Kalan</th><th>Durum</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>`;
+  }
+}
+
+// ── GELİR/GİDER ────────────────────────────────────
+function renderGelirGider() {
+  const tumGelirler = DB.gelirler || [];
+  const giderler    = DB.giderler || [];
+  const odemeler    = DB.odemeler || [];
+  const dno         = currentUser.daire_no;
+
+  // ── Aidat tahsilatları ──────────────────
+  const aidatGelirler = tumGelirler.filter(g => {
+    const tur = (g.tur || '').toLowerCase();
+    return tur === 'aidat' || tur.includes('aidat');
+  });
+
+  // ── Ortak gider tahsilatları ────────────
+  const ogGelirler = tumGelirler.filter(g => {
+    const tur = (g.tur || '').toLowerCase();
+    return tur === 'ortak giderler tahsilatı' || tur.includes('ortak gider');
+  });
+
+  // ── Diğer gelirler (her iki role gösterilir) ──
+  const digerGelirler = tumGelirler.filter(g => {
+    const tur = (g.tur || '').toLowerCase();
+    return !tur.includes('aidat') && !tur.includes('ortak gider');
+  });
+
+  // ── ÖZET KARTLAR ───────────────────────
+  const ozet = document.getElementById('tahsilat-ozet');
+  const cards = document.getElementById('tahsilat-cards');
+  ozet.style.display = 'block';
+
+  if (currentUser.role === 'admin') {
+    // Yönetici: tüm tahsilatların toplamı
+    const topAidat = aidatGelirler.reduce((s,g) => s + (g.tutar||0), 0);
+    const topOG    = ogGelirler.reduce((s,g)    => s + (g.tutar||0), 0);
+
+    cards.innerHTML = `
+      <div class="stat-card gold" style="border-radius:10px;">
+        <div class="stat-label">💳 Toplam Aidat Tahsilatı</div>
+        <div class="stat-value money" style="font-size:22px;">${fmt(topAidat)}</div>
+        <div class="stat-sub">${aidatGelirler.length} ödeme kaydı</div>
+      </div>
+      <div class="stat-card blue" style="border-radius:10px;">
+        <div class="stat-label">🔧 Ortak Gider Tahsilatı</div>
+        <div class="stat-value money" style="font-size:22px;">${fmt(topOG)}</div>
+        <div class="stat-sub">${ogGelirler.length} ödeme kaydı</div>
+      </div>`;
+  } else {
+    // Daire: tüm binanın aidat ve OG toplamları (kişisel ayrıntı yok)
+    const topAidat = odemeler.reduce((s,o) => s + (o.tutar||0), 0);
+    const alacaklilar = DB.alacaklilar || [];
+    const topOG = alacaklilar
+      .filter(a => a.tur === 'Ortak Gider')
+      .reduce((s,a) => s + (a.odemeler||[]).reduce((x,p) => x+(p.tutar||0), 0), 0);
+
+    cards.innerHTML = `
+      <div class="stat-card gold" style="border-radius:10px;">
+        <div class="stat-label">💳 Toplam Aidat Tahsilatı</div>
+        <div class="stat-value money" style="font-size:22px;">${fmt(topAidat)}</div>
+        <div class="stat-sub">Tüm daireler toplamı</div>
+      </div>
+      <div class="stat-card blue" style="border-radius:10px;">
+        <div class="stat-label">🔧 Toplam OG Tahsilatı</div>
+        <div class="stat-value money" style="font-size:22px;">${fmt(topOG)}</div>
+        <div class="stat-sub">Tüm daireler toplamı</div>
+      </div>`;
+  }
+
+  // ── GELİRLER TABLOSU (daire: sadece diğer gelirler) ──
+  const gorunenGelirler = currentUser.role === 'admin' ? tumGelirler : digerGelirler;
+  const topGelir = gorunenGelirler.reduce((s,g) => s + (g.tutar||0), 0);
+  let gRows = '';
+  gorunenGelirler.slice().reverse().forEach(g => {
+    gRows += `<tr>
+      <td>${fmtDate(g.fatura_tarihi||g.tarih)}</td>
+      <td>${g.tur||'—'}</td>
+      <td>${g.aciklama||'—'}</td>
+      <td class="money money-green">${fmt(g.tutar)}</td>
+    </tr>`;
+  });
+  const gTopRow = gorunenGelirler.length > 0 ? `
+    <tr style="border-top:2px solid var(--green);font-weight:700;background:var(--green-bg);">
+      <td colspan="3" style="color:var(--green);padding:12px 14px;">TOPLAM</td>
+      <td class="money" style="color:var(--green);padding:12px 14px;">${fmt(topGelir)}</td>
+    </tr>` : '';
+  document.getElementById('tbl-gelir').innerHTML = `
+    <thead><tr><th>Tarih</th><th>Tür</th><th>Açıklama</th><th>Tutar</th></tr></thead>
+    <tbody>${gRows||'<tr><td colspan="4" style="color:var(--text3);text-align:center;padding:24px;">Kayıt yok</td></tr>'}${gTopRow}</tbody>`;
+
+  // ── DAİRE BAZLI TAHSİLAT TABLOLARI (sadece admin) ──
+  const daireTahsilatSec = document.getElementById('daire-tahsilat-section');
+  if (currentUser.role === 'admin') {
+    daireTahsilatSec.style.display = 'block';
+    const daireler = DB.daireler || [];
+    const alacaklilar = DB.alacaklilar || [];
+
+    // Aidat tablosu: daire başına toplam ödeme
+    let aidatRows = '';
+    let aidatGenel = 0;
+    daireler.forEach(d => {
+      const dPays = odemeler.filter(o => o.daireNo == d.no);
+      const toplam = dPays.reduce((s,o) => s + (o.tutar||0), 0);
+      aidatGenel += toplam;
+      const badge = toplam > 0
+        ? `<span class="badge badge-green">✔</span>`
+        : `<span class="badge badge-red">✘</span>`;
+      aidatRows += `<tr>
+        <td>Daire ${d.no}</td>
+        <td>${d.isim||'—'}</td>
+        <td>${dPays.length} ödeme</td>
+        <td class="money money-green">${fmt(toplam)}</td>
+        <td>${badge}</td>
+      </tr>`;
+    });
+    aidatRows += `<tr style="border-top:2px solid var(--gold);font-weight:700;">
+      <td colspan="3" style="color:var(--gold2);">TOPLAM</td>
+      <td class="money" style="color:var(--gold2);">${fmt(aidatGenel)}</td>
+      <td></td>
+    </tr>`;
+    document.getElementById('tbl-daire-aidat').innerHTML = `
+      <thead><tr><th>Daire</th><th>Sakin</th><th>Kayıt</th><th>Toplam</th><th>Durum</th></tr></thead>
+      <tbody>${aidatRows}</tbody>`;
+
+    // OG tablosu: daire başına toplam OG ödemesi
+    let ogRows = '';
+    let ogGenel = 0;
+    daireler.forEach(d => {
+      const dOG = alacaklilar.filter(a => a.tur === 'Ortak Gider' && a.daire_no == d.no);
+      const toplam = dOG.reduce((s,a) => s + (a.odemeler||[]).reduce((x,p) => x+(p.tutar||0), 0), 0);
+      const beklenen = dOG.reduce((s,a) => s + (a.tutar||0), 0);
+      ogGenel += toplam;
+      const tam = beklenen > 0 && toplam >= beklenen;
+      const badge = dOG.length === 0
+        ? `<span class="badge badge-blue">—</span>`
+        : tam
+          ? `<span class="badge badge-green">✔</span>`
+          : `<span class="badge badge-orange">⚡</span>`;
+      ogRows += `<tr>
+        <td>Daire ${d.no}</td>
+        <td>${d.isim||'—'}</td>
+        <td>${dOG.length} kayıt</td>
+        <td class="money money-green">${fmt(toplam)}</td>
+        <td>${badge}</td>
+      </tr>`;
+    });
+    ogRows += `<tr style="border-top:2px solid var(--blue);font-weight:700;">
+      <td colspan="3" style="color:var(--blue);">TOPLAM</td>
+      <td class="money" style="color:var(--blue);">${fmt(ogGenel)}</td>
+      <td></td>
+    </tr>`;
+    document.getElementById('tbl-daire-og').innerHTML = `
+      <thead><tr><th>Daire</th><th>Sakin</th><th>Kayıt</th><th>Ödenen</th><th>Durum</th></tr></thead>
+      <tbody>${ogRows}</tbody>`;
+  } else {
+    daireTahsilatSec.style.display = 'none';
+  }
+
+  // ── GİDERLER TABLOSU ── tüm kullanıcılar görür
+  const filteredGiderler = giderler;
+
+  let dRows = '';
+  filteredGiderler.slice().reverse().forEach(g => {
+    dRows += `<tr>
+      <td>${fmtDate(g.fatura_tarihi||g.tarih)}</td>
+      <td>${g.tur||'—'}</td>
+      <td>${g.aciklama||'—'}</td>
+      <td class="money money-red">${fmt(g.tutar)}</td>
+    </tr>`;
+  });
+  const topGider = filteredGiderler.reduce((s,g) => s + (g.tutar||0), 0);
+  const dTopRow = filteredGiderler.length > 0 ? `
+    <tr style="border-top:2px solid var(--red);font-weight:700;background:var(--red-bg);">
+      <td colspan="3" style="color:var(--red);padding:12px 14px;">TOPLAM</td>
+      <td class="money" style="color:var(--red);padding:12px 14px;">${fmt(topGider)}</td>
+    </tr>` : '';
+  document.getElementById('tbl-gider').innerHTML = `
+    <thead><tr><th>Tarih</th><th>Tür</th><th>Açıklama</th><th>Tutar</th></tr></thead>
+    <tbody>${dRows||'<tr><td colspan="4" style="color:var(--text3);text-align:center;padding:24px;">Kayıt yok</td></tr>'}${dTopRow}</tbody>`;
+}
+
+// ── DAİRELER (admin) ────────────────────────────────
+function renderDaireler() {
+  const daireler = DB.daireler || [];
+  const odemeler = DB.odemeler || [];
+  const b = DB.bina || {};
+  const ba = thisMonth();
+  const tum_ay = monthRange(b.baslangic || ba, ba);
+
+  let rows = '';
+  daireler.forEach(d => {
+    const odediBuAy = odemeler.some(o => o.daireNo == d.no && o.ay === ba);
+    const borcluAylar = tum_ay.filter(ay => !odemeler.some(o => o.daireNo == d.no && o.ay === ay)).length;
+    const badge = odediBuAy
+      ? '<span class="badge badge-green">✔ Ödedi</span>'
+      : borcluAylar > 0
+        ? `<span class="badge badge-red">✘ ${borcluAylar} ay</span>`
+        : '<span class="badge badge-orange">⏳ Bekliyor</span>';
+
+    rows += `<tr>
+      <td>Daire ${d.no}</td>
+      <td>${d.isim||'—'}</td>
+      <td>${d.tel||'—'}</td>
+      <td>${d.email||'—'}</td>
+      <td>${badge}</td>
+    </tr>`;
+  });
+
+  document.getElementById('tbl-daireler').innerHTML = `
+    <thead><tr>
+      <th>Daire</th><th>Sakin</th><th>Telefon</th><th>E-posta</th><th>Bu Ay Durumu</th>
+    </tr></thead>
+    <tbody>${rows||'<tr><td colspan="6" style="color:var(--text3);text-align:center;padding:24px;">Daire bulunamadı</td></tr>'}</tbody>`;
+}
+
+// ── ALACAKLILAR (admin) ─────────────────────────────
+function renderAlacaklilar() {
+  const alacaklilar = (DB.alacaklilar || []).filter(a => a.tur !== 'Ortak Gider');
+  let rows = '';
+  alacaklilar.slice().reverse().forEach(a => {
+    const odened = (a.odemeler||[]).reduce((s,p)=>s+p.tutar,0);
+    const kalan = Math.max(0, a.tutar - odened);
+    const tam = a.odendi || kalan <= 0;
+    const badge = tam
+      ? '<span class="badge badge-green">✔ Tamam</span>'
+      : odened > 0
+        ? '<span class="badge badge-orange">⚡ Kısmi</span>'
+        : '<span class="badge badge-red">⏳ Bekliyor</span>';
+    rows += `<tr>
+      <td>${fmtDate(a.fatura_tarihi||a.kayit_tarihi)}</td>
+      <td>${a.tur||'—'}</td>
+      <td>${a.kisi||'—'}</td>
+      <td>${a.aciklama||'—'}</td>
+      <td class="money">${fmt(a.tutar)}</td>
+      <td class="money money-green">${odened>0?fmt(odened):'—'}</td>
+      <td class="money ${kalan>0?'money-red':''}">${kalan>0?fmt(kalan):'✔'}</td>
+      <td>${badge}</td>
+    </tr>`;
+  });
+
+  document.getElementById('tbl-alacaklilar').innerHTML = `
+    <thead><tr>
+      <th>Tarih</th><th>Grup</th><th>Kişi/Firma</th><th>Açıklama</th><th>Toplam</th><th>Ödenen</th><th>Kalan</th><th>Durum</th>
+    </tr></thead>
+    <tbody>${rows||'<tr><td colspan="8" style="color:var(--text3);text-align:center;padding:24px;">Kayıt yok</td></tr>'}</tbody>`;
+}
+
+// ════════════════════════════════════════
+//  PASSWORD CHANGE
+// ════════════════════════════════════════
+function onSifreTargetChange() {
+  // nothing extra needed
+}
+
+async function doPasswordChange() {
+  const msgEl = document.getElementById('sifre-msg');
+  msgEl.innerHTML = '';
+
+  let targetUsername;
+  if (currentUser.role === 'admin') {
+    targetUsername = document.getElementById('sifre-target').value;
+    if (!targetUsername) {
+      showMsg(msgEl, 'Lütfen kullanıcı seçin.', 'error'); return;
+    }
+  } else {
+    targetUsername = currentUser.username;
+  }
+
+  const eski  = document.getElementById('sifre-eski').value;
+  const yeni  = document.getElementById('sifre-yeni').value;
+  const tekrar = document.getElementById('sifre-tekrar').value;
+
+  const users = getUsers();
+  const user  = users[targetUsername];
+  if (!user) { showMsg(msgEl,'Kullanıcı bulunamadı.','error'); return; }
+
+  if (user.passwordHash !== hashStr(eski)) {
+    showMsg(msgEl, 'Mevcut şifre hatalı.', 'error'); return;
+  }
+  if (yeni.length < 6) {
+    showMsg(msgEl, 'Yeni şifre en az 6 karakter olmalı.', 'error'); return;
+  }
+  if (yeni !== tekrar) {
+    showMsg(msgEl, 'Yeni şifreler eşleşmiyor.', 'error'); return;
+  }
+
+  user.passwordHash = hashStr(yeni);
+  user.firstLogin = false;
+  await saveUsers(users);
+
+  // Update current user if changing own password
+  if (targetUsername === currentUser.username) {
+    currentUser.firstLogin = false;
+    document.getElementById('first-login-banner').style.display = 'none';
+  }
+
+  document.getElementById('sifre-eski').value = '';
+  document.getElementById('sifre-yeni').value = '';
+  document.getElementById('sifre-tekrar').value = '';
+
+  showMsg(msgEl, `✅ ${user.display || targetUsername} şifresi başarıyla değiştirildi.`, 'success');
+}
+
+function showMsg(el, text, type) {
+  el.className = `alert alert-${type}`;
+  el.style.display = 'block';
+  el.textContent = text;
+}
+
+// ════════════════════════════════════════
+//  FOLDER WATCHER SYSTEM
+// ════════════════════════════════════════
+let folderFiles   = {};
+let watchInterval = null;
+
+const FILE_DEFS = [
+  { name:'bina_ayarlar.json',        icon:'📋', label:'Bina Ayarları' },
+  { name:'bina_gelirler.json',       icon:'📈', label:'Gelirler' },
+  { name:'bina_giderler.json',       icon:'📉', label:'Giderler' },
+  { name:'bina_alacaklilar.json',    icon:'📋', label:'Alacaklılar' },
+  { name:'bina_ortak_giderler.json', icon:'🔧', label:'Ortak Giderler' },
+  { name:'daire_*.json',             icon:'🏠', label:'Daire Dosyaları' },
+];
+
+function classifyFile(name) {
+  const n = name.toLowerCase();
+  if (n === 'bina_kurulum.json')         return 'kurulum';
+  if (n === 'bina_ayarlar.json')         return 'ayarlar';
+  if (n === 'bina_gelirler.json')        return 'gelirler';
+  if (n === 'bina_giderler.json')        return 'giderler';
+  if (n === 'bina_ortak_giderler.json')  return 'og';
+  if (n === 'bina_alacaklilar.json')     return 'alacaklilar';
+  if (/^daire_\d+\.json$/.test(n))     return 'daire';
+  if (n === 'bina_veriler.json')         return 'legacy';
+  return 'unknown';
+}
+
+function selectFolder() {
+  document.getElementById('folder-picker').click();
+}
+
+function onFolderPicked(event) {
+  const files = Array.from(event.target.files).filter(f => f.name.endsWith('.json'));
+  if (!files.length) return;
+
+  folderFiles = {};
+  files.forEach(f => { folderFiles[f.name] = f; });
+
+  const firstPath = files[0].webkitRelativePath || files[0].name;
+  const parts = firstPath.split('/');
+  const folderName = parts.length > 1 ? parts[0] : '(Seçili Klasör)';
+
+  document.getElementById('folder-select-area').style.display = 'none';
+  document.getElementById('folder-info').style.display = 'block';
+  document.getElementById('folder-path-text').textContent = folderName;
+
+  refreshFromFolder();
+  startWatching();
+  event.target.value = '';
+}
+
+async function refreshFromFolder() {
+  if (!Object.keys(folderFiles).length) return;
+  const msgEl = document.getElementById('ayar-msg');
+  let loaded = 0, errors = 0;
+  const daireler_loaded = [];
+  const statusMap = {};
+
+  for (const [fname, file] of Object.entries(folderFiles)) {
+    const type = classifyFile(fname);
+    if (type === 'unknown') continue;
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      switch(type) {
+        case 'kurulum':
+          if (data.daireAdet && data.salt) {
+            await saveSetupConfig(data);
+            // Kullanıcıları yeniden oluştur (yoksa)
+            const existingUsers = localStorage.getItem('bina_users_v1');
+            if (!existingUsers) {
+              const users = { "yonetici": { role:"admin", daire_no:null, display:"Yönetici", passwordHash:hashStr(deriveAdminPassword(data.salt)), firstLogin:true } };
+              for (let i=1;i<=data.daireAdet;i++) {
+                users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`, passwordHash:hashStr(derivePassword(i,data.salt)), firstLogin:true };
+              }
+              await saveUsers(users);
+            }
+            statusMap['bina_kurulum.json'] = 'ok';
+          } break;
+        case 'ayarlar':
+          if (data.bina) DB.bina = data.bina;
+          statusMap['bina_ayarlar.json'] = 'ok'; break;
+        case 'gelirler':
+          DB.gelirler = Array.isArray(data) ? data : [];
+          statusMap['bina_gelirler.json'] = 'ok'; break;
+        case 'giderler':
+          DB.giderler = Array.isArray(data) ? data : [];
+          statusMap['bina_giderler.json'] = 'ok'; break;
+        case 'og': {
+          if (Array.isArray(data)) {
+            const nonOG = (DB.alacaklilar||[]).filter(a => a.tur !== 'Ortak Gider');
+            DB.alacaklilar = [...nonOG, ...data];
+          } else {
+            DB.ortak_giderler = data.og_tanimlar || [];
+            const ogAl = data.og_alacaklilar || [];
+            const nonOG = (DB.alacaklilar||[]).filter(a => a.tur !== 'Ortak Gider');
+            DB.alacaklilar = [...nonOG, ...ogAl];
+          }
+          statusMap['bina_ortak_giderler.json'] = 'ok'; break;
+        }
+        case 'alacaklilar': {
+          const nonOG = (DB.alacaklilar||[]).filter(a => a.tur === 'Ortak Gider');
+          DB.alacaklilar = [...nonOG, ...(Array.isArray(data)?data:[])];
+          statusMap['bina_alacaklilar.json'] = 'ok'; break;
+        }
+        case 'daire':
+          daireler_loaded.push(data); break;
+        case 'legacy':
+          if (data.bina)        DB.bina    = data.bina;
+          if (data.gelirler)    DB.gelirler = data.gelirler;
+          if (data.giderler)    DB.giderler = data.giderler;
+          if (data.alacaklilar) DB.alacaklilar = data.alacaklilar;
+          if (data.ortak_giderler) DB.ortak_giderler = data.ortak_giderler;
+          if (data.daireler) data.daireler.forEach(d => {
+            d.odemeler = (data.odemeler||[]).filter(o=>o.daireNo==d.no);
+            daireler_loaded.push(d);
+          });
+          break;
+      }
+      loaded++;
+    } catch(e) {
+      console.error(fname, e);
+      errors++;
+      statusMap[fname] = 'error';
+    }
+  }
+
+  if (daireler_loaded.length > 0) {
+    daireler_loaded.sort((a,b) => a.no - b.no);
+    DB.daireler = daireler_loaded;
+    DB.odemeler = [];
+    daireler_loaded.forEach(d => (d.odemeler||[]).forEach(o => DB.odemeler.push(o)));
+    statusMap['daire_*.json'] = 'ok';
+  }
+
+  if (DB.bina) {
+    document.getElementById('bina-adi-topbar').textContent = DB.bina.adi || 'Bina Yönetim Sistemi';
+    document.getElementById('topbar-sub').textContent = `${DB.bina.daire||0} Daire • Aylık Aidat: ${fmt(DB.bina.aidat||0)}`;
+  }
+
+  const now = new Date();
+  const el = document.getElementById('last-refresh-time');
+  if (el) el.textContent =
+    `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+
+  renderFileStatusGrid(statusMap);
+
+  // Save to localStorage so all users share the same data
+  saveDBToStorage();
+
+  if (msgEl) showMsg(msgEl,
+    errors > 0 ? `⚠️ ${loaded} dosya yüklendi, ${errors} dosyada hata var.`
+               : `✅ ${loaded} dosya yüklendi — ${daireler_loaded.length} daire verisi dahil. Tüm kullanıcılar bu veriyi görür.`,
+    errors > 0 ? 'error' : 'success'
+  );
+}
+
+function renderFileStatusGrid(statusMap) {
+  const grid = document.getElementById('file-status-grid');
+  if (!grid) return;
+  grid.innerHTML = FILE_DEFS.map(def => {
+    const key = def.name.includes('*') ? 'daire_*.json' : def.name;
+    const st  = statusMap[key];
+    let extra = '';
+    if (def.name.includes('*')) {
+      const cnt = Object.keys(folderFiles).filter(f => classifyFile(f)==='daire').length;
+      extra = cnt > 0 ? ` (${cnt} dosya)` : '';
+    }
+    let color, icon2;
+    if      (st === 'error') { color='var(--red)';    icon2='❌'; }
+    else if (st === 'ok')    { color='var(--green)';  icon2='✅'; }
+    else                     { color='var(--text3)';  icon2='○';  }
+    return `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;display:flex;align-items:center;gap:8px;">
+      <span style="font-size:16px;">${def.icon}</span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:11px;color:${color};font-weight:600;">${def.label}${extra}</div>
+        <div style="font-size:10px;color:var(--text3);font-family:'IBM Plex Mono',monospace;">${def.name}</div>
+      </div>
+      <span style="font-size:14px;">${icon2}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── AYARLAR ────────────────────────────────────────
+function renderAyarlar() {
+  const bar  = document.getElementById('shared-data-bar');
+  const info = document.getElementById('shared-data-info');
+  const meta = getDBMeta();
+  if (meta) {
+    bar.style.display = 'flex';
+    const d = new Date(meta.savedAt);
+    const zaman = `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    info.textContent = `${meta.binaAdi || 'Bina'} • ${meta.daireCount} daire • Son kayıt: ${zaman}`;
+  } else {
+    bar.style.display = 'none';
+  }
+
+  // Tehlike bölgesini admin için göster
+  const dz = document.getElementById('danger-zone-panel');
+  if (dz) dz.style.display = (currentUser && currentUser.role === 'admin') ? 'block' : 'none';
+  const sp = document.getElementById('sifre-goruntule-panel');
+  if (sp) sp.style.display = (currentUser && currentUser.role === 'admin') ? 'block' : 'none';
+
+  // Kurulum bilgisi (admin)
+  const cfg = getSetupConfig();
+  if (cfg && currentUser && currentUser.role === 'admin') {
+    const setupInfo = document.getElementById('setup-info-bar');
+    if (setupInfo) {
+      const dt = new Date(cfg.createdAt);
+      setupInfo.innerHTML = `<span style="font-size:18px;">⚙️</span>
+        <div style="flex:1;font-size:12px;color:var(--text2);">
+          Kurulum: <strong style="color:var(--gold2);">${cfg.daireAdet} daire</strong> •
+          ${String(dt.getDate()).padStart(2,'0')}.${String(dt.getMonth()+1).padStart(2,'0')}.${dt.getFullYear()} tarihinde kuruldu
+        </div>`;
+      setupInfo.style.display = 'flex';
+    }
+  }
+}
+
+function doClearDB() {
+  if (!currentUser || currentUser.role !== 'admin') return;
+  if (!confirm('Paylaşılan veriyi silmek istediğinizden emin misiniz? Tüm kullanıcılar demo veriye dönecek.')) return;
+  clearDBStorage();
+  initDemoData();
+  renderAyarlar();
+  // Reset folder state
+  folderFiles = {};
+  stopWatching();
+  document.getElementById('folder-select-area').style.display = 'block';
+  document.getElementById('folder-info').style.display = 'none';
+  const msgEl = document.getElementById('ayar-msg');
+  if (msgEl) showMsg(msgEl, '🗑️ Paylaşılan veri temizlendi.', 'success');
+}
+
+function startWatching() {
+  document.getElementById('watch-indicator').style.display = 'flex';
+  document.getElementById('btn-stop-watch').style.display  = 'inline-block';
+  if (watchInterval) clearInterval(watchInterval);
+  watchInterval = setInterval(refreshFromFolder, 30000);
+}
+
+function stopWatching() {
+  if (watchInterval) { clearInterval(watchInterval); watchInterval = null; }
+  document.getElementById('watch-indicator').style.display = 'none';
+  document.getElementById('btn-stop-watch').style.display  = 'none';
+}
+
+// ════════════════════════════════════════
+//  HELPER: Month range
+// ════════════════════════════════════════
+function monthRange(start, end) {
+  if (!start) return [];
+  const result = [];
+  let [y, m] = start.split('-').map(Number);
+  const [ey, em] = (end||thisMonth()).split('-').map(Number);
+  while (y < ey || (y === ey && m <= em)) {
+    result.push(`${y}-${String(m).padStart(2,'0')}`);
+    m++;
+    if (m > 12) { m = 1; y++; }
+  }
+  return result;
+}
+
+
+// ════════════════════════════════════════
+//  ŞİFRE TÜRETİCİ — deterministik, daire no'ya göre
+// ════════════════════════════════════════
+function derivePassword(no, salt) {
+  // salt = kurulum sırasında üretilen random string
+  const raw = `${salt}-daire${no}`;
+  let h = 5381;
+  for (let i = 0; i < raw.length; i++) {
+    h = ((h << 5) + h) ^ raw.charCodeAt(i);
+    h |= 0;
+  }
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  let pw = '';
+  let seed = Math.abs(h);
+  for (let i = 0; i < 8; i++) {
+    pw += chars[seed % chars.length];
+    seed = Math.floor(seed / chars.length) + (seed * 17 + i * 31);
+    seed = Math.abs(seed % 999983);
+  }
+  return pw;
+}
+
+function deriveAdminPassword(salt) {
+  const raw = `${salt}-yonetici-admin`;
+  let h = 9973;
+  for (let i = 0; i < raw.length; i++) {
+    h = ((h << 5) + h) ^ raw.charCodeAt(i);
+    h |= 0;
+  }
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  let pw = '';
+  let seed = Math.abs(h);
+  for (let i = 0; i < 10; i++) {
+    pw += chars[seed % chars.length];
+    seed = Math.floor(seed / chars.length) + (seed * 19 + i * 37);
+    seed = Math.abs(seed % 999983);
+  }
+  return pw;
+}
+
+function generateRandomSalt() {
+  const arr = new Uint8Array(12);
+  crypto.getRandomValues(arr);
+  return Array.from(arr).map(b => b.toString(36)).join('');
+}
+
+// ════════════════════════════════════════
+//  SETUP — İLK KURULUM
+// ════════════════════════════════════════
+const SETUP_KEY = 'bina_setup_v1';
+
+async function getSetupConfig() {
+  const data = await fbLoadSetup();
+  if (data) { try{localStorage.setItem(SETUP_KEY,JSON.stringify(data));}catch(e){} return data; }
+  try { const r=localStorage.getItem(SETUP_KEY); return r?JSON.parse(r):null; } catch{return null;}
+}
+
+async function saveSetupConfig(cfg) {
+  try { localStorage.setItem(SETUP_KEY, JSON.stringify(cfg)); } catch(e) {}
+  await fbSaveSetup(cfg);
+}
+
+async function doSetup() {
+  const n = parseInt(document.getElementById('setup-daire-adet').value);
+  const errEl = document.getElementById('setup-error');
+  if (!n || n < 1 || n > 500) {
+    errEl.textContent = 'Lütfen 1 ile 500 arasında geçerli bir daire adedi girin.';
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+
+  const salt = generateRandomSalt();
+  const ADMIN_PW = '123456'; // Yönetici ilk giriş şifresi sabittir
+
+  // Build users
+  const users = {
+    "yonetici": {
+      role: "admin", daire_no: null, display: "Yönetici",
+      passwordHash: hashStr(ADMIN_PW), firstLogin: true
+    }
+  };
+  for (let i = 1; i <= n; i++) {
+    const pw = derivePassword(i, salt);
+    users[`daire${i}`] = {
+      role: "daire", daire_no: i, display: `Daire ${i}`,
+      passwordHash: hashStr(pw), firstLogin: true
+    };
+  }
+
+  // Save config + users
+  await saveSetupConfig({ daireAdet: n, salt, createdAt: new Date().toISOString() });
+  await saveUsers(users);
+
+  // Show result as table
+  const rows = document.getElementById('setup-result-rows');
+  let html = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
+    <thead>
+      <tr style="background:var(--bg4);">
+        <th style="padding:8px 12px;text-align:left;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Kullanıcı Adı</th>
+        <th style="padding:8px 12px;text-align:left;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Şifre</th>
+        <th style="padding:8px 12px;text-align:left;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">WhatsApp</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--border);background:rgba(201,168,76,.06);">
+        <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--gold2);font-weight:700;">yonetici</td>
+        <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--gold2);">123456</td>
+        <td style="padding:8px 12px;color:var(--text3);font-size:11px;">—</td>
+      </tr>`;
+  for (let i = 1; i <= n; i++) {
+    const pw = derivePassword(i, salt);
+    html += `<tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--text);">daire${i}</td>
+      <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--gold2);">${pw}</td>
+      <td style="padding:8px 12px;"></td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+  rows.innerHTML = html;
+  document.getElementById('setup-result').style.display = 'block';
+
+  // PDF şifre tablosunu da hemen üret
+  const users_for_pdf = getUsers();
+  const cfg_for_pdf = getSetupConfig();
+  if (cfg_for_pdf) {
+    setTimeout(() => generateSifrePDF(cfg_for_pdf, users_for_pdf), 400);
+  }
+}
+
+
+// ════════════════════════════════════════
+//  OTOMATİK KURULUM (klasörden daire sayısı alınca)
+// ════════════════════════════════════════
+async function doSetupOtomatik(daireAdet, folderFilesRef) {
+  const salt = generateRandomSalt();
+
+  // Kullanıcıları oluştur
+  const users = {
+    "yonetici": { role:"admin", daire_no:null, display:"Yönetici",
+      passwordHash: hashStr('123456'), firstLogin: true }
+  };
+  for (let i = 1; i <= daireAdet; i++) {
+    const pw = derivePassword(i, salt);
+    users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`,
+      passwordHash: hashStr(pw), firstLogin: true };
+  }
+
+  const cfg = { daireAdet, salt, createdAt: new Date().toISOString() };
+  showLoadingOverlay('Kullanıcılar kaydediliyor...');
+  await saveSetupConfig(cfg);
+  await saveUsers(users);
+  hideLoadingOverlay();
+
+  // Veri dosyalarını yükle
+  if (folderFilesRef) await refreshFromFolderFiles(folderFilesRef);
+
+  // Setup overlay'i kapat, login'e geç
+  document.getElementById('setup-overlay').style.display = 'none';
+  document.getElementById('login-page').style.display = 'flex';
+
+  // PDF üret
+  setTimeout(() => generateSifrePDF(cfg, users), 500);
+}
+
+// ════════════════════════════════════════
+//  PDF ŞİFRE TABLOSU ÜRETİCİ
+// ════════════════════════════════════════
+function generateSifrePDF(cfg, users) {
+  // Şifreleri derle
+  const satirlar = [];
+  satirlar.push({ no: 'Yönetici', kullanici: 'yonetici', sifre: '123456', not: 'İlk girişte değiştirin' });
+  for (let i = 1; i <= cfg.daireAdet; i++) {
+    satirlar.push({ no: i, kullanici: `daire${i}`, sifre: derivePassword(i, cfg.salt), not: '' });
+  }
+
+  // HTML → print penceresi yöntemi
+  const now = new Date();
+  const tarih = `${String(now.getDate()).padStart(2,'0')}.${String(now.getMonth()+1).padStart(2,'0')}.${now.getFullYear()}`;
+  const binaAdi = (DB.bina && DB.bina.adi) || 'Bina Yönetim Sistemi';
+
+  const satirHTML = satirlar.map(s => `
+    <tr>
+      <td>${s.no}</td>
+      <td>${s.kullanici}</td>
+      <td style="font-family:monospace;letter-spacing:1px;">${s.sifre}</td>
+      <td style="color:#888;font-size:11px;">${s.not}</td>
+    </tr>`).join('');
+
+  const html = `<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Bina Giriş Şifreleri — ${binaAdi}</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 30px; color: #111; }
+  h1 { font-size: 20px; margin-bottom: 4px; }
+  .sub { font-size: 12px; color: #666; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #1e2535; color: #fff; padding: 9px 12px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
+  td { padding: 8px 12px; border-bottom: 1px solid #e0e0e0; }
+  tr:nth-child(even) td { background: #f8f8f8; }
+  tr:first-child td { background: #fff8e1; font-weight: bold; }
+  .uyari { background: #fff3cd; border: 1px solid #ffc107; border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #664d03; margin-top: 20px; }
+  .footer { margin-top: 24px; font-size: 11px; color: #999; text-align: right; }
+  @media print { body { padding: 15px; } }
+</style>
+</head>
+<body>
+<h1>🏢 ${binaAdi} — Giriş Şifreleri</h1>
+<div class="sub">Kurulum tarihi: ${tarih} &nbsp;|&nbsp; Toplam daire: ${cfg.daireAdet}</div>
+<table>
+  <thead><tr><th>Daire No</th><th>Kullanıcı Adı</th><th>Şifre</th><th>Not</th></tr></thead>
+  <tbody>${satirHTML}</tbody>
+</table>
+<div class="uyari">
+  ⚠️ <strong>Gizli Belge:</strong> Bu belge yetkisiz kişilerle paylaşılmamalıdır.
+  Kullanıcıların ilk girişte şifrelerini değiştirmeleri önerilir.
+</div>
+<div class="footer">Bina Yönetim Portalı • ${tarih}</div>
+</body>
+</html>`;
+
+  const pw = window.open('', '_blank', 'width=800,height=700');
+  if (!pw) { alert('Lütfen açılır pencere engelini kaldırın ve tekrar deneyin.'); return; }
+  pw.document.write(html);
+  pw.document.close();
+  pw.focus();
+  setTimeout(() => { pw.print(); }, 600);
+}
+
+function downloadKurulumDosyasi() {
+  const cfg = getSetupConfig();
+  if (!cfg) return;
+  const blob = new Blob([JSON.stringify(cfg, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'bina_kurulum.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+async function loadKurulumDosyasiSetup(event) {
+  // Setup ekranında kurulum dosyası yükleme
+  const file = event.target.files[0];
+  const msgEl = document.getElementById('setup-kurulum-yukleme-msg');
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    try {
+      const cfg = JSON.parse(e.target.result);
+      if (!cfg.daireAdet || !cfg.salt) throw new Error('Geçersiz');
+      await saveSetupConfig(cfg);
+      const users = { "yonetici": { role:"admin", daire_no:null, display:"Yönetici",
+        passwordHash: hashStr('123456'), firstLogin: false } };
+      for (let i = 1; i <= cfg.daireAdet; i++) {
+        users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`,
+          passwordHash: hashStr(derivePassword(i, cfg.salt)), firstLogin: false };
+      }
+      await saveUsers(users);
+      msgEl.style.display = 'block';
+      msgEl.style.color = 'var(--green)';
+      msgEl.textContent = `✅ ${cfg.daireAdet} daireli kurulum yüklendi.`;
+      setTimeout(() => {
+        document.getElementById('setup-overlay').style.display = 'none';
+        document.getElementById('login-page').style.display = 'flex';
+      }, 1000);
+    } catch(err) {
+      msgEl.style.display = 'block';
+      msgEl.style.color = 'var(--red)';
+      msgEl.textContent = '❌ Geçersiz kurulum dosyası.';
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+async function loadKurulumDosyasi(event) {
+  const file = event.target.files[0];
+  const msgEl = document.getElementById('kurulum-yukleme-msg');
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    try {
+      const cfg = JSON.parse(e.target.result);
+      if (!cfg.daireAdet || !cfg.salt) throw new Error('Geçersiz dosya');
+      await saveSetupConfig(cfg);
+      // Kullanıcıları oluştur
+      const users = { "yonetici": { role:"admin", daire_no:null, display:"Yönetici", passwordHash:hashStr('123456'), firstLogin:false } };
+      for (let i=1;i<=cfg.daireAdet;i++) {
+        users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`, passwordHash:hashStr(derivePassword(i,cfg.salt)), firstLogin:false };
+      }
+      await saveUsers(users);
+      msgEl.style.display = 'block';
+      msgEl.style.color = 'var(--green)';
+      msgEl.textContent = `✅ ${cfg.daireAdet} daireli kurulum yüklendi. Şimdi giriş yapabilirsiniz.`;
+      document.getElementById('setup-overlay').style.display = 'none';
+      document.getElementById('login-page').style.display = 'flex';
+    } catch(err) {
+      msgEl.style.display = 'block';
+      msgEl.style.color = 'var(--red)';
+      msgEl.textContent = '❌ Geçersiz kurulum dosyası.';
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// Setup klasör seçim adımı
+let setupFolderFiles = {};
+
+async function onSetupFolderPicked(event) {
+  const files = Array.from(event.target.files).filter(f => f.name.endsWith('.json'));
+  setupFolderFiles = {};
+  files.forEach(f => { setupFolderFiles[f.name] = f; });
+
+  const firstPath = (files[0] && files[0].webkitRelativePath) || (files[0] && files[0].name) || '';
+  const parts = firstPath.split('/');
+  const folderName = parts.length > 1 ? parts[0] : '(Seçili Klasör)';
+
+  const msgEl = document.getElementById('setup-klasor-secildi');
+  msgEl.style.display = 'block';
+  msgEl.textContent = '✅ Klasör seçildi: ' + folderName;
+
+  // bina_kurulum.json var mı?
+  const kurulumFile = setupFolderFiles['bina_kurulum.json'];
+  const infoEl = document.getElementById('setup-klasor-kurulum-bulundu');
+  if (kurulumFile) {
+    infoEl.style.display = 'block';
+    infoEl.innerHTML = '📋 <strong>bina_kurulum.json bulundu!</strong> Bu dosyayla kurulum geri yüklenecek. Devam butonuna basın.';
+  } else {
+    infoEl.style.display = 'none';
+  }
+  // Kurulum.json yoksa daire sayısını otomatik bul
+  if (!kurulumFile) {
+    const ayarlarFile = setupFolderFiles['bina_ayarlar.json'];
+    const daireDosyalari = Object.keys(setupFolderFiles).filter(f => /^daire_\d+\.json$/.test(f));
+    let autoCount = 0;
+    if (ayarlarFile) {
+      try {
+        const txt = await ayarlarFile.text();
+        const ay = JSON.parse(txt);
+        if (ay.bina && ay.bina.daire) autoCount = parseInt(ay.bina.daire);
+      } catch(e) {}
+    }
+    if (!autoCount && daireDosyalari.length > 0) {
+      autoCount = daireDosyalari.length;
+    }
+    if (autoCount > 0) {
+      infoEl.style.display = 'block';
+      infoEl.innerHTML = `🏠 <strong>${autoCount} daire tespit edildi.</strong> Kurulum dosyası bulunamadı — otomatik oluşturulacak. Devam butonuna basın.`;
+      document.getElementById('setup-folder-picker').dataset.autoCount = autoCount;
+    }
+  }
+  document.getElementById('btn-setup-devam').style.display = 'block';
+  event.target.value = '';
+}
+
+async function setupKlasorDevam() {
+  // Seçilen klasördeki folderFiles'ı ana sisteme aktar
+  Object.assign(folderFiles, setupFolderFiles);
+
+  // bina_kurulum.json varsa yükle
+  const kurulumFile = setupFolderFiles['bina_kurulum.json'];
+  if (kurulumFile) {
+    try {
+      const text = await kurulumFile.text();
+      const cfg = JSON.parse(text);
+      if (cfg.daireAdet && cfg.salt) {
+        await saveSetupConfig(cfg);
+        const existingUsers = localStorage.getItem('bina_users_v1');
+        if (!existingUsers) {
+          const users = { "yonetici": { role:"admin", daire_no:null, display:"Yönetici", passwordHash:hashStr('123456'), firstLogin:false } };
+          for (let i=1;i<=cfg.daireAdet;i++) {
+            users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`, passwordHash:hashStr(derivePassword(i,cfg.salt)), firstLogin:false };
+          }
+          await saveUsers(users);
+        }
+        // Diğer dosyaları da yükle
+        await refreshFromFolderFiles(setupFolderFiles);
+        document.getElementById('setup-overlay').style.display = 'none';
+        document.getElementById('login-page').style.display = 'flex';
+        return;
+      }
+    } catch(e) { console.error('kurulum.json parse error', e); }
+  }
+
+  // Kurulum dosyası yoksa: daire sayısını otomatik tespit et ve kur
+  const picker = document.getElementById('setup-folder-picker');
+  let autoCount = parseInt(picker.dataset.autoCount || '0');
+
+  // bina_ayarlar.json veya daire_*.json'dan daire sayısını bul
+  if (!autoCount) {
+    const ayarlarFile2 = setupFolderFiles['bina_ayarlar.json'];
+    if (ayarlarFile2) {
+      try {
+        const txt2 = await ayarlarFile2.text();
+        const ay2 = JSON.parse(txt2);
+        if (ay2.bina && ay2.bina.daire) autoCount = parseInt(ay2.bina.daire);
+      } catch(e) {}
+    }
+    if (!autoCount) {
+      autoCount = Object.keys(setupFolderFiles).filter(f => /^daire_\d+\.json$/.test(f)).length;
+    }
+  }
+
+  if (autoCount > 0) {
+    // Otomatik kurulum yap
+    await doSetupOtomatik(autoCount, setupFolderFiles);
+    return;
+  }
+
+  // Daire sayısı bulunamadı: manuel forma geç
+  document.getElementById('setup-step-klasor').style.display = 'none';
+  document.getElementById('setup-step-form').style.display = 'block';
+}
+
+function setupAtlaKlasor() {
+  document.getElementById('setup-step-klasor').style.display = 'none';
+  document.getElementById('setup-step-form').style.display = 'block';
+}
+
+// refreshFromFolder'ın dosya nesneleri alan versiyonu
+async function refreshFromFolderFiles(files) {
+  const daireler_loaded = [];
+  for (const [fname, file] of Object.entries(files)) {
+    const type = classifyFile(fname);
+    if (type === 'unknown' || type === 'kurulum') continue;
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      switch(type) {
+        case 'ayarlar': if (data.bina) DB.bina = data.bina; break;
+        case 'gelirler': DB.gelirler = Array.isArray(data) ? data : []; break;
+        case 'giderler': DB.giderler = Array.isArray(data) ? data : []; break;
+        case 'og': {
+          if (Array.isArray(data)) {
+            const nonOG = (DB.alacaklilar||[]).filter(a => a.tur !== 'Ortak Gider');
+            DB.alacaklilar = [...nonOG, ...data];
+          } else {
+            const ogAl = data.og_alacaklilar || [];
+            const nonOG = (DB.alacaklilar||[]).filter(a => a.tur !== 'Ortak Gider');
+            DB.alacaklilar = [...nonOG, ...ogAl];
+          }
+          break;
+        }
+        case 'alacaklilar': {
+          const nonOG = (DB.alacaklilar||[]).filter(a => a.tur === 'Ortak Gider');
+          DB.alacaklilar = [...nonOG, ...(Array.isArray(data)?data:[])];
+          break;
+        }
+        case 'daire': daireler_loaded.push(data); break;
+        case 'legacy':
+          if (data.bina) DB.bina = data.bina;
+          if (data.gelirler) DB.gelirler = data.gelirler;
+          if (data.giderler) DB.giderler = data.giderler;
+          if (data.alacaklilar) DB.alacaklilar = data.alacaklilar;
+          if (data.daireler) data.daireler.forEach(d => daireler_loaded.push(d));
+          break;
+      }
+    } catch(e) { console.error('file read error', fname, e); }
+  }
+  if (daireler_loaded.length > 0) {
+    DB.daireler = daireler_loaded.sort((a,b) => a.no - b.no);
+    const allOdemeler = [];
+    daireler_loaded.forEach(d => { if (d.odemeler) allOdemeler.push(...d.odemeler); });
+    if (allOdemeler.length > 0) DB.odemeler = allOdemeler;
+  }
+  saveDBToStorage();
+}
+
+function finishSetup() {
+  document.getElementById('setup-overlay').style.display = 'none';
+  document.getElementById('login-page').style.display = 'flex';
+}
+
+// ════════════════════════════════════════
+//  TEHLİKE BÖLGESİ — VERİ SİLME
+// ════════════════════════════════════════
+function doSilTumVeriler() {
+  if (!currentUser || currentUser.role !== 'admin') return;
+  if (!confirm('⚠️ TÜM BİNA VERİLERİ SİLİNECEK!\n\nAidatlar, ödemeler, gelirler, giderler, daire bilgileri silinir.\nKullanıcılar ve şifreler korunur.\n\nDevam etmek istediğinizden emin misiniz?')) return;
+  clearDBStorage();
+  initDemoData();
+  folderFiles = {};
+  stopWatching();
+  document.getElementById('folder-select-area').style.display = 'block';
+  document.getElementById('folder-info').style.display = 'none';
+  const el = document.getElementById('danger-msg');
+  showMsg(el, '🗑️ Tüm bina verileri silindi. Demo veriye dönüldü.', 'success');
+  el.style.display = 'block';
+}
+
+function doSilKullanicilar() {
+  if (!currentUser || currentUser.role !== 'admin') return;
+  if (!confirm('⚠️ TÜM KULLANICI ŞİFRELERİ SIFIRLANACAK!\n\nKullanıcılar kurulum sırasında belirlenen ilk şifrelerine döner.\n\nDevam etmek istediğinizden emin misiniz?')) return;
+  localStorage.removeItem('bina_users_v1');
+  const el = document.getElementById('danger-msg');
+  showMsg(el, '👤 Kullanıcı şifreleri kurulum şifrelerine sıfırlandı.', 'success');
+  el.style.display = 'block';
+}
+
+function buildSifrelerTable(cfg) {
+  const users = getUsers();
+  const daireler = DB.daireler || [];
+  let html = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
+    <thead>
+      <tr style="background:var(--bg4);">
+        <th style="padding:8px 12px;text-align:left;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Kullanıcı Adı</th>
+        <th style="padding:8px 12px;text-align:left;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Sakin</th>
+        <th style="padding:8px 12px;text-align:left;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Telefon</th>
+        <th style="padding:8px 12px;text-align:left;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">Şifre</th>
+        <th style="padding:8px 12px;text-align:left;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;">WhatsApp</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--border);background:rgba(201,168,76,.06);">
+        <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--gold2);font-weight:700;">yonetici</td>
+        <td style="padding:8px 12px;color:var(--text2);">Yönetici</td>
+        <td style="padding:8px 12px;color:var(--text3);">—</td>
+        <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--gold2);">⚠️ Değiştirildi</td>
+        <td style="padding:8px 12px;">—</td>
+      </tr>`;
+  for (let i = 1; i <= cfg.daireAdet; i++) {
+    const pw = derivePassword(i, cfg.salt);
+    const d = daireler.find(x => x.no === i) || {};
+    const tel = d.tel ? d.tel.replace(/[^0-9+]/g,'') : '';
+    const isim = d.isim || '';
+    const msg = encodeURIComponent(`Merhaba, bina yönetim portalı giriş bilgileriniz:
+Kullanıcı adı: daire${i}
+Şifre: ${pw}
+İlk girişte şifrenizi değiştirmeniz önerilir.`);
+    const wpBtn = tel
+      ? `<a href="https://wa.me/${tel.startsWith('+') ? tel.substring(1) : '90'+tel.replace(/^0/,'')}?text=${msg}" target="_blank"
+           style="display:inline-block;background:var(--green-bg);border:1px solid var(--green);color:var(--green);border-radius:6px;padding:4px 10px;font-size:11px;font-family:'Sora',sans-serif;text-decoration:none;">📲 Gönder</a>`
+      : `<span style="color:var(--text3);font-size:11px;">Tel yok</span>`;
+    html += `<tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--text);">daire${i}</td>
+      <td style="padding:8px 12px;color:var(--text2);">${isim||'—'}</td>
+      <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--text3);font-size:12px;">${d.tel||'—'}</td>
+      <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--gold2);">${pw}</td>
+      <td style="padding:8px 12px;">${wpBtn}</td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+  return html;
+}
+
+
+// ════════════════════════════════════════
+//  AİDAT HATIRLATMA — WhatsApp (ayın 25'i geçtiyse)
+// ════════════════════════════════════════
+function sendAidatHatirlatma() {
+  if (!currentUser || currentUser.role !== 'admin') return;
+  const b = DB.bina || {};
+  const odemeler = DB.odemeler || [];
+  const daireler = DB.daireler || [];
+  const ba = thisMonth();
+  const today = new Date();
+
+  // Ayın 25'ine kadar ödeme yapmamış daireler (bu ay)
+  const gecikmisDaireler = daireler.filter(d => {
+    const odedi = odemeler.some(o => o.daireNo == d.no && o.ay === ba);
+    return !odedi;
+  });
+
+  if (gecikmisDaireler.length === 0) {
+    alert('✅ Bu ay tüm daireler ödeme yapmış, hatırlatma gerekmiyor.');
+    return;
+  }
+
+  const withPhone = gecikmisDaireler.filter(d => d.tel);
+  const noPhone   = gecikmisDaireler.filter(d => !d.tel);
+
+  let uyari = '';
+  if (noPhone.length > 0) {
+    uyari = `\n\nNot: ${noPhone.map(d=>'Daire '+d.no).join(', ')} için telefon numarası kayıtlı değil, mesaj gönderilemeyecek.`;
+  }
+
+  if (withPhone.length === 0) {
+    alert('Ödeme yapmamış dairelerin hiçbirinde telefon numarası kayıtlı değil. Daireler bölümünden telefon ekleyin.' + uyari);
+    return;
+  }
+
+  const konfirm = confirm(`📲 ${withPhone.length} daireye WhatsApp hatırlatma gönderilecek:\n${withPhone.map(d=>'• Daire '+d.no+(d.isim?' ('+d.isim+')':'')).join('\n')}${uyari}\n\nDevam etmek istiyor musunuz?`);
+  if (!konfirm) return;
+
+  withPhone.forEach((d, idx) => {
+    const tel = d.tel.replace(/[^0-9+]/g,'');
+    const intl = tel.startsWith('+') ? tel.substring(1) : '90'+tel.replace(/^0/,'');
+    const ay = monthLabel(ba);
+    const aidat = fmt((b.ozel_aidatlar||{})[ba] || b.aidat || 0);
+    const msg = encodeURIComponent(
+      `Sayın ${d.isim||('Daire '+d.no+' sakini')},\n\n${ay} ayı aidat ödemeleriniz (${aidat}) henüz sistemimize yansımamıştır.\n\nÖdemenizi gerçekleştirdiyseniz lütfen bu uyarıyı dikkate almayın.\n\nBina Yönetimi`
+    );
+    setTimeout(() => window.open(`https://wa.me/${intl}?text=${msg}`, '_blank'), idx * 700);
+  });
+}
+
+function sendAllWhatsapp() {
+  if (!currentUser || currentUser.role !== 'admin') return;
+  const cfg = getSetupConfig();
+  if (!cfg) return;
+  const daireler = DB.daireler || [];
+  const withPhone = [];
+  for (let i = 1; i <= cfg.daireAdet; i++) {
+    const d = daireler.find(x => x.no === i) || {};
+    if (d.tel) withPhone.push({ no: i, tel: d.tel, pw: derivePassword(i, cfg.salt) });
+  }
+  if (withPhone.length === 0) {
+    alert('Telefon numarası kayıtlı daire bulunamadı. Daireler bölümünden telefon numaralarını ekleyin.');
+    return;
+  }
+  if (!confirm(`${withPhone.length} daireye WhatsApp mesajı gönderilecek. Her daire için ayrı pencere açılacak. Devam?`)) return;
+  withPhone.forEach((d, idx) => {
+    const tel = d.tel.replace(/[^0-9+]/g,'');
+    const intl = tel.startsWith('+') ? tel.substring(1) : '90'+tel.replace(/^0/,'');
+    const msg = encodeURIComponent(`Merhaba, bina yönetim portalı giriş bilgileriniz:
+Kullanıcı adı: daire${d.no}
+Şifre: ${d.pw}
+İlk girişte şifrenizi değiştirmeniz önerilir.`);
+    setTimeout(() => window.open(`https://wa.me/${intl}?text=${msg}`, '_blank'), idx * 600);
+  });
+}
+
+function toggleKurulumSifreleri() {
+  if (!currentUser || currentUser.role !== 'admin') return;
+  const container = document.getElementById('kurulum-sifreler-container');
+  const btn = document.getElementById('btn-sifre-goster');
+  if (!container) return;
+  const isVisible = container.style.display !== 'none';
+  if (isVisible) {
+    container.style.display = 'none';
+    btn.textContent = '👁 Şifreleri Göster';
+    return;
+  }
+  const cfg = getSetupConfig();
+  if (!cfg) {
+    container.style.display = 'block';
+    document.getElementById('kurulum-sifreler-list').innerHTML = '<p style="color:var(--text3);font-size:12px;">Kurulum şifrelerine erişilemiyor. Salt değeri mevcut değil.</p>';
+    btn.textContent = '🙈 Gizle';
+    return;
+  }
+  document.getElementById('kurulum-sifreler-list').innerHTML = buildSifrelerTable(cfg);
+  container.style.display = 'block';
+  btn.textContent = '🙈 Gizle';
+}
+
+async function doSilTamamen() {
+  if (!currentUser || currentUser.role !== 'admin') return;
+  if (!confirm('💣 HER ŞEY SİLİNECEK!\n\nBina verileri, kullanıcılar, şifreler ve kurulum ayarları tamamen kaldırılır.\nPortal yeniden ilk kurulum ekranına döner.\n\nBu işlem GERİ ALINAMAZ. Devam?')) return;
+  clearDBStorage();
+  localStorage.removeItem('bina_users_v1');
+  localStorage.removeItem(SETUP_KEY);
+  location.reload();
+}
+
+
+// ════════════════════════════════════════
+//  INIT — kurulum / giriş ekranı kararı
+// ════════════════════════════════════════
+(async function() {
+  showLoadingOverlay('Sistem başlatılıyor...');
+  const cfg = await getSetupConfig();
+  hideLoadingOverlay();
+  if (!cfg) {
+    // İlk açılış: klasör seçim adımını göster
+    document.getElementById('setup-overlay').style.display = 'flex';
+    document.getElementById('setup-step-klasor').style.display = 'block';
+    document.getElementById('setup-step-form').style.display   = 'none';
+    document.getElementById('login-page').style.display        = 'none';
+  } else {
+    // Kurulum var: login ekranını göster
+    document.getElementById('setup-overlay').style.display = 'none';
+    document.getElementById('login-page').style.display   = 'flex';
+    if (getDBMeta()) {
+      const n=document.getElementById('login-shared-notice');
+      if(n) n.style.display = 'block';
+    }
+  }
+})();
+// ── window atamaları (module scope → global erişim) ──
+window.doClearDB = doClearDB;
+window.doLogin = doLogin;
+window.doLogout = doLogout;
+window.doPasswordChange = doPasswordChange;
+window.doSetup = doSetup;
+window.doSilKullanicilar = doSilKullanicilar;
+window.doSilTamamen = doSilTamamen;
+window.doSilTumVeriler = doSilTumVeriler;
+window.doZorunluSifreChange = doZorunluSifreChange;
+window.downloadKurulumDosyasi = downloadKurulumDosyasi;
+window.finishSetup = finishSetup;
+window.innerTab = innerTab;
+window.loadKurulumDosyasiSetup = loadKurulumDosyasiSetup;
+window.onFolderPicked = onFolderPicked;
+window.onSetupFolderPicked = onSetupFolderPicked;
+window.onSifreTargetChange = onSifreTargetChange;
+window.pdfSifreTabloDirect = pdfSifreTabloDirect;
+window.refreshFromFolder = refreshFromFolder;
+window.selectFolder = selectFolder;
+window.sendAidatHatirlatma = sendAidatHatirlatma;
+window.sendAllWhatsapp = sendAllWhatsapp;
+window.setupAtlaKlasor = setupAtlaKlasor;
+window.setupKlasorDevam = setupKlasorDevam;
+window.showSection = showSection;
+window.stopWatching = stopWatching;
+window.toggleKurulumSifreleri = toggleKurulumSifreleri;
+
+</script>
+</body>
+</html>
