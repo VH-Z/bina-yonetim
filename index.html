@@ -917,7 +917,7 @@ hr.sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
                 <option value="">-- Kullanıcı seçin --</option>
               </select>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="sifre-eski-group">
               <label>Mevcut Şifre</label>
               <input type="password" id="sifre-eski" placeholder="••••••••">
             </div>
@@ -1079,7 +1079,7 @@ hr.sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, onSnapshot }
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, onSnapshot }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const _fbApp = initializeApp({
@@ -1121,6 +1121,17 @@ async function fbLoadSetup() {
 function fbListenDB(cb) {
   return onSnapshot(doc(_db,'bina','db'), s => { if(s.exists()) try{cb(JSON.parse(s.data().payload));}catch(e){} });
 }
+async function fbDeleteAll() {
+  try {
+    await Promise.all([
+      deleteDoc(doc(_db,'bina','db')),
+      deleteDoc(doc(_db,'bina','users')),
+      deleteDoc(doc(_db,'bina','setup')),
+    ]);
+    console.log('✅ Firebase tamamen silindi');
+    return true;
+  } catch(e) { console.error('fbDeleteAll',e); return false; }
+}
 
 // ════════════════════════════════════════
 //  SIMPLE HASH (non-cryptographic, client-side only)
@@ -1154,47 +1165,8 @@ window.hideLoadingOverlay=hideLoadingOverlay;
 
 // Default users DB (stored in localStorage, overridable)
 const DEFAULT_USERS = {
-  "yonetici": { role: "admin", daire_no: null, display: "Yönetici", passwordHash: hashStr("ZwKf2EJY"), firstLogin: true },
-  "daire1": { role: "daire", daire_no: 1, display: "Daire 1", passwordHash: hashStr("zcj2GGDw"), firstLogin: true },
-  "daire2": { role: "daire", daire_no: 2, display: "Daire 2", passwordHash: hashStr("qMDZ7xlh"), firstLogin: true },
-  "daire3": { role: "daire", daire_no: 3, display: "Daire 3", passwordHash: hashStr("EYpwi1YM"), firstLogin: true },
-  "daire4": { role: "daire", daire_no: 4, display: "Daire 4", passwordHash: hashStr("rlb42osK"), firstLogin: true },
-  "daire5": { role: "daire", daire_no: 5, display: "Daire 5", passwordHash: hashStr("oMOZv0sm"), firstLogin: true },
-  "daire6": { role: "daire", daire_no: 6, display: "Daire 6", passwordHash: hashStr("3XE6hcC3"), firstLogin: true },
-  "daire7": { role: "daire", daire_no: 7, display: "Daire 7", passwordHash: hashStr("f2uTn6Pw"), firstLogin: true },
-  "daire8": { role: "daire", daire_no: 8, display: "Daire 8", passwordHash: hashStr("umv6jmcM"), firstLogin: true },
-  "daire9": { role: "daire", daire_no: 9, display: "Daire 9", passwordHash: hashStr("JH4ImLCY"), firstLogin: true },
-  "daire10": { role: "daire", daire_no: 10, display: "Daire 10", passwordHash: hashStr("boHHWWW0"), firstLogin: true },
-  "daire11": { role: "daire", daire_no: 11, display: "Daire 11", passwordHash: hashStr("bJE156ZA"), firstLogin: true },
-  "daire12": { role: "daire", daire_no: 12, display: "Daire 12", passwordHash: hashStr("DkgE7kmZ"), firstLogin: true },
-  "daire13": { role: "daire", daire_no: 13, display: "Daire 13", passwordHash: hashStr("04QvbZVt"), firstLogin: true },
-  "daire14": { role: "daire", daire_no: 14, display: "Daire 14", passwordHash: hashStr("uQgb4y4U"), firstLogin: true },
-  "daire15": { role: "daire", daire_no: 15, display: "Daire 15", passwordHash: hashStr("2Ycxv1sA"), firstLogin: true },
-  "daire16": { role: "daire", daire_no: 16, display: "Daire 16", passwordHash: hashStr("N66Ma109"), firstLogin: true },
-  "daire17": { role: "daire", daire_no: 17, display: "Daire 17", passwordHash: hashStr("GEX3gGjw"), firstLogin: true },
-  "daire18": { role: "daire", daire_no: 18, display: "Daire 18", passwordHash: hashStr("9u8ywVIf"), firstLogin: true },
-  "daire19": { role: "daire", daire_no: 19, display: "Daire 19", passwordHash: hashStr("JYp4uMa2"), firstLogin: true },
-  "daire20": { role: "daire", daire_no: 20, display: "Daire 20", passwordHash: hashStr("6w1rqjFt"), firstLogin: true },
-  "daire21": { role: "daire", daire_no: 21, display: "Daire 21", passwordHash: hashStr("Hgp66sI8"), firstLogin: true },
-  "daire22": { role: "daire", daire_no: 22, display: "Daire 22", passwordHash: hashStr("IQGtVy0B"), firstLogin: true },
-  "daire23": { role: "daire", daire_no: 23, display: "Daire 23", passwordHash: hashStr("Bnh24L6T"), firstLogin: true },
-  "daire24": { role: "daire", daire_no: 24, display: "Daire 24", passwordHash: hashStr("zqc7Hezw"), firstLogin: true },
-  "daire25": { role: "daire", daire_no: 25, display: "Daire 25", passwordHash: hashStr("tY9YCGu1"), firstLogin: true },
-  "daire26": { role: "daire", daire_no: 26, display: "Daire 26", passwordHash: hashStr("Xyhj8g58"), firstLogin: true },
-  "daire27": { role: "daire", daire_no: 27, display: "Daire 27", passwordHash: hashStr("XXm8aIiK"), firstLogin: true },
-  "daire28": { role: "daire", daire_no: 28, display: "Daire 28", passwordHash: hashStr("37wdUQjR"), firstLogin: true },
-  "daire29": { role: "daire", daire_no: 29, display: "Daire 29", passwordHash: hashStr("fiJWog2a"), firstLogin: true },
-  "daire30": { role: "daire", daire_no: 30, display: "Daire 30", passwordHash: hashStr("5Byu6Jrd"), firstLogin: true },
-  "daire31": { role: "daire", daire_no: 31, display: "Daire 31", passwordHash: hashStr("ndC4A9iC"), firstLogin: true },
-  "daire32": { role: "daire", daire_no: 32, display: "Daire 32", passwordHash: hashStr("hRc5ktUF"), firstLogin: true },
-  "daire33": { role: "daire", daire_no: 33, display: "Daire 33", passwordHash: hashStr("wgP1PixN"), firstLogin: true },
-  "daire34": { role: "daire", daire_no: 34, display: "Daire 34", passwordHash: hashStr("e54oHSAb"), firstLogin: true },
-  "daire35": { role: "daire", daire_no: 35, display: "Daire 35", passwordHash: hashStr("dIX5Llk0"), firstLogin: true },
-  "daire36": { role: "daire", daire_no: 36, display: "Daire 36", passwordHash: hashStr("gmm2iXkK"), firstLogin: true },
-  "daire37": { role: "daire", daire_no: 37, display: "Daire 37", passwordHash: hashStr("nz3YzDvZ"), firstLogin: true },
-  "daire38": { role: "daire", daire_no: 38, display: "Daire 38", passwordHash: hashStr("iMahK4LW"), firstLogin: true },
+  "yonetici": { role: "admin", daire_no: null, display: "Yönetici", passwordHash: hashStr("123456"), firstLogin: true }
 };
-
 // ════════════════════════════════════════
 //  STATE
 // ════════════════════════════════════════
@@ -1575,7 +1547,7 @@ function innerTab(el, targetId) {
 // ════════════════════════════════════════
 //  RENDER SECTIONS
 // ════════════════════════════════════════
-function renderSection(id) {
+async function renderSection(id) {
   switch(id) {
     case 'ozet':        renderOzet(); break;
     case 'aidat':       renderAidat(); break;
@@ -1583,8 +1555,8 @@ function renderSection(id) {
     case 'gelir':       renderGelirGider(); break;
     case 'daireler':    renderDaireler(); break;
     case 'alacaklilar': renderAlacaklilar(); break;
-    case 'sifre':       /* static */ break;
-    case 'ayarlar':     renderAyarlar(); break;
+    case 'sifre':       await renderAyarlar(); break;
+    case 'ayarlar':     await renderAyarlar(); break;
   }
 }
 
@@ -2167,12 +2139,15 @@ async function doPasswordChange() {
   const yeni  = document.getElementById('sifre-yeni').value;
   const tekrar = document.getElementById('sifre-tekrar').value;
 
-  const users = getUsers();
+  const users = await getUsers();
   const user  = users[targetUsername];
   if (!user) { showMsg(msgEl,'Kullanıcı bulunamadı.','error'); return; }
 
-  if (user.passwordHash !== hashStr(eski)) {
-    showMsg(msgEl, 'Mevcut şifre hatalı.', 'error'); return;
+  // Admin başka kullanıcının şifresini değiştiriyorsa eski şifre gerekmez
+  if (currentUser.role !== 'admin' || targetUsername === currentUser.username) {
+    if (user.passwordHash !== hashStr(eski)) {
+      showMsg(msgEl, 'Mevcut şifre hatalı.', 'error'); return;
+    }
   }
   if (yeni.length < 6) {
     showMsg(msgEl, 'Yeni şifre en az 6 karakter olmalı.', 'error'); return;
@@ -2389,7 +2364,7 @@ function renderFileStatusGrid(statusMap) {
 }
 
 // ── AYARLAR ────────────────────────────────────────
-function renderAyarlar() {
+async function renderAyarlar() {
   const bar  = document.getElementById('shared-data-bar');
   const info = document.getElementById('shared-data-info');
   const meta = getDBMeta();
@@ -2408,8 +2383,28 @@ function renderAyarlar() {
   const sp = document.getElementById('sifre-goruntule-panel');
   if (sp) sp.style.display = (currentUser && currentUser.role === 'admin') ? 'block' : 'none';
 
+  // Şifre değiştirme — kullanıcı listesini doldur
+  if (currentUser && currentUser.role === 'admin') {
+    const users = await getUsers();
+    const sel = document.getElementById('sifre-target');
+    if (sel) {
+      const keys = Object.keys(users).sort((a,b) => {
+        if (a === 'yonetici') return -1;
+        if (b === 'yonetici') return 1;
+        return (users[a].daire_no||0) - (users[b].daire_no||0);
+      });
+      sel.innerHTML = '<option value="">-- Kullanıcı seçin --</option>' +
+        keys.map(u => `<option value="${u}">${users[u].display || u}</option>`).join('');
+      // admin-target-group göster, mevcut şifre gizle
+      const tg = document.getElementById('admin-target-group');
+      if (tg) tg.style.display = 'block';
+      const eskiGrp = document.getElementById('sifre-eski-group');
+      if (eskiGrp) eskiGrp.style.display = 'none';
+    }
+  }
+
   // Kurulum bilgisi (admin)
-  const cfg = getSetupConfig();
+  const cfg = await getSetupConfig();
   if (cfg && currentUser && currentUser.role === 'admin') {
     const setupInfo = document.getElementById('setup-info-bar');
     if (setupInfo) {
@@ -2424,12 +2419,16 @@ function renderAyarlar() {
   }
 }
 
-function doClearDB() {
+async function doClearDB() {
   if (!currentUser || currentUser.role !== 'admin') return;
   if (!confirm('Paylaşılan veriyi silmek istediğinizden emin misiniz? Tüm kullanıcılar demo veriye dönecek.')) return;
-  clearDBStorage();
+  showLoadingOverlay('Veriler siliniyor...');
+  await clearDBStorage();
+  localStorage.removeItem(DB_STORAGE_KEY);
+  localStorage.removeItem(DB_META_KEY);
   initDemoData();
-  renderAyarlar();
+  hideLoadingOverlay();
+  await renderAyarlar();
   // Reset folder state
   folderFiles = {};
   stopWatching();
@@ -2962,17 +2961,20 @@ function doSilTumVeriler() {
   el.style.display = 'block';
 }
 
-function doSilKullanicilar() {
+async function doSilKullanicilar() {
   if (!currentUser || currentUser.role !== 'admin') return;
   if (!confirm('⚠️ TÜM KULLANICI ŞİFRELERİ SIFIRLANACAK!\n\nKullanıcılar kurulum sırasında belirlenen ilk şifrelerine döner.\n\nDevam etmek istediğinizden emin misiniz?')) return;
+  showLoadingOverlay('Kullanıcılar sıfırlanıyor...');
   localStorage.removeItem('bina_users_v1');
+  await deleteDoc(doc(_db,'bina','users'));
+  hideLoadingOverlay();
   const el = document.getElementById('danger-msg');
   showMsg(el, '👤 Kullanıcı şifreleri kurulum şifrelerine sıfırlandı.', 'success');
   el.style.display = 'block';
 }
 
-function buildSifrelerTable(cfg) {
-  const users = getUsers();
+async function buildSifrelerTable(cfg, users) {
+  if (!users) users = await getUsers();
   const daireler = DB.daireler || [];
   let html = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
     <thead>
@@ -2992,7 +2994,12 @@ function buildSifrelerTable(cfg) {
         <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--gold2);">⚠️ Değiştirildi</td>
         <td style="padding:8px 12px;">—</td>
       </tr>`;
-  for (let i = 1; i <= cfg.daireAdet; i++) {
+  // Daire sayısını users'dan al (cfg.daireAdet yerine)
+  const daireKullanicilari = Object.keys(users)
+    .filter(u => u !== 'yonetici')
+    .sort((a,b) => (users[a].daire_no||0) - (users[b].daire_no||0));
+  const daireAdet = cfg ? cfg.daireAdet : daireKullanicilari.length;
+  for (let i = 1; i <= daireAdet; i++) {
     const pw = derivePassword(i, cfg.salt);
     const d = daireler.find(x => x.no === i) || {};
     const tel = d.tel ? d.tel.replace(/[^0-9+]/g,'') : '';
@@ -3094,7 +3101,7 @@ Kullanıcı adı: daire${d.no}
   });
 }
 
-function toggleKurulumSifreleri() {
+async function toggleKurulumSifreleri() {
   if (!currentUser || currentUser.role !== 'admin') return;
   const container = document.getElementById('kurulum-sifreler-container');
   const btn = document.getElementById('btn-sifre-goster');
@@ -3105,14 +3112,17 @@ function toggleKurulumSifreleri() {
     btn.textContent = '👁 Şifreleri Göster';
     return;
   }
-  const cfg = getSetupConfig();
-  if (!cfg) {
+  showLoadingOverlay('Şifreler yükleniyor...');
+  const cfg = await getSetupConfig();
+  const users = await getUsers();
+  hideLoadingOverlay();
+  if (!cfg || !cfg.salt) {
     container.style.display = 'block';
     document.getElementById('kurulum-sifreler-list').innerHTML = '<p style="color:var(--text3);font-size:12px;">Kurulum şifrelerine erişilemiyor. Salt değeri mevcut değil.</p>';
     btn.textContent = '🙈 Gizle';
     return;
   }
-  document.getElementById('kurulum-sifreler-list').innerHTML = buildSifrelerTable(cfg);
+  document.getElementById('kurulum-sifreler-list').innerHTML = await buildSifrelerTable(cfg, users);
   container.style.display = 'block';
   btn.textContent = '🙈 Gizle';
 }
@@ -3120,7 +3130,11 @@ function toggleKurulumSifreleri() {
 async function doSilTamamen() {
   if (!currentUser || currentUser.role !== 'admin') return;
   if (!confirm('💣 HER ŞEY SİLİNECEK!\n\nBina verileri, kullanıcılar, şifreler ve kurulum ayarları tamamen kaldırılır.\nPortal yeniden ilk kurulum ekranına döner.\n\nBu işlem GERİ ALINAMAZ. Devam?')) return;
-  clearDBStorage();
+  showLoadingOverlay('Tüm veriler siliniyor...');
+  await fbDeleteAll();
+  hideLoadingOverlay();
+  localStorage.removeItem(DB_STORAGE_KEY);
+  localStorage.removeItem(DB_META_KEY);
   localStorage.removeItem('bina_users_v1');
   localStorage.removeItem(SETUP_KEY);
   location.reload();
