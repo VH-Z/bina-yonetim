@@ -1430,6 +1430,7 @@ async function doZorunluSifreChange() {
 
   // Save new password
   user.passwordHash = hashStr(yeni);
+  user.plainPassword = yeni;
   user.firstLogin = false;
   await saveUsers(users);
   currentUser.firstLogin = false;
@@ -2157,6 +2158,7 @@ async function doPasswordChange() {
   }
 
   user.passwordHash = hashStr(yeni);
+  user.plainPassword = yeni;
   user.firstLogin = false;
   await saveUsers(users);
 
@@ -2253,7 +2255,7 @@ async function refreshFromFolder() {
             if (!existingUsers) {
               const users = { "yonetici": { role:"admin", daire_no:null, display:"Yönetici", passwordHash:hashStr(deriveAdminPassword(data.salt)), firstLogin:true } };
               for (let i=1;i<=data.daireAdet;i++) {
-                users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`, passwordHash:hashStr(derivePassword(i,data.salt)), firstLogin:true };
+                users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`, passwordHash:hashStr(derivePassword(i,data.salt)), plainPassword:derivePassword(i,data.salt), firstLogin:true };
               }
               await saveUsers(users);
             }
@@ -2613,7 +2615,7 @@ async function doSetupOtomatik(daireAdet, folderFilesRef) {
   for (let i = 1; i <= daireAdet; i++) {
     const pw = derivePassword(i, salt);
     users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`,
-      passwordHash: hashStr(pw), firstLogin: true };
+      passwordHash: hashStr(pw), plainPassword: pw, firstLogin: true };
   }
 
   const cfg = { daireAdet, salt, createdAt: new Date().toISOString() };
@@ -2725,7 +2727,7 @@ async function loadKurulumDosyasiSetup(event) {
         passwordHash: hashStr('123456'), firstLogin: false } };
       for (let i = 1; i <= cfg.daireAdet; i++) {
         users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`,
-          passwordHash: hashStr(derivePassword(i, cfg.salt)), firstLogin: false };
+          passwordHash: hashStr(derivePassword(i, cfg.salt)), plainPassword: derivePassword(i, cfg.salt), firstLogin: false };
       }
       await saveUsers(users);
       msgEl.style.display = 'block';
@@ -2758,7 +2760,7 @@ async function loadKurulumDosyasi(event) {
       // Kullanıcıları oluştur
       const users = { "yonetici": { role:"admin", daire_no:null, display:"Yönetici", passwordHash:hashStr('123456'), firstLogin:false } };
       for (let i=1;i<=cfg.daireAdet;i++) {
-        users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`, passwordHash:hashStr(derivePassword(i,cfg.salt)), firstLogin:false };
+        users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`, passwordHash:hashStr(derivePassword(i,cfg.salt)), plainPassword:derivePassword(i,cfg.salt), firstLogin:false };
       }
       await saveUsers(users);
       msgEl.style.display = 'block';
@@ -2842,7 +2844,7 @@ async function setupKlasorDevam() {
         if (!existingUsers) {
           const users = { "yonetici": { role:"admin", daire_no:null, display:"Yönetici", passwordHash:hashStr('123456'), firstLogin:false } };
           for (let i=1;i<=cfg.daireAdet;i++) {
-            users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`, passwordHash:hashStr(derivePassword(i,cfg.salt)), firstLogin:false };
+            users[`daire${i}`] = { role:"daire", daire_no:i, display:`Daire ${i}`, passwordHash:hashStr(derivePassword(i,cfg.salt)), plainPassword:derivePassword(i,cfg.salt), firstLogin:false };
           }
           await saveUsers(users);
         }
@@ -2973,6 +2975,32 @@ async function doSilKullanicilar() {
   el.style.display = 'block';
 }
 
+
+async function resetUserPassword(username) {
+  const cfg = await getSetupConfig();
+  const users = await getUsers();
+  const user = users[username];
+  if (!user) return;
+
+  const daire_no = user.daire_no;
+  const originalPw = cfg && cfg.salt ? derivePassword(daire_no, cfg.salt) : null;
+  if (!originalPw) { alert('Kurulum bilgisi bulunamadı, sıfırlama yapılamadı.'); return; }
+
+  user.passwordHash = hashStr(originalPw);
+  user.plainPassword = originalPw;
+  user.firstLogin = true;
+  await saveUsers(users);
+
+  // Tabloyu yenile
+  const listEl = document.getElementById('kurulum-sifreler-list');
+  if (listEl && listEl.innerHTML) {
+    listEl.innerHTML = await buildSifrelerTable(cfg, await getUsers());
+  }
+  // Şifre değiştir sekmesindeki select'i de yenile
+  await renderAyarlar();
+}
+window.resetUserPassword = resetUserPassword;
+
 async function buildSifrelerTable(cfg, users) {
   if (!users) users = await getUsers();
   const daireler = DB.daireler || [];
@@ -2991,21 +3019,25 @@ async function buildSifrelerTable(cfg, users) {
         <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--gold2);font-weight:700;">yonetici</td>
         <td style="padding:8px 12px;color:var(--text2);">Yönetici</td>
         <td style="padding:8px 12px;color:var(--text3);">—</td>
-        <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--gold2);">⚠️ Değiştirildi</td>
+        <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--gold2);">${users['yonetici']?.plainPassword || '⚠️ Değiştirildi'}</td>
         <td style="padding:8px 12px;">—</td>
       </tr>`;
-  // Daire sayısını users'dan al (cfg.daireAdet yerine)
+  // Daire kullanıcılarını Firebase users'dan al
   const daireKullanicilari = Object.keys(users)
     .filter(u => u !== 'yonetici')
     .sort((a,b) => (users[a].daire_no||0) - (users[b].daire_no||0));
-  const daireAdet = cfg ? cfg.daireAdet : daireKullanicilari.length;
-  for (let i = 1; i <= daireAdet; i++) {
-    const pw = derivePassword(i, cfg.salt);
+  for (const uKey of daireKullanicilari) {
+    const u = users[uKey];
+    const i = u.daire_no;
+    const pw = u.plainPassword || derivePassword(i, cfg?.salt || '');
     const d = daireler.find(x => x.no === i) || {};
     const tel = d.tel ? d.tel.replace(/[^0-9+]/g,'') : '';
-    const isim = d.isim || '';
+    const isim = d.isim || u.display || '';
+    const pwLabel = u.firstLogin
+      ? `<span style="font-family:'IBM Plex Mono',monospace;color:var(--gold2);">${pw}</span>`
+      : `<span style="font-family:'IBM Plex Mono',monospace;color:var(--blue);">${pw}</span> <span style="color:var(--text3);font-size:10px;">✔ değiştirildi</span>`;
     const msg = encodeURIComponent(`Merhaba, bina yönetim portalı giriş bilgileriniz:
-Kullanıcı adı: daire${i}
+Kullanıcı adı: ${uKey}
 Şifre: ${pw}
 İlk girişte şifrenizi değiştirmeniz önerilir.`);
     const wpBtn = tel
@@ -3013,11 +3045,11 @@ Kullanıcı adı: daire${i}
            style="display:inline-block;background:var(--green-bg);border:1px solid var(--green);color:var(--green);border-radius:6px;padding:4px 10px;font-size:11px;font-family:'Sora',sans-serif;text-decoration:none;">📲 Gönder</a>`
       : `<span style="color:var(--text3);font-size:11px;">Tel yok</span>`;
     html += `<tr style="border-bottom:1px solid var(--border);">
-      <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--text);">daire${i}</td>
+      <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--text);">${uKey}</td>
       <td style="padding:8px 12px;color:var(--text2);">${isim||'—'}</td>
       <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--text3);font-size:12px;">${d.tel||'—'}</td>
-      <td style="padding:8px 12px;font-family:'IBM Plex Mono',monospace;color:var(--gold2);">${pw}</td>
-      <td style="padding:8px 12px;">${wpBtn}</td>
+      <td style="padding:8px 12px;">${pwLabel}</td>
+      <td style="padding:8px 12px;display:flex;gap:6px;align-items:center;">${wpBtn}<button onclick="window.resetUserPassword('${uKey}')" style="background:var(--orange-bg);border:1px solid var(--orange);color:var(--orange);border-radius:6px;padding:3px 9px;font-size:11px;font-family:'Sora',sans-serif;cursor:pointer;" title="İlk şifreye sıfırla">🔄 Sıfırla</button></td>
     </tr>`;
   }
   html += '</tbody></table>';
