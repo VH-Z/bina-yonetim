@@ -599,6 +599,243 @@ hr.sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 }
 
   @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ══════════════════════════════════════════════
+   MOBİL & RESPONSIVE DÜZENLEMELER
+══════════════════════════════════════════════ */
+
+/* Hamburger menü butonu */
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 10px;
+  cursor: pointer;
+  color: var(--text2);
+  font-size: 18px;
+  line-height: 1;
+  transition: border-color .2s, color .2s;
+}
+.hamburger-btn:hover { border-color: var(--gold); color: var(--gold2); }
+
+/* Mobil nav drawer */
+.mobile-nav-drawer {
+  display: none;
+  position: fixed;
+  top: 60px;
+  left: 0; right: 0;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  z-index: 99;
+  padding: 8px 0;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+.mobile-nav-drawer.open { display: block; }
+.mobile-nav-drawer .nav-tab {
+  display: block;
+  padding: 14px 20px;
+  border-bottom: none;
+  border-left: 3px solid transparent;
+  font-size: 14px;
+  width: 100%;
+}
+.mobile-nav-drawer .nav-tab.active {
+  border-left-color: var(--gold);
+  border-bottom-color: transparent;
+  background: rgba(201,168,76,.06);
+  color: var(--gold2);
+}
+
+/* Overlay for closing drawer */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  top: 60px;
+  background: rgba(0,0,0,.4);
+  z-index: 98;
+}
+.nav-overlay.open { display: block; }
+
+/* Login card mobile */
+@media (max-width: 480px) {
+  .login-card {
+    width: 100%;
+    margin: 16px;
+    padding: 32px 24px;
+  }
+  #login-page {
+    padding: 16px;
+    align-items: flex-start;
+    padding-top: 48px;
+  }
+  .setup-card {
+    width: calc(100% - 32px) !important;
+    max-width: none !important;
+    padding: 32px 20px;
+    margin: 16px;
+  }
+  #setup-overlay {
+    align-items: flex-start;
+    padding-top: 32px;
+    overflow-y: auto;
+  }
+  .setup-result-scroll { max-height: 180px; }
+  .setup-card > div[style*="grid-template-columns:1fr 1fr"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+}
+
+/* Topbar mobile */
+@media (max-width: 768px) {
+  .hamburger-btn { display: flex; align-items: center; justify-content: center; }
+  .nav-tabs { display: none; } /* Desktop nav gizle */
+
+  .topbar {
+    padding: 0 16px;
+    height: 56px;
+  }
+  .topbar-title { font-size: 13px; }
+  .topbar-sub { display: none; }
+  .user-badge {
+    display: none;
+  }
+  /* Küçük kullanıcı ismi hamburger yanında göster */
+  .topbar-right {
+    gap: 8px;
+  }
+  .btn-logout {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .main-content {
+    padding: 16px 12px;
+  }
+
+  /* Stat grid tek sütun */
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .stat-card { padding: 14px 12px; }
+  .stat-value { font-size: 20px; }
+
+  /* Two col tek sütun */
+  .two-col { grid-template-columns: 1fr !important; gap: 12px; }
+
+  /* Panel header stack */
+  .panel-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 14px;
+  }
+  .panel-body { padding: 12px; }
+
+  /* Tablolar yatay kaydırmalı */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .data-table { min-width: 480px; }
+  .data-table th, .data-table td { padding: 10px 10px; font-size: 12px; }
+
+  /* Section title */
+  .section-title { font-size: 15px; margin-bottom: 14px; }
+
+  /* Inner tabs wrap */
+  .inner-tabs { gap: 6px; }
+  .inner-tab { padding: 7px 12px; font-size: 11px; }
+
+  /* Buttons daha büyük touch target */
+  .btn-primary { padding: 12px 18px; font-size: 13px; min-height: 44px; }
+  .btn-login { min-height: 48px; font-size: 15px; }
+
+  /* Form inputs daha büyük */
+  .form-group input,
+  .form-group select { padding: 14px 14px; font-size: 15px; }
+
+  /* Password form full width */
+  .password-form { max-width: 100%; }
+
+  /* Modal içleri */
+  #zorunlu-sifre-overlay > div,
+  #borc-uyari-overlay > div {
+    width: calc(100% - 24px) !important;
+    padding: 28px 20px !important;
+    margin: 12px;
+  }
+
+  /* First login banner */
+  .first-login-banner { padding: 14px 16px; }
+
+  /* Danger zone butonlar */
+  .btn-danger + .btn-danger { margin-left: 0; margin-top: 8px; }
+  .danger-zone .btn-danger { display: block; width: 100%; margin-bottom: 8px; }
+
+  /* Section title */
+  .section-title { flex-wrap: wrap; }
+}
+
+@media (max-width: 420px) {
+  .stat-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-value { font-size: 17px; }
+  .stat-label { font-size: 10px; }
+  .main-content { padding: 12px 8px; }
+
+  /* Paneller için padding azalt */
+  .panel-body { padding: 10px 8px; }
+}
+
+/* Tablet (768-1024) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .stat-grid { grid-template-columns: repeat(3, 1fr); }
+  .main-content { padding: 20px 16px; }
+  .topbar { padding: 0 16px; }
+}
+
+/* Dokunmatik cihazlar için hover efektleri bastır */
+@media (hover: none) {
+  .nav-tab:hover { color: var(--text2); }
+  .btn-logout:hover { border-color: var(--border); color: var(--text2); }
+  .data-table tr:hover td { background: transparent; }
+}
+
+/* Inline stil tablolar için mobil sarmalayıcı */
+@media (max-width: 768px) {
+  /* Zorla inline table'ların sarmalanması */
+  [id$="-list"] table,
+  .panel-body table,
+  .table-wrap table {
+    min-width: 500px;
+  }
+  [id$="-list"],
+  .panel-body:has(table) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Modal overlay içerikleri */
+  #zorunlu-sifre-overlay > div {
+    width: calc(100% - 24px) !important;
+    padding: 28px 20px !important;
+    max-width: 420px;
+  }
+  #borc-uyari-overlay > div {
+    width: calc(100% - 24px) !important;
+    padding: 24px 16px !important;
+  }
+
+  /* İlk giriş uyarı banner */
+  .first-login-banner {
+    padding: 12px 14px;
+  }
+  .first-login-banner h3 { font-size: 13px; }
+  .first-login-banner p { font-size: 11px; }
+}
 </style>
 </head>
 <body>
@@ -751,11 +988,16 @@ hr.sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
     <div class="topbar-right">
       <div class="user-badge">Hoş geldiniz, <span id="user-display-name">—</span></div>
       <button class="btn-logout" onclick="window.doLogout()">Çıkış</button>
+      <button class="hamburger-btn" id="hamburger-btn" onclick="toggleMobileNav()" aria-label="Menü">☰</button>
     </div>
   </div>
 
-  <!-- Nav tabs — rendered by JS -->
+  <!-- Nav tabs — Desktop -->
   <div class="nav-tabs" id="nav-tabs"></div>
+
+  <!-- Nav drawer — Mobil -->
+  <div class="mobile-nav-drawer" id="mobile-nav-drawer"></div>
+  <div class="nav-overlay" id="nav-overlay" onclick="closeMobileNav()"></div>
 
   <div class="main-content">
 
@@ -793,6 +1035,10 @@ hr.sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
     <!-- ── AİDAT ── -->
     <div class="section" id="sec-aidat">
       <div class="section-title">💳 Aidat Bilgileri <small id="aidat-title-sub"></small></div>
+
+      <!-- Ödenmemiş Özet Kartları -->
+      <div id="aidat-ozet-kartlar" style="display:none;margin-bottom:16px;"></div>
+
       <div class="panel">
         <div class="panel-header">
           <span class="panel-title" id="aidat-panel-title">Aidat Geçmişi</span>
@@ -814,6 +1060,10 @@ hr.sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
     <!-- ── ORTAK GİDER ── -->
     <div class="section" id="sec-og">
       <div class="section-title">🔧 Ortak Giderler <small id="og-title-sub"></small></div>
+
+      <!-- Ödenmemiş Özet Kartları -->
+      <div id="og-ozet-kartlar" style="display:none;margin-bottom:16px;"></div>
+
       <div class="panel">
         <div class="panel-header"><span class="panel-title" id="og-panel-title">Ortak Gider Durumu</span></div>
         <div class="panel-body">
@@ -1229,30 +1479,18 @@ const DB_STORAGE_KEY = 'bina_db_v1';
 const DB_META_KEY    = 'bina_db_meta_v1';
 
 async function saveDBToStorage() {
-  try { localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(DB)); } catch(e) {}
-  try { localStorage.setItem(DB_META_KEY, JSON.stringify({savedAt:new Date().toISOString(),binaAdi:DB.bina?.adi||'',daireCount:(DB.daireler||[]).length})); } catch(e) {}
   return await fbSaveDB(DB);
 }
 
 async function loadDBFromStorage() {
   const data = await fbLoadDB();
   if (data && data.bina) { DB = data; return true; }
-  try {
-    const raw = localStorage.getItem(DB_STORAGE_KEY);
-    if (!raw) return false;
-    const parsed = JSON.parse(raw);
-    if (!parsed || !parsed.bina) return false;
-    DB = parsed; return true;
-  } catch(e) { return false; }
+  return false;
 }
 
-function getDBMeta() {
-  try { const r=localStorage.getItem(DB_META_KEY); return r?JSON.parse(r):null; } catch{return null;}
-}
+function getDBMeta() { return null; }
 
 async function clearDBStorage() {
-  localStorage.removeItem(DB_STORAGE_KEY);
-  localStorage.removeItem(DB_META_KEY);
   await fbSaveDB({});
 }
 
@@ -1333,9 +1571,10 @@ async function doLogin() {
 
   document.getElementById('user-display-name').textContent = user.display;
 
-  // Firebase'den veri yükle
-  showLoadingOverlay('Veriler yükleniyor...');
-  if (!(await loadDBFromStorage())) initDemoData();
+  // İlk girişte Firebase'den taze veri çek
+  showLoadingOverlay("Firebase verileri yükleniyor...");
+  const dbLoaded = await loadDBFromStorage();
+  if (!dbLoaded) initDemoData();
   hideLoadingOverlay();
   buildNav();
   // Paneller başlangıçta hep gizli — renderAyarlar admin için açar
@@ -1345,7 +1584,7 @@ async function doLogin() {
   if (_sp2) _sp2.style.display = 'none';
   showSection(currentUser.role === 'admin' ? 'ozet' : 'aidat');
 
-  // Gerçek zamanlı: başka cihazda yönetici veri değiştirirse anında güncelle
+  // Gerçek zamanlı Firestore listener: başka cihaz veri değiştirince anında güncelle
   fbListenDB(function(newData) {
     if (newData && newData.bina) {
       DB = newData;
@@ -1353,6 +1592,17 @@ async function doLogin() {
       if (active) renderSection(active.id.replace('sec-',''));
     }
   });
+
+  // 10 saniyede bir Firebase'den periyodik çek (klasör seçili değilse)
+  if (!watchInterval) {
+    watchInterval = setInterval(async () => {
+      if (Object.keys(folderFiles||{}).length === 0) {
+        await loadDBFromStorage();
+        const active = document.querySelector('.section.active');
+        if (active) renderSection(active.id.replace('sec-',''));
+      }
+    }, 10000);
+  }
 
   if (user.firstLogin) {
     // Zorunlu şifre değiştirme overlay'ini göster
@@ -1479,6 +1729,8 @@ function buildNav() {
   const tabs = currentUser.role === 'admin' ? ADMIN_TABS : DAIRE_TABS;
   const nav = document.getElementById('nav-tabs');
   nav.innerHTML = '';
+  const mobileNav = document.getElementById('mobile-nav-drawer');
+  if (mobileNav) mobileNav.innerHTML = '';
   tabs.forEach(t => {
     const div = document.createElement('div');
     div.className = 'nav-tab';
@@ -1486,6 +1738,12 @@ function buildNav() {
     div.dataset.id = t.id;
     div.onclick = () => { showSection(t.id); setActiveTab(t.id); };
     nav.appendChild(div);
+    // Mobil nav için klon
+    if (mobileNav) {
+      const mDiv = div.cloneNode(true);
+      mDiv.onclick = () => { showSection(t.id); setActiveTab(t.id); closeMobileNav(); };
+      mobileNav.appendChild(mDiv);
+    }
   });
   setActiveTab(currentUser.role === 'admin' ? 'ozet' : 'aidat');
 
@@ -1688,6 +1946,57 @@ function renderAidat() {
 
   let rows = '';
 
+  // ── Daire bazlı ödenmemiş özet kartları ──────────────────────────────────
+  const ozKartEl = document.getElementById('aidat-ozet-kartlar');
+  if (ozKartEl && currentUser.role === 'admin') {
+    // Her daire için toplam borç hesapla
+    const borcluDaireler = daireler.map(d => {
+      const eksikAylar = tum_ay.filter(ay => !odemeler.some(o => o.daireNo == d.no && o.ay === ay));
+      const toplam = eksikAylar.reduce((s, ay) => s + ((b.ozel_aidatlar||{})[ay] || b.aidat || 0), 0);
+      return { d, eksikAylar, toplam };
+    }).filter(x => x.toplam > 0).sort((a,b) => b.toplam - a.toplam);
+
+    if (borcluDaireler.length > 0) {
+      const genelToplam = borcluDaireler.reduce((s,x) => s + x.toplam, 0);
+      ozKartEl.style.display = 'block';
+      ozKartEl.innerHTML = `
+        <div style="background:var(--bg2);border:1px solid var(--orange);border-radius:12px;padding:16px 20px;margin-bottom:4px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div style="font-size:13px;font-weight:700;color:var(--orange);">⚠️ Ödenmemiş Aidat Özeti — ${borcluDaireler.length} Daire</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:700;color:var(--red);">Toplam: ${fmt(genelToplam)}</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            ${borcluDaireler.map(({d,eksikAylar,toplam}) => `
+              <div style="background:var(--bg3);border:1px solid var(--orange);border-radius:8px;padding:8px 12px;min-width:140px;">
+                <div style="font-size:12px;font-weight:700;color:var(--text);">Daire ${d.no}${d.isim ? ' — '+d.isim : ''}</div>
+                <div style="font-size:11px;color:var(--text3);margin:2px 0;">${eksikAylar.length} ay ödenmemiş</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--red);font-weight:700;">${fmt(toplam)}</div>
+              </div>`).join('')}
+          </div>
+        </div>`;
+    } else {
+      ozKartEl.style.display = 'none';
+    }
+  } else if (ozKartEl && currentUser.role !== 'admin') {
+    // Daire kullanıcısı: kendi borcunu göster
+    const daireNo = currentUser.daire_no;
+    const eksikAylar = tum_ay.filter(ay => !odemeler.some(o => o.daireNo == daireNo && o.ay === ay));
+    if (eksikAylar.length > 0) {
+      const toplam = eksikAylar.reduce((s, ay) => s + ((b.ozel_aidatlar||{})[ay] || b.aidat || 0), 0);
+      ozKartEl.style.display = 'block';
+      ozKartEl.innerHTML = `
+        <div style="background:var(--bg2);border:1px solid var(--orange);border-radius:12px;padding:16px 20px;">
+          <div style="font-size:13px;font-weight:700;color:var(--orange);margin-bottom:8px;">⚠️ Ödenmemiş Aidatınız Var</div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;">
+            <div><span style="color:var(--text3);font-size:12px;">Ödenmemiş Dönem</span><br><span style="font-weight:700;color:var(--text);">${eksikAylar.length} ay</span></div>
+            <div><span style="color:var(--text3);font-size:12px;">Toplam Borç</span><br><span style="font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--red);">${fmt(toplam)}</span></div>
+          </div>
+        </div>`;
+    } else {
+      ozKartEl.style.display = 'none';
+    }
+  }
+
   // Show/hide WhatsApp button for admin based on unpaid this month
   const ba_today = new Date();
   const wpBtnArea = document.getElementById('aidat-wp-btn-area');
@@ -1794,6 +2103,63 @@ function renderOG() {
   const dno = currentUser.daire_no;
   const daireler = DB.daireler || [];
   let rows = '';
+
+  // ── OG Özet Kartları ──────────────────────────────────────────────────────
+  const ogOzetEl = document.getElementById('og-ozet-kartlar');
+  if (ogOzetEl) {
+    const ogKayitlarTum = alacaklilar.filter(a => a.tur === 'Ortak Gider');
+    if (currentUser.role === 'admin' && ogKayitlarTum.length > 0) {
+      // Daire bazlı ödememiş OG borçları
+      const daireBorcMap = {};
+      ogKayitlarTum.forEach(a => {
+        const odenen = (a.odemeler||[]).reduce((s,p)=>s+p.tutar,0);
+        const kalan = Math.max(0, a.tutar - odenen);
+        if (kalan > 0) {
+          if (!daireBorcMap[a.daire_no]) daireBorcMap[a.daire_no] = { toplam:0, adet:0 };
+          daireBorcMap[a.daire_no].toplam += kalan;
+          daireBorcMap[a.daire_no].adet++;
+        }
+      });
+      const borcluDaireler = Object.entries(daireBorcMap).sort((a,b)=>b[1].toplam-a[1].toplam);
+      if (borcluDaireler.length > 0) {
+        const genelToplam = borcluDaireler.reduce((s,[,v])=>s+v.toplam,0);
+        ogOzetEl.style.display = 'block';
+        ogOzetEl.innerHTML = `
+          <div style="background:var(--bg2);border:1px solid var(--red);border-radius:12px;padding:16px 20px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <div style="font-size:13px;font-weight:700;color:var(--red);">🔧 Ödenmemiş Ortak Gider — ${borcluDaireler.length} Daire</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:700;color:var(--red);">Toplam: ${fmt(genelToplam)}</div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              ${borcluDaireler.map(([daireNo,{toplam,adet}])=>{
+                const d = daireler.find(x=>x.no==daireNo)||{};
+                return `<div style="background:var(--bg3);border:1px solid var(--red);border-radius:8px;padding:8px 12px;min-width:140px;">
+                  <div style="font-size:12px;font-weight:700;color:var(--text);">Daire ${daireNo}${d.isim?' — '+d.isim:''}</div>
+                  <div style="font-size:11px;color:var(--text3);margin:2px 0;">${adet} gider kalemi</div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--red);font-weight:700;">${fmt(toplam)}</div>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>`;
+      } else {
+        ogOzetEl.style.display = 'none';
+      }
+    } else if (currentUser.role !== 'admin') {
+      // Daire kullanıcısı kendi OG borcunu görür
+      const myOG = ogKayitlarTum.filter(a=>a.daire_no==dno);
+      const toplamBorc = myOG.reduce((s,a)=>{
+        const od=(a.odemeler||[]).reduce((x,p)=>x+p.tutar,0);
+        return s+Math.max(0,a.tutar-od);
+      },0);
+      if (toplamBorc > 0) {
+        ogOzetEl.style.display = 'block';
+        ogOzetEl.innerHTML = `<div style="background:var(--bg2);border:1px solid var(--red);border-radius:12px;padding:14px 20px;">
+          <span style="font-size:13px;font-weight:700;color:var(--red);">🔧 Ödenmemiş Ortak Gider Borcunuz: </span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:700;color:var(--red);">${fmt(toplamBorc)}</span>
+        </div>`;
+      } else { ogOzetEl.style.display = 'none'; }
+    } else { ogOzetEl.style.display = 'none'; }
+  }
 
   if (currentUser.role === 'admin') {
     const ogKayitlar = alacaklilar.filter(a => a.tur === 'Ortak Gider');
@@ -2209,16 +2575,65 @@ function classifyFile(name) {
   return 'unknown';
 }
 
-function selectFolder() {
+// Klasör handle'ı — File System Access API ile canlı okuma
+let dirHandle = null;
+
+async function selectFolder() {
+  // File System Access API destekleniyorsa canlı okuma yap
+  if (window.showDirectoryPicker) {
+    try {
+      dirHandle = await window.showDirectoryPicker({ mode: 'read' });
+      const folderName = dirHandle.name;
+
+      folderFiles = {};
+      await readDirHandle();
+
+      document.getElementById('folder-select-area').style.display = 'none';
+      document.getElementById('folder-info').style.display = 'block';
+      document.getElementById('folder-path-text').textContent = folderName;
+
+      await refreshFromFolder();
+      startWatching();
+      return;
+    } catch(e) {
+      if (e.name !== 'AbortError') console.warn('showDirectoryPicker:', e);
+    }
+  }
+  // Fallback: eski yöntem
   document.getElementById('folder-picker').click();
 }
 
-function onFolderPicked(event) {
+async function readDirHandle() {
+  if (!dirHandle) return;
+  const newFiles = {};
+  for await (const [name, handle] of dirHandle.entries()) {
+    if (handle.kind === 'file' && name.endsWith('.json')) {
+      try {
+        const file = await handle.getFile();
+        newFiles[name] = await file.text();
+      } catch(e) { console.warn('readDirHandle:', name, e); }
+    }
+  }
+  // Sadece değişenleri güncelle
+  let changed = false;
+  for (const [name, text] of Object.entries(newFiles)) {
+    if (folderFiles[name] !== text) {
+      folderFiles[name] = text;
+      changed = true;
+    }
+  }
+  return changed;
+}
+
+async function onFolderPicked(event) {
   const files = Array.from(event.target.files).filter(f => f.name.endsWith('.json'));
   if (!files.length) return;
 
   folderFiles = {};
-  files.forEach(f => { folderFiles[f.name] = f; });
+  await Promise.all(files.map(async f => {
+    try { folderFiles[f.name] = await f.text(); }
+    catch(e) { console.warn('Dosya okunamadı:', f.name, e); }
+  }));
 
   const firstPath = files[0].webkitRelativePath || files[0].name;
   const parts = firstPath.split('/');
@@ -2228,7 +2643,7 @@ function onFolderPicked(event) {
   document.getElementById('folder-info').style.display = 'block';
   document.getElementById('folder-path-text').textContent = folderName;
 
-  refreshFromFolder();
+  await refreshFromFolder();
   startWatching();
   event.target.value = '';
 }
@@ -2240,11 +2655,18 @@ async function refreshFromFolder() {
   const daireler_loaded = [];
   const statusMap = {};
 
-  for (const [fname, file] of Object.entries(folderFiles)) {
+  for (const [fname, entry] of Object.entries(folderFiles)) {
     const type = classifyFile(fname);
     if (type === 'unknown') continue;
     try {
-      const text = await file.text();
+      // Dosya içeriğini cache'den al, yoksa oku ve cache'le
+      let text;
+      if (typeof entry === 'string') {
+        text = entry; // zaten cache'lenmiş
+      } else {
+        text = await entry.text();
+        folderFiles[fname] = text; // cache'le
+      }
       const data = JSON.parse(text);
       switch(type) {
         case 'kurulum':
@@ -2329,8 +2751,15 @@ async function refreshFromFolder() {
 
   renderFileStatusGrid(statusMap);
 
-  // Save to localStorage so all users share the same data
-  saveDBToStorage();
+  // Firebase'e kaydet
+  await saveDBToStorage();
+
+  // Aktif sekmeyi yenile
+  const activeSection = document.querySelector('.section.active');
+  if (activeSection) {
+    const secId = activeSection.id.replace('sec-', '');
+    await renderSection(secId);
+  }
 
   if (msgEl) showMsg(msgEl,
     errors > 0 ? `⚠️ ${loaded} dosya yüklendi, ${errors} dosyada hata var.`
@@ -2444,7 +2873,26 @@ function startWatching() {
   document.getElementById('watch-indicator').style.display = 'flex';
   document.getElementById('btn-stop-watch').style.display  = 'inline-block';
   if (watchInterval) clearInterval(watchInterval);
-  watchInterval = setInterval(refreshFromFolder, 30000);
+  watchInterval = setInterval(async () => {
+    if (dirHandle) {
+      // File System Access API: dosyaları tazele, değişiklik varsa güncelle
+      const changed = await readDirHandle();
+      if (changed) {
+        await refreshFromFolder();
+        console.log('📂 Değişiklik algılandı, veriler güncellendi');
+      }
+    } else if (Object.keys(folderFiles).length > 0) {
+      // Eski yöntem: cache'den oku
+      await refreshFromFolder();
+    } else {
+      // Klasör yok: Firebase'den çek
+      const fresh = await loadDBFromStorage();
+      if (fresh) {
+        const active = document.querySelector('.section.active');
+        if (active) renderSection(active.id.replace('sec-',''));
+      }
+    }
+  }, 10000);
 }
 
 function stopWatching() {
@@ -3196,6 +3644,37 @@ async function doSilTamamen() {
     }
   }
 })();
+// ════════════════════════════════════════
+//  MOBİL NAV
+// ════════════════════════════════════════
+function toggleMobileNav() {
+  const drawer = document.getElementById('mobile-nav-drawer');
+  const overlay = document.getElementById('nav-overlay');
+  const btn = document.getElementById('hamburger-btn');
+  if (!drawer) return;
+  const isOpen = drawer.classList.contains('open');
+  if (isOpen) {
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    btn.textContent = '☰';
+  } else {
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    btn.textContent = '✕';
+  }
+}
+function closeMobileNav() {
+  const drawer = document.getElementById('mobile-nav-drawer');
+  const overlay = document.getElementById('nav-overlay');
+  const btn = document.getElementById('hamburger-btn');
+  if (!drawer) return;
+  drawer.classList.remove('open');
+  overlay.classList.remove('open');
+  if (btn) btn.textContent = '☰';
+}
+window.toggleMobileNav = toggleMobileNav;
+window.closeMobileNav = closeMobileNav;
+
 // ── window atamaları (module scope → global erişim) ──
 window.doClearDB = doClearDB;
 window.doLogin = doLogin;
