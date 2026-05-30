@@ -1624,7 +1624,9 @@ function checkDaireBorcUyari(daireNo) {
   const b = DB.bina || {};
   const odemeler = DB.odemeler || [];
   const ba = thisMonth();
-  const tum_ay = monthRange(b.baslangic || ba, ba);
+  // İleri dönem ödemeleri de kapsansın: ödemelerdeki en yüksek ayı bul
+  const maxAy = odemeler.reduce((max, o) => (o.ay||'') > max ? o.ay : max, ba);
+  const tum_ay = monthRange(b.baslangic || ba, maxAy);
 
   const eksikAylar = tum_ay.filter(ay =>
     !odemeler.some(o => o.daireNo == daireNo && o.ay === ay)
@@ -2071,7 +2073,12 @@ function renderAidat() {
     document.getElementById('aidat-panel-title').textContent = `Daire ${dno} — Aidat Geçmişi`;
     document.getElementById('aidat-title-sub').textContent = d.isim ? `(${d.isim})` : '';
 
-    tum_ay.slice().reverse().forEach(ay => {
+    // İleri dönem ödemeleri de kapsansın: ödemelerdeki en yüksek ayı bul
+    const dOdemeler = odemeler.filter(o => o.daireNo == dno);
+    const maxOdemeAy = dOdemeler.reduce((max, o) => o.ay > max ? o.ay : max, ba);
+    const daire_tum_ay = monthRange(b.baslangic || ba, maxOdemeAy);
+
+    daire_tum_ay.slice().reverse().forEach(ay => {
       const odeme = odemeler.find(o => o.daireNo == dno && o.ay === ay);
       const aidat = (b.ozel_aidatlar||{})[ay] || b.aidat || 0;
       const status = odeme
