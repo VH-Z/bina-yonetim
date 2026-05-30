@@ -2281,31 +2281,12 @@ function renderGelirGider() {
     </div>`;
 
   // ── GELİR TABLOSU ──────────────────────────────────────
-  // Aidat satırları: DB.odemeler'den üret
-  const aidatRows = odemeler.slice().reverse().map(o => {
-    const d = daireler.find(x => x.no == o.daireNo) || {};
-    const aciklama = (d.isim ? d.isim + ' · ' : '') + 'Daire ' + o.daireNo + (o.ay ? ' · ' + o.ay : '');
-    return { tarih: o.tarih, tur: 'Aidat', aciklama, tutar: o.tutar||0 };
-  });
-
-  // OG satırları: DB.alacaklilar'dan üret
-  const ogRows = [];
-  ogAlaOdemeler.forEach(a => {
-    const d = daireler.find(x => x.no == a.daire_no) || {};
-    (a.odemeler||[]).forEach(p => {
-      const aciklama = (d.isim ? d.isim + ' · ' : '') + 'Daire ' + a.daire_no + (a.aciklama ? ' · ' + a.aciklama : '');
-      ogRows.push({ tarih: p.tarih||a.tarih, tur: 'Ortak Gider Tahsilatı', aciklama, tutar: p.tutar||0 });
-    });
-  });
-  ogRows.reverse();
-
-  // Diğer gelirler
+  // Tabloda sadece diğer gelirler (aidat ve OG tahsilatı hariç)
   const digerRows = digerGelirler.slice().reverse().map(g => ({
     tarih: g.fatura_tarihi||g.tarih, tur: g.tur||'—', aciklama: g.aciklama||'—', tutar: g.tutar||0
   }));
 
-  // Hepsini birleştir: admin → aidat+OG+diğer, daire → aidat+OG+diğer (aynı)
-  const gorunenGelirler = [...aidatRows, ...ogRows, ...digerRows];
+  const gorunenGelirler = [...digerRows];
   const topGelir = gorunenGelirler.reduce((s,g) => s + g.tutar, 0);
 
   let gRows = '';
