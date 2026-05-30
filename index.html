@@ -2241,77 +2241,79 @@ function renderGelirGider() {
   const tumGelirler = DB.gelirler || [];
   const giderler    = DB.giderler || [];
   const odemeler    = DB.odemeler || [];
-  const dno         = currentUser.daire_no;
+  const alacaklilar = DB.alacaklilar || [];
+  const daireler    = DB.daireler || [];
 
-  // ── Aidat tahsilatları ──────────────────
-  const aidatGelirler = tumGelirler.filter(g => {
-    const tur = (g.tur || '').toLowerCase();
-    return tur === 'aidat' || tur.includes('aidat');
-  });
+  // ── Gerçek aidat tahsilatı: DB.odemeler ──────────────────
+  // DB.odemeler her zaman asıl aidat ödeme kaynağıdır
+  const topAidat   = odemeler.reduce((s,o) => s + (o.tutar||0), 0);
+  const aidatSayi  = odemeler.length;
 
-  // ── Ortak gider tahsilatları ────────────
-  const ogGelirler = tumGelirler.filter(g => {
-    const tur = (g.tur || '').toLowerCase();
-    return tur === 'ortak giderler tahsilatı' || tur.includes('ortak gider');
-  });
+  // ── Gerçek OG tahsilatı: DB.alacaklilar → Ortak Gider ödemeleri ──────────
+  const ogAlaOdemeler = alacaklilar.filter(a => a.tur === 'Ortak Gider');
+  const topOG    = ogAlaOdemeler.reduce((s,a) => s + (a.odemeler||[]).reduce((x,p) => x+(p.tutar||0), 0), 0);
+  const ogSayi   = ogAlaOdemeler.reduce((s,a) => s + (a.odemeler||[]).length, 0);
 
-  // ── Diğer gelirler (her iki role gösterilir) ──
+  // ── Diğer gelirler (aidat ve OG dışı, DB.gelirler'den) ──
   const digerGelirler = tumGelirler.filter(g => {
     const tur = (g.tur || '').toLowerCase();
     return !tur.includes('aidat') && !tur.includes('ortak gider');
   });
 
-  // ── ÖZET KARTLAR ───────────────────────
+  // ── ÖZET KARTLAR (tüm kullanıcılar görür) ───────────────
   const ozet = document.getElementById('tahsilat-ozet');
   const cards = document.getElementById('tahsilat-cards');
   ozet.style.display = 'block';
 
-  if (currentUser.role === 'admin') {
-    // Yönetici: tüm tahsilatların toplamı
-    const topAidat = aidatGelirler.reduce((s,g) => s + (g.tutar||0), 0);
-    const topOG    = ogGelirler.reduce((s,g)    => s + (g.tutar||0), 0);
+  const subLabelAidat = currentUser.role === 'admin' ? `${aidatSayi} ödeme kaydı` : 'Tüm daireler toplamı';
+  const subLabelOG    = currentUser.role === 'admin' ? `${ogSayi} ödeme kaydı`    : 'Tüm daireler toplamı';
 
-    cards.innerHTML = `
-      <div class="stat-card gold" style="border-radius:10px;">
-        <div class="stat-label">💳 Toplam Aidat Tahsilatı</div>
-        <div class="stat-value money" style="font-size:22px;">${fmt(topAidat)}</div>
-        <div class="stat-sub">${aidatGelirler.length} ödeme kaydı</div>
-      </div>
-      <div class="stat-card blue" style="border-radius:10px;">
-        <div class="stat-label">🔧 Ortak Gider Tahsilatı</div>
-        <div class="stat-value money" style="font-size:22px;">${fmt(topOG)}</div>
-        <div class="stat-sub">${ogGelirler.length} ödeme kaydı</div>
-      </div>`;
-  } else {
-    // Daire: tüm binanın aidat ve OG toplamları (kişisel ayrıntı yok)
-    const topAidat = odemeler.reduce((s,o) => s + (o.tutar||0), 0);
-    const alacaklilar = DB.alacaklilar || [];
-    const topOG = alacaklilar
-      .filter(a => a.tur === 'Ortak Gider')
-      .reduce((s,a) => s + (a.odemeler||[]).reduce((x,p) => x+(p.tutar||0), 0), 0);
+  cards.innerHTML = `
+    <div class="stat-card gold" style="border-radius:10px;">
+      <div class="stat-label">💳 Toplam Aidat Tahsilatı</div>
+      <div class="stat-value money" style="font-size:22px;">${fmt(topAidat)}</div>
+      <div class="stat-sub">${subLabelAidat}</div>
+    </div>
+    <div class="stat-card blue" style="border-radius:10px;">
+      <div class="stat-label">🔧 Ortak Gider Tahsilatı</div>
+      <div class="stat-value money" style="font-size:22px;">${fmt(topOG)}</div>
+      <div class="stat-sub">${subLabelOG}</div>
+    </div>`;
 
-    cards.innerHTML = `
-      <div class="stat-card gold" style="border-radius:10px;">
-        <div class="stat-label">💳 Toplam Aidat Tahsilatı</div>
-        <div class="stat-value money" style="font-size:22px;">${fmt(topAidat)}</div>
-        <div class="stat-sub">Tüm daireler toplamı</div>
-      </div>
-      <div class="stat-card blue" style="border-radius:10px;">
-        <div class="stat-label">🔧 Toplam OG Tahsilatı</div>
-        <div class="stat-value money" style="font-size:22px;">${fmt(topOG)}</div>
-        <div class="stat-sub">Tüm daireler toplamı</div>
-      </div>`;
-  }
+  // ── GELİR TABLOSU ──────────────────────────────────────
+  // Aidat satırları: DB.odemeler'den üret
+  const aidatRows = odemeler.slice().reverse().map(o => {
+    const d = daireler.find(x => x.no == o.daireNo) || {};
+    const aciklama = (d.isim ? d.isim + ' · ' : '') + 'Daire ' + o.daireNo + (o.ay ? ' · ' + o.ay : '');
+    return { tarih: o.tarih, tur: 'Aidat', aciklama, tutar: o.tutar||0 };
+  });
 
-  // ── GELİRLER TABLOSU (daire: sadece diğer gelirler) ──
-  const gorunenGelirler = currentUser.role === 'admin' ? tumGelirler : digerGelirler;
-  const topGelir = gorunenGelirler.reduce((s,g) => s + (g.tutar||0), 0);
+  // OG satırları: DB.alacaklilar'dan üret
+  const ogRows = [];
+  ogAlaOdemeler.forEach(a => {
+    const d = daireler.find(x => x.no == a.daire_no) || {};
+    (a.odemeler||[]).forEach(p => {
+      const aciklama = (d.isim ? d.isim + ' · ' : '') + 'Daire ' + a.daire_no + (a.aciklama ? ' · ' + a.aciklama : '');
+      ogRows.push({ tarih: p.tarih||a.tarih, tur: 'Ortak Gider Tahsilatı', aciklama, tutar: p.tutar||0 });
+    });
+  });
+  ogRows.reverse();
+
+  // Diğer gelirler
+  const digerRows = digerGelirler.slice().reverse().map(g => ({
+    tarih: g.fatura_tarihi||g.tarih, tur: g.tur||'—', aciklama: g.aciklama||'—', tutar: g.tutar||0
+  }));
+
+  // Hepsini birleştir: admin → aidat+OG+diğer, daire → aidat+OG+diğer (aynı)
+  const gorunenGelirler = [...aidatRows, ...ogRows, ...digerRows];
+  const topGelir = gorunenGelirler.reduce((s,g) => s + g.tutar, 0);
+
   let gRows = '';
-  gorunenGelirler.slice().reverse().forEach(g => {
+  gorunenGelirler.forEach(g => {
     gRows += `<tr>
-      <td>${fmtDate(g.fatura_tarihi||g.tarih)}</td>
-      <td>${g.tur||'—'}</td>
-      <td>${g.aciklama||'—'}</td>
+      <td>${fmtDate(g.tarih)}</td>
+      <td>${g.tur}</td>
+      <td>${g.aciklama}</td>
       <td class="money money-green">${fmt(g.tutar)}</td>
     </tr>`;
   });
