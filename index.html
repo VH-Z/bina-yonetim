@@ -1458,11 +1458,11 @@ function initDemoData() {
       { id:3, daireNo:3, ay:prevMonth, tutar:750, yontem:"Havale/EFT", tarih:new Date(Date.now()-30*86400000).toISOString(), makbuzNo:"AID-2025-00003" },
     ],
     gelirler: [
-      { id:10, tur:"Kira", aciklama:"Ortak alan kira geliri", tarih:new Date().toISOString(), tutar:1200, fatura_tarihi:new Date().toISOString() },
+      { id:10, tur:"Kira", aciklama:"Ortak alan kira geliri", tarih:new Date().toISOString(), tutar:1200, fatura_tarihi:new Date().toISOString(), belge_tipi:"Fatura", belge_no:"2025-001", makbuz_no:"GLR-2025-00001", yazdirildi:false },
     ],
     giderler: [
-      { id:20, tur:"Elektrik", aciklama:"Ocak ayı ortak alan elektrik", tarih:new Date().toISOString(), tutar:850, fatura_tarihi:new Date().toISOString() },
-      { id:21, tur:"Temizlik", aciklama:"Aylık temizlik hizmeti", tarih:new Date().toISOString(), tutar:600, fatura_tarihi:new Date().toISOString() },
+      { id:20, tur:"Elektrik", aciklama:"Ocak ayı ortak alan elektrik", tarih:new Date().toISOString(), tutar:850, fatura_tarihi:new Date().toISOString(), belge_tipi:"Fatura", belge_no:"ELK-001", makbuz_no:"GDR-2025-00001", yazdirildi:false },
+      { id:21, tur:"Temizlik", aciklama:"Aylık temizlik hizmeti", tarih:new Date().toISOString(), tutar:600, fatura_tarihi:new Date().toISOString(), belge_tipi:"Faturasız", belge_no:"", makbuz_no:"GDR-2025-00002", yazdirildi:false },
     ],
     alacaklilar: [
       { id:30, tur:"Fatura", kisi:"Elektrik A.Ş.", aciklama:"Ocak faturası", tutar:850, fatura_tarihi:new Date().toISOString(), kayit_tarihi:new Date().toISOString(), odendi:true, odemeler:[{id:31, tutar:850, tarih:new Date().toISOString()}] },
@@ -1836,7 +1836,15 @@ function renderOzet() {
 
   // Stats
   const tahsilat_buay = odemeler.filter(o => (o.tarih||'').startsWith(ba)).reduce((s,o)=>s+o.tutar,0);
-  const toplam_gelir  = gelirler.reduce((s,g)=>s+g.tutar,0);
+
+  // Toplam gelir: aidat tahsilatı + OG tahsilatı + diğer gelirler (bina_yonetim.py ile uyumlu)
+  const topAidatTum   = odemeler.reduce((s,o) => s + (o.tutar||0), 0);
+  const topOGTum      = alacaklilar.filter(a => a.tur === 'Ortak Gider')
+                          .reduce((s,a) => s + (a.odemeler||[]).reduce((x,p) => x+(p.tutar||0), 0), 0);
+  const topDigerGelir = gelirler
+                          .filter(g => !['aidat','ortak gider'].some(k => (g.tur||'').toLowerCase().includes(k)))
+                          .reduce((s,g) => s + (g.tutar||0), 0);
+  const toplam_gelir  = topAidatTum + topOGTum + topDigerGelir;
   const toplam_gider  = giderler.reduce((s,g)=>s+g.tutar,0);
   const net           = toplam_gelir - toplam_gider;
 
@@ -2289,30 +2297,31 @@ function renderGelirGider() {
 
   // ── GELİR TABLOSU ──────────────────────────────────────
   // Tabloda sadece diğer gelirler (aidat ve OG tahsilatı hariç)
-  const digerRows = digerGelirler.slice().reverse().map(g => ({
-    tarih: g.fatura_tarihi||g.tarih, tur: g.tur||'—', aciklama: g.aciklama||'—', tutar: g.tutar||0
-  }));
-
-  const gorunenGelirler = [...digerRows];
-  const topGelir = gorunenGelirler.reduce((s,g) => s + g.tutar, 0);
+  const gorunenGelirler = digerGelirler.slice().reverse();
+  const topGelir = gorunenGelirler.reduce((s,g) => s + (g.tutar||0), 0);
 
   let gRows = '';
   gorunenGelirler.forEach(g => {
+    const belge = g.belge_tipi && g.belge_tipi !== 'Faturasız'
+      ? (g.belge_no ? `${g.belge_tipi} #${g.belge_no}` : g.belge_tipi)
+      : (g.belge_no ? `#${g.belge_no}` : '—');
     gRows += `<tr>
-      <td>${fmtDate(g.tarih)}</td>
-      <td>${g.tur}</td>
-      <td>${g.aciklama}</td>
+      <td>${fmtDate(g.fatura_tarihi||g.tarih)}</td>
+      <td>${g.tur||'—'}</td>
+      <td>${g.aciklama||'—'}</td>
+      <td style="color:var(--text2);font-size:12px;">${belge}</td>
+      <td style="color:var(--text3);font-size:11px;font-family:'IBM Plex Mono',monospace;">${g.makbuz_no||'—'}</td>
       <td class="money money-green">${fmt(g.tutar)}</td>
     </tr>`;
   });
   const gTopRow = gorunenGelirler.length > 0 ? `
     <tr style="border-top:2px solid var(--green);font-weight:700;background:var(--green-bg);">
-      <td colspan="3" style="color:var(--green);padding:12px 14px;">TOPLAM</td>
+      <td colspan="5" style="color:var(--green);padding:12px 14px;">TOPLAM</td>
       <td class="money" style="color:var(--green);padding:12px 14px;">${fmt(topGelir)}</td>
     </tr>` : '';
   document.getElementById('tbl-gelir').innerHTML = `
-    <thead><tr><th>Tarih</th><th>Tür</th><th>Açıklama</th><th>Tutar</th></tr></thead>
-    <tbody>${gRows||'<tr><td colspan="4" style="color:var(--text3);text-align:center;padding:24px;">Kayıt yok</td></tr>'}${gTopRow}</tbody>`;
+    <thead><tr><th>Tarih</th><th>Tür</th><th>Açıklama</th><th>Belge</th><th>Makbuz No</th><th>Tutar</th></tr></thead>
+    <tbody>${gRows||'<tr><td colspan="6" style="color:var(--text3);text-align:center;padding:24px;">Kayıt yok</td></tr>'}${gTopRow}</tbody>`;
 
   // ── DAİRE BAZLI TAHSİLAT TABLOLARI (sadece admin) ──
   const daireTahsilatSec = document.getElementById('daire-tahsilat-section');
@@ -2387,22 +2396,27 @@ function renderGelirGider() {
 
   let dRows = '';
   filteredGiderler.slice().reverse().forEach(g => {
+    const belge = g.belge_tipi && g.belge_tipi !== 'Faturasız'
+      ? (g.belge_no ? `${g.belge_tipi} #${g.belge_no}` : g.belge_tipi)
+      : (g.belge_no ? `#${g.belge_no}` : '—');
     dRows += `<tr>
       <td>${fmtDate(g.fatura_tarihi||g.tarih)}</td>
       <td>${g.tur||'—'}</td>
       <td>${g.aciklama||'—'}</td>
+      <td style="color:var(--text2);font-size:12px;">${belge}</td>
+      <td style="color:var(--text3);font-size:11px;font-family:'IBM Plex Mono',monospace;">${g.makbuz_no||'—'}</td>
       <td class="money money-red">${fmt(g.tutar)}</td>
     </tr>`;
   });
   const topGider = filteredGiderler.reduce((s,g) => s + (g.tutar||0), 0);
   const dTopRow = filteredGiderler.length > 0 ? `
     <tr style="border-top:2px solid var(--red);font-weight:700;background:var(--red-bg);">
-      <td colspan="3" style="color:var(--red);padding:12px 14px;">TOPLAM</td>
+      <td colspan="5" style="color:var(--red);padding:12px 14px;">TOPLAM</td>
       <td class="money" style="color:var(--red);padding:12px 14px;">${fmt(topGider)}</td>
     </tr>` : '';
   document.getElementById('tbl-gider').innerHTML = `
-    <thead><tr><th>Tarih</th><th>Tür</th><th>Açıklama</th><th>Tutar</th></tr></thead>
-    <tbody>${dRows||'<tr><td colspan="4" style="color:var(--text3);text-align:center;padding:24px;">Kayıt yok</td></tr>'}${dTopRow}</tbody>`;
+    <thead><tr><th>Tarih</th><th>Tür</th><th>Açıklama</th><th>Belge</th><th>Makbuz No</th><th>Tutar</th></tr></thead>
+    <tbody>${dRows||'<tr><td colspan="6" style="color:var(--text3);text-align:center;padding:24px;">Kayıt yok</td></tr>'}${dTopRow}</tbody>`;
 }
 
 // ── DAİRELER (admin) ────────────────────────────────
@@ -2702,15 +2716,26 @@ async function refreshFromFolder() {
         case 'daire':
           daireler_loaded.push(data); break;
         case 'legacy':
-          if (data.bina)        DB.bina    = data.bina;
-          if (data.gelirler)    DB.gelirler = data.gelirler;
-          if (data.giderler)    DB.giderler = data.giderler;
-          if (data.alacaklilar) DB.alacaklilar = data.alacaklilar;
-          if (data.ortak_giderler) DB.ortak_giderler = data.ortak_giderler;
-          if (data.daireler) data.daireler.forEach(d => {
-            d.odemeler = (data.odemeler||[]).filter(o=>o.daireNo==d.no);
-            daireler_loaded.push(d);
-          });
+          // Legacy (bina_veriler.json) sadece güncel dosyalar YOK ise yükle
+          if (data.bina && !folderFiles['bina_ayarlar.json'])
+            DB.bina = data.bina;
+          if (data.gelirler && !folderFiles['bina_gelirler.json'])
+            DB.gelirler = data.gelirler;
+          if (data.giderler && !folderFiles['bina_giderler.json'])
+            DB.giderler = data.giderler;
+          if (data.ortak_giderler && !folderFiles['bina_ortak_giderler.json'])
+            DB.ortak_giderler = data.ortak_giderler;
+          if (data.alacaklilar && !folderFiles['bina_alacaklilar.json'] && !folderFiles['bina_ortak_giderler.json']) {
+            // Legacy alacaklilar: OG'siz kayıtları koy, OG güncel dosyadan gelecek
+            const nonOG = data.alacaklilar.filter(a => a.tur !== 'Ortak Gider');
+            DB.alacaklilar = [...(DB.alacaklilar||[]).filter(a => a.tur === 'Ortak Gider'), ...nonOG];
+          }
+          if (data.daireler && daireler_loaded.length === 0) {
+            data.daireler.forEach(d => {
+              d.odemeler = (data.odemeler||[]).filter(o=>o.daireNo==d.no);
+              daireler_loaded.push(d);
+            });
+          }
           break;
       }
       loaded++;
@@ -3348,6 +3373,7 @@ async function refreshFromFolderFiles(files) {
             const nonOG = (DB.alacaklilar||[]).filter(a => a.tur !== 'Ortak Gider');
             DB.alacaklilar = [...nonOG, ...data];
           } else {
+            DB.ortak_giderler = data.og_tanimlar || []; // ✓ og_tanimlar kaydet
             const ogAl = data.og_alacaklilar || [];
             const nonOG = (DB.alacaklilar||[]).filter(a => a.tur !== 'Ortak Gider');
             DB.alacaklilar = [...nonOG, ...ogAl];
@@ -3361,20 +3387,29 @@ async function refreshFromFolderFiles(files) {
         }
         case 'daire': daireler_loaded.push(data); break;
         case 'legacy':
-          if (data.bina) DB.bina = data.bina;
-          if (data.gelirler) DB.gelirler = data.gelirler;
-          if (data.giderler) DB.giderler = data.giderler;
-          if (data.alacaklilar) DB.alacaklilar = data.alacaklilar;
-          if (data.daireler) data.daireler.forEach(d => daireler_loaded.push(d));
+          // Legacy (bina_veriler.json) sadece güncel dosyalar YOK ise yükle
+          if (data.bina && !files['bina_ayarlar.json'])
+            DB.bina = data.bina;
+          if (data.gelirler && !files['bina_gelirler.json'])
+            DB.gelirler = data.gelirler;
+          if (data.giderler && !files['bina_giderler.json'])
+            DB.giderler = data.giderler;
+          if (data.ortak_giderler && !files['bina_ortak_giderler.json'])
+            DB.ortak_giderler = data.ortak_giderler;
+          if (data.alacaklilar && !files['bina_alacaklilar.json'] && !files['bina_ortak_giderler.json']) {
+            const nonOG = data.alacaklilar.filter(a => a.tur !== 'Ortak Gider');
+            DB.alacaklilar = [...(DB.alacaklilar||[]).filter(a => a.tur === 'Ortak Gider'), ...nonOG];
+          }
+          if (data.daireler && daireler_loaded.length === 0)
+            data.daireler.forEach(d => daireler_loaded.push(d));
           break;
       }
     } catch(e) { console.error('file read error', fname, e); }
   }
   if (daireler_loaded.length > 0) {
     DB.daireler = daireler_loaded.sort((a,b) => a.no - b.no);
-    const allOdemeler = [];
-    daireler_loaded.forEach(d => { if (d.odemeler) allOdemeler.push(...d.odemeler); });
-    if (allOdemeler.length > 0) DB.odemeler = allOdemeler;
+    DB.odemeler = []; // ✓ her zaman sıfırla — stale ödeme kalmasın
+    daireler_loaded.forEach(d => { if (d.odemeler) DB.odemeler.push(...d.odemeler); });
   }
   saveDBToStorage();
 }
