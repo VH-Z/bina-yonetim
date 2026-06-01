@@ -1037,6 +1037,14 @@ hr.sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
       <div class="section-title">💳 Aidat Bilgileri <small id="aidat-title-sub"></small></div>
 
       <!-- Ödenmemiş Özet Kartları -->
+      <!-- Son Ödeme Günü Bilgisi -->
+      <div id="aidat-son-odeme-banner" style="display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
+        <span style="font-size:18px;">📅</span>
+        <span style="color:var(--text2);">Her ayın son ödeme tarihi:</span>
+        <span style="font-weight:700;color:var(--gold2);">25'i</span>
+        <span id="aidat-son-odeme-durum" style="margin-left:4px;"></span>
+      </div>
+
       <div id="aidat-ozet-kartlar" style="display:none;margin-bottom:16px;"></div>
 
       <div class="panel">
@@ -1624,6 +1632,8 @@ function checkDaireBorcUyari(daireNo) {
   const b = DB.bina || {};
   const odemeler = DB.odemeler || [];
   const ba = thisMonth();
+  const today_uyari = new Date();
+  const sonOdemeTarihiGecti_uyari = today_uyari.getDate() >= 25;
   // İleri dönem ödemeleri de kapsansın: ödemelerdeki en yüksek ayı bul
   const maxAy = odemeler.reduce((max, o) => (o.ay||'') > max ? o.ay : max, ba);
   const tum_ay = monthRange(b.baslangic || ba, maxAy);
@@ -1634,12 +1644,21 @@ function checkDaireBorcUyari(daireNo) {
 
   if (eksikAylar.length === 0) return; // Borç yok, uyarma
 
+  // Sadece bu ayın borcu varsa ve 25'i geçmişse popup gösterme
+  const gecmisEksik = eksikAylar.filter(ay => ay < ba);
+  const buAyEksik = eksikAylar.includes(ba);
+  const gosterilecekEksik = [
+    ...gecmisEksik,
+    ...(buAyEksik && sonOdemeTarihiGecti_uyari ? [ba] : [])
+  ];
+  if (gosterilecekEksik.length === 0) return; // Sadece bu ayın borcu + 25'i geçmemiş → gösterme
+
   const liste = document.getElementById('borc-uyari-liste');
   const toplam_el = document.getElementById('borc-uyari-toplam');
   const overlay = document.getElementById('borc-uyari-overlay');
 
   let toplamBorc = 0;
-  liste.innerHTML = eksikAylar.map(ay => {
+  liste.innerHTML = gosterilecekEksik.map(ay => {
     const aidat = (b.ozel_aidatlar||{})[ay] || b.aidat || 0;
     toplamBorc += aidat;
     return `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);">
@@ -1954,16 +1973,44 @@ function renderAidat() {
   const ba = thisMonth();
   const tum_ay = monthRange(b.baslangic || ba, ba);
 
+  // Son ödeme günü durum göstergesi
+  const durumEl = document.getElementById('aidat-son-odeme-durum');
+  if (durumEl) {
+    const _today = new Date();
+    const _gun = _today.getDate();
+    if (_gun < 25) {
+      const kalan = 25 - _gun;
+      durumEl.innerHTML = `<span style="background:var(--green-bg);border:1px solid var(--green);color:var(--green);border-radius:6px;padding:2px 10px;font-size:12px;font-weight:600;">${kalan} gün kaldı</span>`;
+    } else if (_gun === 25) {
+      durumEl.innerHTML = `<span style="background:var(--orange-bg);border:1px solid var(--orange);color:var(--orange);border-radius:6px;padding:2px 10px;font-size:12px;font-weight:600;">⚠️ Bugün son gün</span>`;
+    } else {
+      durumEl.innerHTML = `<span style="background:var(--red-bg);border:1px solid var(--red);color:var(--red);border-radius:6px;padding:2px 10px;font-size:12px;font-weight:600;">Son tarih geçti</span>`;
+    }
+  }
+
   let rows = '';
 
   // ── Daire bazlı ödenmemiş özet kartları ──────────────────────────────────
   const ozKartEl = document.getElementById('aidat-ozet-kartlar');
   if (ozKartEl && currentUser.role === 'admin') {
+    const today_ozet = new Date();
+    const gectiMi = today_ozet.getDate() > 25; // ayın 25'i geçti mi (borçlu)
+    const bugunAy25 = today_ozet.getDate() === 25; // tam 25'i (borçlu sayılır)
+    const sonOdemeTarihiGecti = today_ozet.getDate() >= 25;
+
     // Her daire için toplam borç hesapla
     const borcluDaireler = daireler.map(d => {
       const eksikAylar = tum_ay.filter(ay => !odemeler.some(o => o.daireNo == d.no && o.ay === ay));
       const toplam = eksikAylar.reduce((s, ay) => s + ((b.ozel_aidatlar||{})[ay] || b.aidat || 0), 0);
-      return { d, eksikAylar, toplam };
+      // Bu ayki eksik mi var?
+      const buAyEksik = eksikAylar.includes(ba);
+      // Geçmiş ay borcu var mı (bu ay hariç)?
+      const gecmisEksik = eksikAylar.filter(ay => ay < ba).length > 0;
+      // Kırmızı: geçmiş borcu var VEYA bu ay ödenmemiş ve 25'i geçmiş
+      const isKirmizi = gecmisEksik || (buAyEksik && sonOdemeTarihiGecti);
+      // Sarı: sadece bu ay ödenmemiş ve 25'i geçmemiş
+      const isSari = buAyEksik && !sonOdemeTarihiGecti && !gecmisEksik;
+      return { d, eksikAylar, toplam, isKirmizi, isSari };
     }).filter(x => x.toplam > 0).sort((a,b) => b.toplam - a.toplam);
 
     if (borcluDaireler.length > 0) {
@@ -1975,13 +2022,18 @@ function renderAidat() {
             <div style="font-size:13px;font-weight:700;color:var(--orange);">⚠️ Ödenmemiş Aidat Özeti — ${borcluDaireler.length} Daire</div>
             <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:700;color:var(--red);">Toplam: ${fmt(genelToplam)}</div>
           </div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:8px;">Son ödeme tarihi her ayın 25'idir. 🔴 Borçlu &nbsp;🟡 Bekliyor (süre dolmadı)</div>
           <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            ${borcluDaireler.map(({d,eksikAylar,toplam}) => `
-              <div style="background:var(--bg3);border:1px solid var(--orange);border-radius:8px;padding:8px 12px;min-width:140px;">
-                <div style="font-size:12px;font-weight:700;color:var(--text);">Daire ${d.no}${d.isim ? ' — '+d.isim : ''}</div>
+            ${borcluDaireler.map(({d,eksikAylar,toplam,isKirmizi,isSari}) => {
+              const borderColor = isKirmizi ? 'var(--red)' : 'var(--orange)';
+              const amountColor = isKirmizi ? 'var(--red)' : 'var(--orange)';
+              const icon = isKirmizi ? '🔴' : '🟡';
+              return `<div style="background:var(--bg3);border:1px solid ${borderColor};border-radius:8px;padding:8px 12px;min-width:140px;">
+                <div style="font-size:12px;font-weight:700;color:var(--text);">${icon} Daire ${d.no}${d.isim ? ' — '+d.isim : ''}</div>
                 <div style="font-size:11px;color:var(--text3);margin:2px 0;">${eksikAylar.length} ay ödenmemiş</div>
-                <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--red);font-weight:700;">${fmt(toplam)}</div>
-              </div>`).join('')}
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:${amountColor};font-weight:700;">${fmt(toplam)}</div>
+              </div>`;
+            }).join('')}
           </div>
         </div>`;
     } else {
@@ -1990,17 +2042,35 @@ function renderAidat() {
   } else if (ozKartEl && currentUser.role !== 'admin') {
     // Daire kullanıcısı: kendi borcunu göster
     const daireNo = currentUser.daire_no;
+    const today_daire_ozet = new Date();
+    const gun = today_daire_ozet.getDate();
+    const sonOdemeTarihiGecti_daire_ozet = gun >= 25;
     const eksikAylar = tum_ay.filter(ay => !odemeler.some(o => o.daireNo == daireNo && o.ay === ay));
-    if (eksikAylar.length > 0) {
-      const toplam = eksikAylar.reduce((s, ay) => s + ((b.ozel_aidatlar||{})[ay] || b.aidat || 0), 0);
+    // Geçmiş ay borcu varsa her zaman göster; sadece bu ay ödenmemiş ve 25'i geçmişse gizle
+    const gecmisEksik = eksikAylar.filter(ay => ay < ba);
+    const buAyEksik = eksikAylar.includes(ba);
+    // Gösterilecek eksik aylar: geçmiş her zaman + bu ay sadece 25'i geçmişse
+    const gosterilecekEksik = [
+      ...gecmisEksik,
+      ...(buAyEksik && sonOdemeTarihiGecti_daire_ozet ? [ba] : [])
+    ];
+    if (gosterilecekEksik.length > 0) {
+      const toplam = gosterilecekEksik.reduce((s, ay) => s + ((b.ozel_aidatlar||{})[ay] || b.aidat || 0), 0);
+      const sadeceBuAy = gecmisEksik.length === 0 && buAyEksik;
+      // Bu ayın son ödeme günü
+      const ayStr = monthLabel(ba);
+      const borderColor = gecmisEksik.length > 0 ? 'var(--red)' : 'var(--orange)';
+      const titleColor = gecmisEksik.length > 0 ? 'var(--red)' : 'var(--orange)';
+      const titleIcon = gecmisEksik.length > 0 ? '🔴' : '⚠️';
       ozKartEl.style.display = 'block';
       ozKartEl.innerHTML = `
-        <div style="background:var(--bg2);border:1px solid var(--orange);border-radius:12px;padding:16px 20px;">
-          <div style="font-size:13px;font-weight:700;color:var(--orange);margin-bottom:8px;">⚠️ Ödenmemiş Aidatınız Var</div>
-          <div style="display:flex;gap:16px;flex-wrap:wrap;">
-            <div><span style="color:var(--text3);font-size:12px;">Ödenmemiş Dönem</span><br><span style="font-weight:700;color:var(--text);">${eksikAylar.length} ay</span></div>
-            <div><span style="color:var(--text3);font-size:12px;">Toplam Borç</span><br><span style="font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--red);">${fmt(toplam)}</span></div>
+        <div style="background:var(--bg2);border:1px solid ${borderColor};border-radius:12px;padding:16px 20px;">
+          <div style="font-size:13px;font-weight:700;color:${titleColor};margin-bottom:8px;">${titleIcon} Ödenmemiş Aidatınız Var</div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px;">
+            <div><span style="color:var(--text3);font-size:12px;">Ödenmemiş Dönem</span><br><span style="font-weight:700;color:var(--text);">${gosterilecekEksik.length} ay</span></div>
+            <div><span style="color:var(--text3);font-size:12px;">Toplam Borç</span><br><span style="font-family:'IBM Plex Mono',monospace;font-weight:700;color:${titleColor};">${fmt(toplam)}</span></div>
           </div>
+          ${buAyEksik && gosterilecekEksik.includes(ba) ? `<div style="font-size:12px;color:var(--text3);border-top:1px solid var(--border);padding-top:8px;">📅 ${ayStr} ayı son ödeme tarihi 25'i geçti.</div>` : ''}
         </div>`;
     } else {
       ozKartEl.style.display = 'none';
@@ -2035,15 +2105,22 @@ function renderAidat() {
     document.getElementById('aidat-panel-title').textContent = 'Tüm Daireler — Aidat Durumu';
     document.getElementById('aidat-title-sub').textContent = `${tum_ay.length} dönem`;
 
+    const today_aidat = new Date();
+    const sonOdemeTarihiGecti_aidat = today_aidat.getDate() >= 25;
     tum_ay.slice().reverse().forEach(ay => {
       daireler.forEach(d => {
         const odeme = odemeler.find(o => o.daireNo == d.no && o.ay === ay);
         const aidat = (b.ozel_aidatlar||{})[ay] || b.aidat || 0;
+        // Geçmiş ay → her zaman kırmızı (borçlu); bu ay → 25'e kadar sarı (bekliyor), 25+ kırmızı (borçlu)
         const status = odeme
           ? `<span class="badge badge-green">✔ Ödendi</span>`
           : ay > ba
             ? `<span class="badge badge-blue">İleri Dönem</span>`
-            : `<span class="badge badge-red">✘ Ödenmedi</span>`;
+            : ay < ba
+              ? `<span class="badge badge-red">✘ Borçlu</span>`
+              : sonOdemeTarihiGecti_aidat
+                ? `<span class="badge badge-red">✘ Borçlu</span>`
+                : `<span class="badge badge-orange">⏳ Bekliyor</span>`;
         // WhatsApp per-row button for unpaid current/past months
         let wpCell = '—';
         if (!odeme && ay <= ba && d.tel) {
@@ -2086,6 +2163,8 @@ function renderAidat() {
     const maxOdemeAy = dOdemeler.reduce((max, o) => o.ay > max ? o.ay : max, ba);
     const daire_tum_ay = monthRange(b.baslangic || ba, maxOdemeAy);
 
+    const today_daire = new Date();
+    const sonOdemeTarihiGecti_daire = today_daire.getDate() >= 25;
     daire_tum_ay.slice().reverse().forEach(ay => {
       const odeme = odemeler.find(o => o.daireNo == dno && o.ay === ay);
       const aidat = (b.ozel_aidatlar||{})[ay] || b.aidat || 0;
@@ -2093,7 +2172,11 @@ function renderAidat() {
         ? `<span class="badge badge-green">✔ Ödendi</span>`
         : ay > ba
           ? `<span class="badge badge-blue">İleri Dönem</span>`
-          : `<span class="badge badge-red">✘ Ödenmedi</span>`;
+          : ay < ba
+            ? `<span class="badge badge-red">✘ Borçlu</span>`
+            : sonOdemeTarihiGecti_daire
+              ? `<span class="badge badge-red">✘ Borçlu</span>`
+              : `<span class="badge badge-orange">⏳ Bekliyor</span>`;
       rows += `<tr>
         <td>${monthLabel(ay)}</td>
         <td class="money">${fmt(aidat)}</td>
@@ -2426,16 +2509,31 @@ function renderDaireler() {
   const b = DB.bina || {};
   const ba = thisMonth();
   const tum_ay = monthRange(b.baslangic || ba, ba);
+  const today_daireler = new Date();
+  const sonOdemeTarihiGecti_daireler = today_daireler.getDate() >= 25;
 
   let rows = '';
   daireler.forEach(d => {
     const odediBuAy = odemeler.some(o => o.daireNo == d.no && o.ay === ba);
-    const borcluAylar = tum_ay.filter(ay => !odemeler.some(o => o.daireNo == d.no && o.ay === ay)).length;
-    const badge = odediBuAy
-      ? '<span class="badge badge-green">✔ Ödedi</span>'
-      : borcluAylar > 0
-        ? `<span class="badge badge-red">✘ ${borcluAylar} ay</span>`
-        : '<span class="badge badge-orange">⏳ Bekliyor</span>';
+    // Geçmiş tüm ödenmemiş aylar (bu ay dahil, 25'e göre)
+    const borcluAylar = tum_ay.filter(ay => {
+      const odendi = odemeler.some(o => o.daireNo == d.no && o.ay === ay);
+      if (odendi) return false;
+      if (ay < ba) return true; // geçmiş ay → her zaman borçlu
+      if (ay === ba) return sonOdemeTarihiGecti_daireler; // bu ay → 25'i geçtiyse borçlu
+      return false;
+    }).length;
+    const buAyBekliyor = !odediBuAy && !sonOdemeTarihiGecti_daireler; // bu ay, 25'i geçmemiş
+
+    let badge;
+    if (odediBuAy && borcluAylar === 0) {
+      badge = '<span class="badge badge-green">✔ Ödedi</span>';
+    } else if (borcluAylar > 0) {
+      badge = `<span class="badge badge-red">✘ ${borcluAylar} ay</span>`;
+    } else {
+      // buAyBekliyor
+      badge = '<span class="badge badge-orange">⏳ Bekliyor</span>';
+    }
 
     rows += `<tr>
       <td>Daire ${d.no}</td>
