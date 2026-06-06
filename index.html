@@ -1230,6 +1230,20 @@ hr.sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 
           <!-- Klasör seç butonu -->
           <div id="folder-select-area">
+
+            <!-- Kayıtlı klasör hatırlatma bandı (Firebase'den gelir) -->
+            <div id="saved-folder-banner" style="display:none;background:var(--orange-bg);border:1px solid var(--orange);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:none;align-items:center;gap:10px;">
+              <span style="font-size:20px;">📂</span>
+              <div style="flex:1;">
+                <div style="font-size:11px;font-weight:600;color:var(--orange);margin-bottom:2px;">SON SEÇİLEN KLASÖR</div>
+                <div id="saved-folder-name" style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--gold2);"></div>
+                <div id="saved-folder-date" style="font-size:10px;color:var(--text3);margin-top:2px;"></div>
+              </div>
+              <button onclick="window.selectFolder()" class="btn-primary" style="padding:8px 16px;font-size:12px;white-space:nowrap;">
+                🗂️ Yeniden Seç
+              </button>
+            </div>
+
             <div style="background:var(--bg3);border:2px dashed var(--border);border-radius:12px;padding:40px 24px;text-align:center;margin-bottom:20px;">
               <div style="font-size:40px;margin-bottom:14px;">🗂️</div>
               <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;">Veri Klasörünü Seçin</div>
@@ -1591,6 +1605,18 @@ async function doLogin() {
   if (_dz2) _dz2.style.display = 'none';
   if (_sp2) _sp2.style.display = 'none';
   showSection(currentUser.role === 'admin' ? 'ozet' : 'aidat');
+
+  // Kayıtlı klasör adını Firebase'den çekip folder-info alanına yaz
+  // (tarayıcı güvenliği nedeniyle dirHandle sıfırlanır ama adı gösterebiliriz)
+  if (currentUser.role === 'admin') {
+    const savedCfg = await getSetupConfig();
+    if (savedCfg && savedCfg.folderName) {
+      const folderInfo = document.getElementById('folder-info');
+      const folderPathText = document.getElementById('folder-path-text');
+      // Klasör henüz seçilmediyse sadece bilgi olarak topbar'a yaz, seçim beklenir
+      if (folderPathText) folderPathText.textContent = savedCfg.folderName;
+    }
+  }
 
   // Gerçek zamanlı Firestore listener: başka cihaz veri değiştirince anında güncelle
   fbListenDB(function(newData) {
@@ -2693,6 +2719,17 @@ async function selectFolder() {
       document.getElementById('folder-select-area').style.display = 'none';
       document.getElementById('folder-info').style.display = 'block';
       document.getElementById('folder-path-text').textContent = folderName;
+      // Kayıtlı klasör hatırlatma bandını gizle
+      const sb = document.getElementById('saved-folder-banner');
+      if (sb) sb.style.display = 'none';
+
+      // Klasör adını Firebase setup'a kaydet
+      const cfg = await getSetupConfig();
+      if (cfg) {
+        cfg.folderName = folderName;
+        cfg.folderSetAt = new Date().toISOString();
+        await saveSetupConfig(cfg);
+      }
 
       await refreshFromFolder();
       startWatching();
@@ -2744,6 +2781,17 @@ async function onFolderPicked(event) {
   document.getElementById('folder-select-area').style.display = 'none';
   document.getElementById('folder-info').style.display = 'block';
   document.getElementById('folder-path-text').textContent = folderName;
+  // Kayıtlı klasör hatırlatma bandını gizle
+  const sb2 = document.getElementById('saved-folder-banner');
+  if (sb2) sb2.style.display = 'none';
+
+  // Klasör adını Firebase setup'a kaydet
+  const cfg = await getSetupConfig();
+  if (cfg) {
+    cfg.folderName = folderName;
+    cfg.folderSetAt = new Date().toISOString();
+    await saveSetupConfig(cfg);
+  }
 
   await refreshFromFolder();
   startWatching();
@@ -2959,6 +3007,29 @@ async function renderAyarlar() {
           ${String(dt.getDate()).padStart(2,'0')}.${String(dt.getMonth()+1).padStart(2,'0')}.${dt.getFullYear()} tarihinde kuruldu
         </div>`;
       setupInfo.style.display = 'flex';
+    }
+
+    // Kayıtlı klasör adını göster (Firebase'den)
+    const banner = document.getElementById('saved-folder-banner');
+    const bannerName = document.getElementById('saved-folder-name');
+    const bannerDate = document.getElementById('saved-folder-date');
+    const folderSelectArea = document.getElementById('folder-select-area');
+    const folderInfoArea   = document.getElementById('folder-info');
+
+    if (banner && cfg.folderName) {
+      // Klasör henüz bu oturumda seçilmemişse hatırlatma bandını göster
+      if (folderInfoArea && folderInfoArea.style.display === 'none' || !dirHandle) {
+        if (bannerName) bannerName.textContent = cfg.folderName;
+        if (bannerDate && cfg.folderSetAt) {
+          const fd = new Date(cfg.folderSetAt);
+          bannerDate.textContent = `Son seçilme: ${String(fd.getDate()).padStart(2,'0')}.${String(fd.getMonth()+1).padStart(2,'0')}.${fd.getFullYear()} ${String(fd.getHours()).padStart(2,'0')}:${String(fd.getMinutes()).padStart(2,'0')}`;
+        }
+        banner.style.display = 'flex';
+      } else {
+        banner.style.display = 'none';
+      }
+    } else if (banner) {
+      banner.style.display = 'none';
     }
   }
 }
